@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FitTrack</string>
+
+    <string name="home">Home</string>
+    <string name="stats">Stats</string>
+    <string name="test">Test</string>
 </resources>
