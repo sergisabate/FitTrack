@@ -4,4 +4,5 @@
     <string name="home">Home</string>
     <string name="stats">Stats</string>
     <string name="test">Test</string>
+    <string name="settings">Settings</string>
 </resources>
