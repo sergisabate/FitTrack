@@ -12,40 +12,36 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.sergisabate.fittrack.ui.theme.LocalThemeViewModel
-
-enum class ThemeOption {
-    DarkMode,
-    LightMode,
-    SystemDefault
-}
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.sergisabate.fittrack.data.UserPreferencesRepository
+import com.sergisabate.fittrack.ui.theme.ThemeOption
+import com.sergisabate.fittrack.ui.viewmodels.ThemeViewModel
+import com.sergisabate.fittrack.ui.viewmodels.ThemeViewModelFactory
 
 @Composable
 fun ApplicationThemeScreen() {
-    val themeViewModel = LocalThemeViewModel.current
-    val themeSetting = themeViewModel.getDarkTheme()
+    val context = LocalContext.current
+    val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
+    val themeViewModel: ThemeViewModel = viewModel(
+        factory = ThemeViewModelFactory(userPreferencesRepository)
+    )
 
-    val initialOption = when (themeSetting) {
-        true -> ThemeOption.DarkMode
-        false -> ThemeOption.LightMode
-        null -> ThemeOption.SystemDefault
-    }
+    val themeSetting by themeViewModel.getPreferences().collectAsState(initial = ThemeOption.SystemDefault.value)
 
+    val initialOption = remember(themeSetting) { enumValues<ThemeOption>().getOrElse(themeSetting) { ThemeOption.SystemDefault } }
     var selectedOption by remember { mutableStateOf(initialOption) }
 
     val onOptionSelected: (ThemeOption) -> Unit = { option ->
-        when (option) {
-            ThemeOption.DarkMode -> themeViewModel.setDarkTheme(true)
-            ThemeOption.LightMode -> themeViewModel.setDarkTheme(false)
-            ThemeOption.SystemDefault -> themeViewModel.setDarkTheme(null)
-        }
+        themeViewModel.setDarkTheme(option.value)
         selectedOption = option
     }
 
