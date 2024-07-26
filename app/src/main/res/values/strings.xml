@@ -2,7 +2,8 @@
     <string name="app_name">FitTrack</string>
 
     <string name="home">Home</string>
-    <string name="stats">Stats</string>
-    <string name="test">Test</string>
+    <string name="progress">Progress</string>
+    <string name="aitools">AI Tools</string>
+    <string name="profile">Profile</string>
     <string name="settings">Settings</string>
 </resources>

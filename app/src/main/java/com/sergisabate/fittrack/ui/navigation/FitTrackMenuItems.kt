@@ -1,6 +1,7 @@
 package com.sergisabate.fittrack.ui.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
@@ -17,10 +18,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.UserPreferencesRepository
+import com.sergisabate.fittrack.ui.screens.AIToolsScreen
 import com.sergisabate.fittrack.ui.screens.ApplicationThemeScreen
 import com.sergisabate.fittrack.ui.screens.HomeScreen
+import com.sergisabate.fittrack.ui.screens.ProfileScreen
+import com.sergisabate.fittrack.ui.screens.ProgressScreen
 import com.sergisabate.fittrack.ui.screens.SettingsScreen
-import com.sergisabate.fittrack.ui.screens.StatsScreen
 import com.sergisabate.fittrack.ui.screens.TestScreen
 import com.sergisabate.fittrack.ui.theme.ThemeOption
 import com.sergisabate.fittrack.ui.viewmodels.ThemeViewModel
@@ -54,13 +57,18 @@ fun getBottomItems(): List<NavItem> {
         ),
         NavItem(
             icon = Icons.Default.Menu,
-            name = stringResource(R.string.stats),
-            screen = { StatsScreen() }
+            name = stringResource(R.string.progress),
+            screen = { ProgressScreen() }
+        ),
+        NavItem(
+            icon = Icons.Default.Build,
+            name = stringResource(R.string.aitools),
+            screen = { AIToolsScreen() }
         ),
         NavItem(
             icon = Icons.Default.Face,
-            name = stringResource(R.string.test),
-            screen = { TestScreen() }
+            name = stringResource(R.string.profile),
+            screen = { ProfileScreen() }
         )
     )
 }
