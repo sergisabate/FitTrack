@@ -35,7 +35,7 @@ fun ApplicationThemeScreen() {
         factory = ThemeViewModelFactory(userPreferencesRepository)
     )
 
-    val themeSetting by themeViewModel.getPreferences().collectAsState(initial = ThemeOption.SystemDefault.value)
+    val themeSetting by themeViewModel.getPreferences().collectAsState()
 
     val initialOption = remember(themeSetting) { enumValues<ThemeOption>().getOrElse(themeSetting) { ThemeOption.SystemDefault } }
     var selectedOption by remember { mutableStateOf(initialOption) }
