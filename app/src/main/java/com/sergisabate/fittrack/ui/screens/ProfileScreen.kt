@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -35,9 +37,8 @@ fun ProfileScreen() {
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(16.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             // Profile Header
             ProfileHeader(
@@ -53,6 +54,11 @@ fun ProfileScreen() {
                 bodyFat = "15%",
                 muscleMass = "65 kg"
             )
+
+            // Linked Devices
+            LinkedDevicesCard(
+                devices = listOf("Xiaomi Scale 2")
+            )
         }
     }
 }
@@ -61,8 +67,8 @@ fun ProfileScreen() {
 fun ProfileHeader(profilePicture: Painter, name: String) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp),
+            .padding(16.dp)
+            .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary
         ),
@@ -93,8 +99,57 @@ fun ProfileHeader(profilePicture: Painter, name: String) {
 
 @Composable
 fun BodyStatisticsCard(age: Int, weight: String, height: String, bodyFat: String, muscleMass: String) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            BodyStatisticCard(label = "Edad", value = age.toString(), modifier = Modifier.weight(1f).padding(16.dp, 0.dp, 0.dp, 0.dp))
+            BodyStatisticCard(label = "Peso", value = weight, modifier = Modifier.weight(1f))
+            BodyStatisticCard(label = "Altura", value = height, modifier = Modifier.weight(1f).padding(0.dp, 0.dp, 16.dp, 0.dp))
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            BodyStatisticCard(label = "Masa Muscular", value = muscleMass, modifier = Modifier.weight(1f).padding(16.dp, 0.dp, 0.dp, 0.dp))
+            BodyStatisticCard(label = "Grasa Corporal", value = bodyFat, modifier = Modifier.weight(1f).padding(0.dp, 0.dp, 16.dp, 0.dp))
+        }
+    }
+}
+
+@Composable
+fun BodyStatisticCard(label: String, value: String, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondary
+        ),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp, 16.dp, 0.dp, 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+            )
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
+}
+
+@Composable
+fun LinkedDevicesCard(devices: List<String>) {
     Card(
         modifier = Modifier
+            .padding(16.dp)
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary
@@ -103,44 +158,18 @@ fun BodyStatisticsCard(age: Int, weight: String, height: String, bodyFat: String
         Column(
             modifier = Modifier
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = "Estadísticas Corporales",
+                text = "Dispositivos Vinculados",
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
             )
-            // Create a grid layout for statistics
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                BodyStatisticItem("Edad", age.toString())
-                BodyStatisticItem("Peso", weight)
-                BodyStatisticItem("Altura", height)
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                BodyStatisticItem("Grasa Corporal", bodyFat)
-                BodyStatisticItem("Masa Muscular", muscleMass)
+            devices.forEach { device ->
+                Text(
+                    text = device,
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
         }
-    }
-}
-
-@Composable
-fun BodyStatisticItem(label: String, value: String) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = value,
-            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-        )
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium
-        )
     }
 }

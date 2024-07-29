@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
@@ -80,6 +81,16 @@ fun getSettingsItems(): List<NavItem> {
             name = "Application Theme",
             description = getThemeOptionName(),
             screen = { ApplicationThemeScreen() }
+        ),
+        NavItem(
+            icon = Icons.Default.Notifications,
+            name = "Change Language",
+            screen = { TestScreen() }
+        ),
+        NavItem(
+            icon = Icons.Default.Notifications,
+            name = "Notifications",
+            screen = { TestScreen() }
         ),
         NavItem(
             icon = Icons.Default.Info,

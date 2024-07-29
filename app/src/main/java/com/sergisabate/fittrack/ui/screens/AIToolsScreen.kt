@@ -92,11 +92,6 @@ fun AI_ToolsList() {
             description = "Consulta con un asistente nutricional que ofrece sugerencias y planes de dieta adaptados a tus necesidades.",
             icon = painterResource(id = R.drawable.ic_launcher_foreground)
         )
-        AI_ToolCard(
-            title = "Seguimiento de Progresos",
-            description = "Monitorea tu progreso con gráficos y estadísticas detalladas generadas por IA.",
-            icon = painterResource(id = R.drawable.ic_launcher_foreground)
-        )
     }
 }
 
