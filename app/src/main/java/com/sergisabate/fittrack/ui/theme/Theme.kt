@@ -55,7 +55,7 @@ fun FitTrackTheme(
         factory = ThemeViewModelFactory(userPreferencesRepository)
     )
 
-    val themeOption by themeViewModel.getPreferences().collectAsState(initial = ThemeOption.SystemDefault.value)
+    val themeOption by themeViewModel.getPreferences().collectAsState()
 
     val colorScheme = getColorScheme(context, themeOption, dynamicColor)
 
