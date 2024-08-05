@@ -10,18 +10,22 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import com.sergisabate.fittrack.ui.navigation.currentRoute
+import com.sergisabate.fittrack.R
+import com.sergisabate.fittrack.ui.navigation.currentNav
+import com.sergisabate.fittrack.ui.navigation.currentTitle
 import com.sergisabate.fittrack.ui.navigation.getTopItems
 import com.sergisabate.fittrack.ui.navigation.isCurrentRouteBottom
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FitTrackTopAppBar(navController: NavHostController) {
-    val name = currentRoute(navController)
-    if (name != null) {
+    val nav = currentNav(navController)
+    if (nav != null) {
+        val title = currentTitle(nav)
         TopAppBar(
-            title = { Text(name) },
+            title = { Text(title ?: "") },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.background,
             ),
@@ -35,8 +39,8 @@ fun FitTrackTopAppBar(navController: NavHostController) {
 private fun GetActions(navController: NavHostController) {
     if (isCurrentRouteBottom(navController)) {
         getTopItems().forEach { item ->
-            IconButton(onClick = { navController.navigate(item.name) }) {
-                Icon(item.icon, item.name)
+            IconButton(onClick = { navController.navigate(item.route) }) {
+                Icon(item.icon, item.title)
             }
         }
     }
@@ -46,7 +50,7 @@ private fun GetActions(navController: NavHostController) {
 private fun GetNavs(navController: NavHostController) {
     if (!isCurrentRouteBottom(navController)) {
         IconButton(onClick = { navController.popBackStack() }) {
-            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go Back")
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.go_back))
         }
     }
 }

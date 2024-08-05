@@ -30,7 +30,7 @@ fun SettingsScreen(navController: NavHostController = rememberNavController()) {
         ) {
             items.forEach { item ->
                 ListItem(
-                    modifier = Modifier.clickable { navController.navigate(item.name) },
+                    modifier = Modifier.clickable { navController.navigate(item.route) },
                     leadingContent = {
                         Icon(
                             imageVector = item.icon,
@@ -39,7 +39,7 @@ fun SettingsScreen(navController: NavHostController = rememberNavController()) {
                         )
                     },
                     headlineContent = {
-                        Text(item.name)
+                        Text(item.title)
                     },
                     supportingContent = {
                         item.description?.let {

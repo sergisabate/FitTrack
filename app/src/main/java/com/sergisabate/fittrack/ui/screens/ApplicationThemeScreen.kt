@@ -64,7 +64,7 @@ fun ApplicationThemeScreen() {
 }
 
 @Composable
-fun RadioButtonGroup(
+private fun RadioButtonGroup(
     options: Array<ThemeOption>,
     selectedOption: ThemeOption,
     onOptionSelected: (ThemeOption) -> Unit

@@ -39,35 +39,15 @@ fun AIToolsScreen() {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Tools Header
-            ToolsHeader(
-                title = "Herramientas de IA",
-                description = "Utiliza herramientas impulsadas por IA para mejorar tu rendimiento y bienestar."
+            Text(
+                text = "Utiliza herramientas impulsadas por IA para mejorar tu rendimiento y bienestar.",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             // AI Tools List
             AI_ToolsList()
         }
-    }
-}
-
-@Composable
-fun ToolsHeader(title: String, description: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = description,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onBackground
-        )
     }
 }
 

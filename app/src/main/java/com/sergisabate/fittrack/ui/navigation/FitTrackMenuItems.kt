@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
@@ -17,11 +18,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.UserPreferencesRepository
 import com.sergisabate.fittrack.ui.screens.AIToolsScreen
 import com.sergisabate.fittrack.ui.screens.ApplicationThemeScreen
 import com.sergisabate.fittrack.ui.screens.HomeScreen
+import com.sergisabate.fittrack.ui.screens.LanguageOption
+import com.sergisabate.fittrack.ui.screens.LanguageScreen
 import com.sergisabate.fittrack.ui.screens.ProfileScreen
 import com.sergisabate.fittrack.ui.screens.ProgressScreen
 import com.sergisabate.fittrack.ui.screens.SettingsScreen
@@ -32,9 +36,10 @@ import com.sergisabate.fittrack.ui.viewmodels.ThemeViewModelFactory
 
 data class NavItem(
     val icon: ImageVector,
-    val name: String,
+    val title: String,
     val description: String? = null,
-    val screen: @Composable () -> Unit
+    val route: String,
+    val screen: @Composable (NavHostController?) -> Unit
 )
 
 @Composable
@@ -42,8 +47,13 @@ fun getTopItems(): List<NavItem> {
     return listOf(
         NavItem(
             icon = Icons.Default.Settings,
-            name = stringResource(R.string.settings),
-            screen = { SettingsScreen() }
+            title = stringResource(R.string.settings),
+            route = "Settings",
+            screen = { navController ->
+                if (navController != null) {
+                    SettingsScreen(navController)
+                }
+            }
         )
     )
 }
@@ -53,22 +63,26 @@ fun getBottomItems(): List<NavItem> {
     return listOf(
         NavItem(
             icon = Icons.Default.Home,
-            name = stringResource(R.string.home),
+            title = stringResource(R.string.home),
+            route = "Home",
             screen = { HomeScreen() }
         ),
         NavItem(
             icon = Icons.Default.Menu,
-            name = stringResource(R.string.progress),
+            title = stringResource(R.string.progress),
+            route = "Progress",
             screen = { ProgressScreen() }
         ),
         NavItem(
             icon = Icons.Default.Build,
-            name = stringResource(R.string.aitools),
+            title = stringResource(R.string.ai_tools),
+            route = "AITools",
             screen = { AIToolsScreen() }
         ),
         NavItem(
             icon = Icons.Default.Face,
-            name = stringResource(R.string.profile),
+            title = stringResource(R.string.profile),
+            route = "Profile",
             screen = { ProfileScreen() }
         )
     )
@@ -78,23 +92,28 @@ fun getSettingsItems(): List<NavItem> {
     return listOf(
         NavItem(
             icon = Icons.Default.Star,
-            name = "Application Theme",
+            title = stringResource(R.string.theme),
             description = getThemeOptionName(),
+            route = "Theme",
             screen = { ApplicationThemeScreen() }
         ),
         NavItem(
-            icon = Icons.Default.Notifications,
-            name = "Change Language",
-            screen = { TestScreen() }
+            icon = Icons.Default.Place,
+            title = stringResource(R.string.language),
+            description = getLanguageOptionName(),
+            route = "Language",
+            screen = { LanguageScreen() }
         ),
         NavItem(
             icon = Icons.Default.Notifications,
-            name = "Notifications",
+            title = stringResource(R.string.notifications),
+            route = "Notifications",
             screen = { TestScreen() }
         ),
         NavItem(
             icon = Icons.Default.Info,
-            name = "About",
+            title = stringResource(R.string.about),
+            route = "About",
             screen = { TestScreen() }
         )
     )
@@ -110,5 +129,13 @@ fun getThemeOptionName(): String {
     val themeSetting by themeViewModel.getPreferences().collectAsState()
     val themeOption = enumValues<ThemeOption>().getOrElse(themeSetting) { ThemeOption.SystemDefault }
     return themeOption.name
+}
+
+@Composable
+fun getLanguageOptionName(): String {
+    val context = LocalContext.current
+    val test = context.resources.configuration.getLocales().get(0).language
+    val option = LanguageOption.entries.firstOrNull { it.value == test } ?: LanguageOption.Spanish
+    return option.name
 }
 

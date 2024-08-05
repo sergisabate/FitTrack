@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FitTrack</string>
+    <string name="home">Inici</string>
+    <string name="progress">Progrés</string>
+    <string name="ai_tools">Eines IA</string>
+    <string name="profile">Perfil</string>
+    <string name="settings">Configuració</string>
+    <string name="go_back">Anar enrere</string>
+    <string name="profile_picture">Foto de Perfil</string>
+    <string name="age">Anys</string>
+    <string name="weight">Pes</string>
+    <string name="height">Alçada</string>
+    <string name="muscle_mass">Massa muscular</string>
+    <string name="body_fat">Greix Corporal</string>
+    <string name="notifications">Notificacions</string>
+    <string name="theme">Tema</string>
+    <string name="language">Idioma</string>
+    <string name="about">Sobre</string>
+    <string name="steps">Passes</string>
+    <string name="calories">Calories</string>
+    <string name="kilometers">Quilòmetres</string>
+    <string name="linked_devices">Dispositius Vinculats</string>
+</resources>

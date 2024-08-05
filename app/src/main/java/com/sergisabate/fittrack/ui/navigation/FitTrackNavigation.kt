@@ -3,45 +3,39 @@ package com.sergisabate.fittrack.ui.navigation
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.sergisabate.fittrack.R
-import com.sergisabate.fittrack.ui.screens.SettingsScreen
+import androidx.navigation.navArgument
 
 @Composable
 fun FitTrackNavigation(navController: NavHostController) {
-    val topItems = listOf(
-        NavItem(
-            icon = Icons.Default.Settings,
-            name = stringResource(R.string.settings),
-            screen = { SettingsScreen( navController ) }
-        )
-    )
+    val topItems = getTopItems()
     val bottomItems = getBottomItems()
     val settingsItems = getSettingsItems()
     NavHost(
         navController = navController,
-        startDestination = stringResource(R.string.home),
+        startDestination = "Home",
     ) {
         topItems.forEach { item ->
-            composable(item.name,
+            composable(item.route,
+                listOf(navArgument("title") { defaultValue = item.title }),
                 enterTransition = { fadeInTransition() }) {
-                item.screen()
+                item.screen(navController)
             }
         }
         bottomItems.forEach { item ->
-            composable(item.name) { item.screen() }
+            composable(item.route,
+                listOf(navArgument("title") { defaultValue = item.title })) { item.screen(null) }
         }
         settingsItems.forEach { item ->
-            composable(item.name,
+            composable(item.route,
+                listOf(navArgument("title") { defaultValue = item.title }),
                 enterTransition = { fadeInTransition() }) {
-                item.screen()
+                item.screen(null)
             }
         }
     }
@@ -56,15 +50,16 @@ fun currentRoute(navController: NavHostController): String? =
     navController.currentBackStackEntryAsState().value?.destination?.route
 
 @Composable
-fun isCurrentRouteTop(navController: NavHostController): Boolean {
-    val currentRoute = currentRoute(navController)
-    val topItems = getTopItems()
-    return topItems.any { it.name == currentRoute }
-}
-
-@Composable
 fun isCurrentRouteBottom(navController: NavHostController): Boolean {
     val currentRoute = currentRoute(navController)
     val bottomItems = getBottomItems()
-    return bottomItems.any { it.name == currentRoute }
+    return bottomItems.any { it.route == currentRoute }
 }
+
+@Composable
+fun currentNav(navController: NavHostController): NavDestination? =
+    navController.currentBackStackEntryAsState().value?.destination
+
+@Composable
+fun currentTitle(navDestination: NavDestination): String? =
+    navDestination.arguments.get("title")?.defaultValue?.toString()

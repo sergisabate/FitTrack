@@ -36,11 +36,11 @@ fun FitTrackBottomAppBar(navController: NavHostController) {
             containerColor = MaterialTheme.colorScheme.secondary
         ) {
             getBottomItems().forEach { item ->
-                val isSelected = currentRoute(navController) == item.name
+                val isSelected = currentRoute(navController) == item.route
                 NavigationBarItem(
                     selected = isSelected,
-                    onClick = { if (!isSelected) navController.navigate(item.name) },
-                    icon = { BottomNavItemContent(item.icon, item.name) },
+                    onClick = { if (!isSelected) navController.navigate(item.route) },
+                    icon = { BottomNavItemContent(item.icon, item.title) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.secondary,
                         unselectedIconColor = MaterialTheme.colorScheme.onSecondary,

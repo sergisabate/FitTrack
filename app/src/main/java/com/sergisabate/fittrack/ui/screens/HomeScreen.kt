@@ -16,8 +16,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.sergisabate.fittrack.R
 
 @Composable
 fun HomeScreen() {
@@ -55,15 +57,15 @@ fun HomeScreen() {
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Column {
-                            Text(text = "Pasos", style = MaterialTheme.typography.bodyLarge)
+                            Text(text = stringResource(R.string.steps), style = MaterialTheme.typography.bodyLarge)
                             Text(text = "7500", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
                         }
                         Column {
-                            Text(text = "Calorías", style = MaterialTheme.typography.bodyLarge)
+                            Text(text = stringResource(R.string.calories), style = MaterialTheme.typography.bodyLarge)
                             Text(text = "300 kcal", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
                         }
                         Column {
-                            Text(text = "Kilómetros", style = MaterialTheme.typography.bodyLarge)
+                            Text(text = stringResource(R.string.kilometers), style = MaterialTheme.typography.bodyLarge)
                             Text(text = "5.2 km", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
                         }
                     }

@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sergisabate.fittrack.R
@@ -83,7 +84,7 @@ fun ProfileHeader(profilePicture: Painter, name: String) {
         ) {
             Image(
                 painter = profilePicture,
-                contentDescription = "Profile Picture",
+                contentDescription = stringResource(R.string.profile_picture),
                 modifier = Modifier
                     .size(100.dp)
                     .clip(CircleShape),
@@ -106,16 +107,16 @@ fun BodyStatisticsCard(age: Int, weight: String, height: String, bodyFat: String
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            BodyStatisticCard(label = "Edad", value = age.toString(), modifier = Modifier.weight(1f).padding(16.dp, 0.dp, 0.dp, 0.dp))
-            BodyStatisticCard(label = "Peso", value = weight, modifier = Modifier.weight(1f))
-            BodyStatisticCard(label = "Altura", value = height, modifier = Modifier.weight(1f).padding(0.dp, 0.dp, 16.dp, 0.dp))
+            BodyStatisticCard(label = stringResource(R.string.age), value = age.toString(), modifier = Modifier.weight(1f).padding(16.dp, 0.dp, 0.dp, 0.dp))
+            BodyStatisticCard(label = stringResource(R.string.weight), value = weight, modifier = Modifier.weight(1f))
+            BodyStatisticCard(label = stringResource(R.string.height), value = height, modifier = Modifier.weight(1f).padding(0.dp, 0.dp, 16.dp, 0.dp))
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            BodyStatisticCard(label = "Masa Muscular", value = muscleMass, modifier = Modifier.weight(1f).padding(16.dp, 0.dp, 0.dp, 0.dp))
-            BodyStatisticCard(label = "Grasa Corporal", value = bodyFat, modifier = Modifier.weight(1f).padding(0.dp, 0.dp, 16.dp, 0.dp))
+            BodyStatisticCard(label = stringResource(R.string.muscle_mass), value = muscleMass, modifier = Modifier.weight(1f).padding(16.dp, 0.dp, 0.dp, 0.dp))
+            BodyStatisticCard(label = stringResource(R.string.body_fat), value = bodyFat, modifier = Modifier.weight(1f).padding(0.dp, 0.dp, 16.dp, 0.dp))
         }
     }
 }
@@ -161,7 +162,7 @@ fun LinkedDevicesCard(devices: List<String>) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = "Dispositivos Vinculados",
+                text = stringResource(R.string.linked_devices),
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
             )
             devices.forEach { device ->
