@@ -46,10 +46,6 @@ private fun fadeInTransition(): EnterTransition {
 }
 
 @Composable
-fun currentRoute(navController: NavHostController): String? =
-    navController.currentBackStackEntryAsState().value?.destination?.route
-
-@Composable
 fun isCurrentRouteBottom(navController: NavHostController): Boolean {
     val currentRoute = currentRoute(navController)
     val bottomItems = getBottomItems()
@@ -57,9 +53,13 @@ fun isCurrentRouteBottom(navController: NavHostController): Boolean {
 }
 
 @Composable
+fun currentRoute(navController: NavHostController): String? =
+    navController.currentBackStackEntryAsState().value?.destination?.route
+
+@Composable
 fun currentNav(navController: NavHostController): NavDestination? =
     navController.currentBackStackEntryAsState().value?.destination
 
 @Composable
 fun currentTitle(navDestination: NavDestination): String? =
-    navDestination.arguments.get("title")?.defaultValue?.toString()
+    navDestination.arguments["title"]?.defaultValue?.toString()

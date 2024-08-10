@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sergisabate.fittrack.R
+import com.sergisabate.fittrack.ui.charts.FitTrackChart
 
 @Composable
 fun HomeScreen() {
@@ -36,7 +37,7 @@ fun HomeScreen() {
             Card(
                 modifier = Modifier
                     .padding(16.dp)
-                    .height(150.dp)
+                    .height(340.dp)
                     .fillMaxWidth(),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.secondary
@@ -52,6 +53,7 @@ fun HomeScreen() {
                         text = "Resumen de Hoy",
                         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
+                    FitTrackChart(modifier = Modifier)
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth()
