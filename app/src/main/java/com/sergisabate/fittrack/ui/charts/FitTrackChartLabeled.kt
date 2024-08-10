@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisGuidelineComponent
@@ -39,8 +38,6 @@ import kotlin.random.Random
 
 private val x = (1..10).toList()
 private val axisValueOverrider = AxisValueOverrider.adaptiveYValues(yFraction = 1.2f, round = true)
-private val lineColor = Color(0xffffbb00)
-private val bottomAxisLabelBackgroundColor = Color(0xff9db591)
 
 @Composable
 fun FitTrackChartLabeled(modifier: Modifier, label1: String, label2: String) {
