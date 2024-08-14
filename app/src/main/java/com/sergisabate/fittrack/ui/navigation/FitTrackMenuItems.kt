@@ -20,7 +20,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.sergisabate.fittrack.R
-import com.sergisabate.fittrack.data.UserPreferencesRepository
+import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
+import com.sergisabate.fittrack.data.viewmodels.ThemeViewModel
+import com.sergisabate.fittrack.data.viewmodels.ThemeViewModelFactory
 import com.sergisabate.fittrack.ui.screens.AIToolsScreen
 import com.sergisabate.fittrack.ui.screens.ApplicationThemeScreen
 import com.sergisabate.fittrack.ui.screens.HomeScreen
@@ -126,7 +128,7 @@ fun getThemeOptionName(): String {
     val themeViewModel: ThemeViewModel = viewModel(
         factory = ThemeViewModelFactory(userPreferencesRepository)
     )
-    val themeSetting by themeViewModel.getPreferences().collectAsState()
+    val themeSetting by themeViewModel.getDarkTheme().collectAsState()
     val themeOption = enumValues<ThemeOption>().getOrElse(themeSetting) { ThemeOption.SystemDefault }
     return themeOption.name
 }

@@ -1,13 +1,10 @@
 package com.sergisabate.fittrack.ui.theme
 
 import android.app.Activity
-import android.content.Context
-import android.os.Build
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
@@ -20,9 +17,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.sergisabate.fittrack.data.UserPreferencesRepository
-import com.sergisabate.fittrack.ui.viewmodels.ThemeViewModel
-import com.sergisabate.fittrack.ui.viewmodels.ThemeViewModelFactory
+import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
+import com.sergisabate.fittrack.data.viewmodels.ThemeViewModel
+import com.sergisabate.fittrack.data.viewmodels.ThemeViewModelFactory
 
 private val DarkColorScheme = darkColorScheme(
     primary = Color.White,
@@ -46,18 +43,10 @@ enum class ThemeOption(val value: Int) {
 
 @Composable
 fun FitTrackTheme(
-    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val context = LocalContext.current
-    val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
-    val themeViewModel: ThemeViewModel = viewModel(
-        factory = ThemeViewModelFactory(userPreferencesRepository)
-    )
-
-    val themeOption by themeViewModel.getPreferences().collectAsState()
-
-    val colorScheme = getColorScheme(context, themeOption, dynamicColor)
+    val themeOption = getThemeOption()
+    val colorScheme = getColorScheme(themeOption, isSystemInDarkTheme())
 
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -66,8 +55,8 @@ fun FitTrackTheme(
             window.statusBarColor = colorScheme.background.toArgb()
 
             val insetsController = WindowCompat.getInsetsController(window, view)
-            insetsController.isAppearanceLightStatusBars = themeOption == ThemeOption.LightMode.value
-            insetsController.isAppearanceLightNavigationBars = themeOption == ThemeOption.LightMode.value
+            insetsController.isAppearanceLightStatusBars = colorScheme == LightColorScheme
+            insetsController.isAppearanceLightNavigationBars = colorScheme == LightColorScheme
         }
     }
 
@@ -79,15 +68,21 @@ fun FitTrackTheme(
 }
 
 @Composable
-private fun getColorScheme(context: Context, themeOption: Int, dynamicColor: Boolean): ColorScheme {
+private fun getThemeOption(): Int {
+    val context = LocalContext.current
+    val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
+    val themeViewModel: ThemeViewModel = viewModel(
+        factory = ThemeViewModelFactory(userPreferencesRepository)
+    )
+    val themeOption by themeViewModel.getDarkTheme().collectAsState()
+    return themeOption
+}
+
+private fun getColorScheme(themeOption: Int, isSystemInDarkTheme: Boolean): ColorScheme {
     return when (ThemeOption.entries.firstOrNull { it.value == themeOption } ?: ThemeOption.SystemDefault) {
         ThemeOption.SystemDefault -> {
-            if (dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                if (themeOption == ThemeOption.DarkMode.value) dynamicDarkColorScheme(context)
-                else dynamicLightColorScheme(context)
-            } else {
-                DarkColorScheme
-            }
+            if (isSystemInDarkTheme) DarkColorScheme
+            else LightColorScheme
         }
         ThemeOption.LightMode -> LightColorScheme
         ThemeOption.DarkMode -> DarkColorScheme

@@ -1,9 +1,9 @@
-package com.sergisabate.fittrack.ui.viewmodels
+package com.sergisabate.fittrack.data.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.sergisabate.fittrack.data.UserPreferencesRepository
+import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
@@ -15,7 +15,7 @@ class ThemeViewModel(private val userPreferencesRepository: UserPreferencesRepos
         }
     }
 
-    fun getPreferences(): StateFlow<Int> {
+    fun getDarkTheme(): StateFlow<Int> {
         return userPreferencesRepository.isInDarkModeFlow
     }
 }
