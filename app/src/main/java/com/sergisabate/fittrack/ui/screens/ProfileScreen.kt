@@ -19,22 +19,38 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sergisabate.fittrack.R
+import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
+import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
+import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
 
 @Composable
 fun ProfileScreen() {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
+        val context = LocalContext.current
+        val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
+        val profileViewModel: ProfileViewModel = viewModel(
+            factory = ProfileViewModelFactory(userPreferencesRepository)
+        )
+
+        val currentProfileData by profileViewModel.getProfileData().collectAsState()
+
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -44,14 +60,14 @@ fun ProfileScreen() {
             // Profile Header
             ProfileHeader(
                 profilePicture = painterResource(id = R.drawable.ic_launcher_foreground),
-                name = "Juan Pérez"
+                name = currentProfileData.name
             )
 
             // Body Statistics
             BodyStatisticsCard(
-                age = 28,
-                weight = "75 kg",
-                height = "175 cm",
+                age = currentProfileData.age,
+                weight = currentProfileData.weight.toString() + " kg",
+                height = currentProfileData.height.toString() + " cm",
                 bodyFat = "15%",
                 muscleMass = "65 kg"
             )
