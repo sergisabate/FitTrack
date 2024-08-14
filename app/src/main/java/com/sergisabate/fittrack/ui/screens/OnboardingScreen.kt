@@ -53,7 +53,7 @@ fun TypingText(
 }
 
 @Composable
-fun OnboardingScreen(onSubmit: (String, Int, Int, Int) -> Unit) {
+fun OnboardingScreen(modifier: Modifier, onSubmit: (String, Int, Int, Int) -> Unit) {
     var showWelcome by remember { mutableStateOf(false) }
     var showExcitement by remember { mutableStateOf(false) }
     var showIntroduction by remember { mutableStateOf(false) }
@@ -81,7 +81,7 @@ fun OnboardingScreen(onSubmit: (String, Int, Int, Int) -> Unit) {
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp),
@@ -91,19 +91,19 @@ fun OnboardingScreen(onSubmit: (String, Int, Int, Int) -> Unit) {
                 if (showWelcome) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = modifier.fillMaxWidth()
                     ) {
                         TypingText(
                             text = stringResource(R.string.welcome_message),
                             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                             color = MaterialTheme.colorScheme.secondary,
-                            modifier = Modifier.weight(1f)
+                            modifier = modifier.weight(1f)
                         )
                         Button(
                             onClick = { skipAnimation = true },
                             colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent, contentColor = MaterialTheme.colorScheme.primary),
                             contentPadding = PaddingValues(0.dp),
-                            modifier = Modifier.align(Alignment.CenterVertically)
+                            modifier = modifier.align(Alignment.CenterVertically)
                         ) {
                             Text(text = "Omitir")
                         }
@@ -112,7 +112,7 @@ fun OnboardingScreen(onSubmit: (String, Int, Int, Int) -> Unit) {
                 if (showExcitement) {
                     TypingText(
                         text = stringResource(R.string.excited_message),
-                        modifier = Modifier.padding(top = 8.dp),
+                        modifier = modifier.padding(top = 8.dp),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -120,7 +120,7 @@ fun OnboardingScreen(onSubmit: (String, Int, Int, Int) -> Unit) {
                 if (showIntroduction) {
                     TypingText(
                         text = stringResource(R.string.claim_data_message),
-                        modifier = Modifier.padding(top = 8.dp),
+                        modifier = modifier.padding(top = 8.dp),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -128,7 +128,7 @@ fun OnboardingScreen(onSubmit: (String, Int, Int, Int) -> Unit) {
                 if (showDataAdvise) {
                     TypingText(
                         text = stringResource(R.string.local_data_message),
-                        modifier = Modifier.padding(top = 8.dp),
+                        modifier = modifier.padding(top = 8.dp),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -136,14 +136,14 @@ fun OnboardingScreen(onSubmit: (String, Int, Int, Int) -> Unit) {
                 if (showPrompt) {
                     TypingText(
                         text = stringResource(R.string.complete_form_message),
-                        modifier = Modifier.padding(top = 8.dp),
+                        modifier = modifier.padding(top = 8.dp),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
             } else {
                 DisplayAllTexts()
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = modifier.height(16.dp))
                 ProfileForm(null, onSubmit)
             }
         }

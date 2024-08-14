@@ -12,14 +12,14 @@ import com.sergisabate.fittrack.ui.components.FitTrackTopAppBar
 import com.sergisabate.fittrack.ui.navigation.FitTrackNavigation
 
 @Composable
-fun MainScreen() {
+fun MainScreen(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     Scaffold (
         topBar = { FitTrackTopAppBar(navController)},
         bottomBar = { FitTrackBottomAppBar(navController) }
     ) { padding ->
         Box (
-            modifier = Modifier.padding(padding).fillMaxSize()
+            modifier = modifier.padding(padding).fillMaxSize()
         ) {
             FitTrackNavigation(navController)
         }
