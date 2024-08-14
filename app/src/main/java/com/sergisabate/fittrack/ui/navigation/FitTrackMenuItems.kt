@@ -136,14 +136,18 @@ fun getThemeOptionName(): String {
     )
     val themeSetting by themeViewModel.getDarkTheme().collectAsState()
     val themeOption = enumValues<ThemeOption>().getOrElse(themeSetting) { ThemeOption.SystemDefault }
-    return themeOption.name
+    return when (themeOption) {
+        ThemeOption.DarkMode -> stringResource(R.string.dark_mode)
+        ThemeOption.LightMode -> stringResource(R.string.light_mode)
+        ThemeOption.SystemDefault -> stringResource(R.string.system_default)
+    }
 }
 
 @Composable
 fun getLanguageOptionName(): String {
     val context = LocalContext.current
     val test = context.resources.configuration.getLocales().get(0).language
-    val option = LanguageOption.entries.firstOrNull { it.value == test } ?: LanguageOption.Spanish
+    val option = LanguageOption.entries.firstOrNull { it.value == test } ?: LanguageOption.Español
     return option.name
 }
 

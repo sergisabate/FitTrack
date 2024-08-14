@@ -29,4 +29,7 @@
     <string name="full_name">Nom complet</string>
     <string name="submit">Guardar</string>
     <string name="edit_profile">Editar Perfil</string>
+    <string name="dark_mode">Mode Fosc</string>
+    <string name="light_mode">Mode Clar</string>
+    <string name="system_default">Predeterminat del Sistema</string>
 </resources>

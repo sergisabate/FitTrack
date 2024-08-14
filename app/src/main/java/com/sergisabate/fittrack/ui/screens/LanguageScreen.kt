@@ -29,8 +29,8 @@ import androidx.core.os.LocaleListCompat
 
 
 enum class LanguageOption(val value: String) {
-    Spanish("es"),
-    Catalan("ca"),
+    Español("es"),
+    Català("ca"),
     English("en")
 }
 
@@ -38,7 +38,7 @@ enum class LanguageOption(val value: String) {
 fun LanguageScreen() {
     val context = LocalContext.current
     val currentLanguage = context.resources.configuration.locales[0].language
-    val initialOption = LanguageOption.entries.firstOrNull { it.value == currentLanguage } ?: LanguageOption.Spanish
+    val initialOption = LanguageOption.entries.firstOrNull { it.value == currentLanguage } ?: LanguageOption.Español
     var selectedOption by remember { mutableStateOf(initialOption) }
 
     val onOptionSelected: (LanguageOption) -> Unit = { option ->
