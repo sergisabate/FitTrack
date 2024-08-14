@@ -2,6 +2,7 @@ package com.sergisabate.fittrack.ui.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
@@ -25,6 +26,7 @@ import com.sergisabate.fittrack.data.viewmodels.ThemeViewModel
 import com.sergisabate.fittrack.data.viewmodels.ThemeViewModelFactory
 import com.sergisabate.fittrack.ui.screens.AIToolsScreen
 import com.sergisabate.fittrack.ui.screens.ApplicationThemeScreen
+import com.sergisabate.fittrack.ui.screens.EditProfileScreen
 import com.sergisabate.fittrack.ui.screens.HomeScreen
 import com.sergisabate.fittrack.ui.screens.LanguageOption
 import com.sergisabate.fittrack.ui.screens.LanguageScreen
@@ -33,8 +35,6 @@ import com.sergisabate.fittrack.ui.screens.ProgressScreen
 import com.sergisabate.fittrack.ui.screens.SettingsScreen
 import com.sergisabate.fittrack.ui.screens.TestScreen
 import com.sergisabate.fittrack.ui.theme.ThemeOption
-import com.sergisabate.fittrack.ui.viewmodels.ThemeViewModel
-import com.sergisabate.fittrack.ui.viewmodels.ThemeViewModelFactory
 
 data class NavItem(
     val icon: ImageVector,
@@ -105,6 +105,12 @@ fun getSettingsItems(): List<NavItem> {
             description = getLanguageOptionName(),
             route = "Language",
             screen = { LanguageScreen() }
+        ),
+        NavItem(
+            icon = Icons.Default.Create,
+            title = stringResource(R.string.edit_profile),
+            route = "EditProfile",
+            screen = { EditProfileScreen() }
         ),
         NavItem(
             icon = Icons.Default.Notifications,
