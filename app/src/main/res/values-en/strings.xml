@@ -32,4 +32,6 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="light_mode">Light Mode</string>
     <string name="system_default">System Default</string>
+    <string name="error_saving_profile_data">Error saving profile data</string>
+    <string name="updated_successfully">Successfully updated</string>
 </resources>

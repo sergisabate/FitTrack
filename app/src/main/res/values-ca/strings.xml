@@ -32,4 +32,6 @@
     <string name="dark_mode">Mode Fosc</string>
     <string name="light_mode">Mode Clar</string>
     <string name="system_default">Predeterminat del Sistema</string>
+    <string name="error_saving_profile_data">Error en desar les dades del perfil</string>
+    <string name="updated_successfully">Actualitzat amb èxit</string>
 </resources>

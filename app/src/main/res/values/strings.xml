@@ -31,4 +31,6 @@
     <string name="dark_mode">Modo Oscuro</string>
     <string name="light_mode">Modo Claro</string>
     <string name="system_default">Predeterminado del Sistema</string>
+    <string name="error_saving_profile_data">Error al guardar los datos del perfil</string>
+    <string name="updated_successfully">Actualizado con éxito</string>
 </resources>

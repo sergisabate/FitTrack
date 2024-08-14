@@ -18,9 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.repositories.ProfileData
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
@@ -39,13 +41,15 @@ fun EditProfileScreen() {
 
     val snackbarHostState = remember { SnackbarHostState() }
 
-    var showSnackbar by remember { mutableStateOf(false) }
     var snackbarMessage by remember { mutableStateOf("") }
 
-    LaunchedEffect(showSnackbar) {
-        if (showSnackbar) {
+    val successMessage = stringResource(R.string.updated_successfully)
+    val errorMessage = stringResource(R.string.error_saving_profile_data)
+
+    LaunchedEffect(snackbarMessage) {
+        if (snackbarMessage.isNotEmpty()) {
             snackbarHostState.showSnackbar(snackbarMessage)
-            showSnackbar = false
+            snackbarMessage = ""
         }
     }
 
@@ -60,13 +64,11 @@ fun EditProfileScreen() {
                 profileViewModel.setProfileData(
                     profileData,
                     onSuccess = {
-                        snackbarMessage = "Actualizado con éxito"
-                        showSnackbar = true
+                        snackbarMessage = successMessage
                     },
                     onError = { e ->
                         Log.e("EditProfileScreen", "Error al guardar los datos del perfil", e)
-                        snackbarMessage = "Error al actualizar"
-                        showSnackbar = true
+                        snackbarMessage = errorMessage
                     }
                 )
             },
