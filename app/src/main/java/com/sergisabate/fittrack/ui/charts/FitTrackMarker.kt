@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sergisabate.fittrack.ui.components
+package com.sergisabate.fittrack.ui.charts
 
 import android.annotation.SuppressLint
 import android.text.Layout
