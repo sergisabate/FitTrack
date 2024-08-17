@@ -27,6 +27,7 @@ import com.sergisabate.fittrack.data.viewmodels.ThemeViewModelFactory
 import com.sergisabate.fittrack.ui.screens.AIToolsScreen
 import com.sergisabate.fittrack.ui.screens.ApplicationThemeScreen
 import com.sergisabate.fittrack.ui.screens.EditProfileScreen
+import com.sergisabate.fittrack.ui.screens.GenerateExerciseRoutineScreen
 import com.sergisabate.fittrack.ui.screens.GenerateMenuScreen
 import com.sergisabate.fittrack.ui.screens.HomeScreen
 import com.sergisabate.fittrack.ui.screens.LanguageOption
@@ -35,6 +36,7 @@ import com.sergisabate.fittrack.ui.screens.ProfileScreen
 import com.sergisabate.fittrack.ui.screens.ProgressScreen
 import com.sergisabate.fittrack.ui.screens.SettingsScreen
 import com.sergisabate.fittrack.ui.screens.TestScreen
+import com.sergisabate.fittrack.ui.screens.ViewExerciseRoutineScreen
 import com.sergisabate.fittrack.ui.screens.ViewMenuScreen
 import com.sergisabate.fittrack.ui.theme.ThemeOption
 
@@ -139,6 +141,24 @@ fun getMenuItems(): List<NavItem> {
             title = stringResource(R.string.view_menu),
             route = "ViewMenu",
             screen = { ViewMenuScreen() }
+        )
+    )
+}
+
+@Composable
+fun getExerciseRoutineItems(): List<NavItem> {
+    return listOf(
+        NavItem(
+            icon = Icons.Default.Build,
+            title = stringResource(R.string.routine_generator_title),
+            route = "GenerateExerciseRoutine",
+            screen =  { navController -> navController?.let { GenerateExerciseRoutineScreen(it) } }
+        ),
+        NavItem(
+            icon = Icons.Default.Build,
+            title = stringResource(R.string.view_routine),
+            route = "ViewExerciseRoutine",
+            screen = { ViewExerciseRoutineScreen() }
         )
     )
 }

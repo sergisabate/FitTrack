@@ -76,7 +76,7 @@ fun GenerateMenuScreen(navController: NavHostController) {
     val profileData by profileViewModel.getProfileData().collectAsState()
 
     val systemMessage = stringResource(id = R.string.chatgpt_system_message)
-    val userMessageFormat = stringResource(id = R.string.chatgpt_user_message)
+    val userMessageFormat = stringResource(id = R.string.chatgpt_menu_message)
     val userMessage = String.format(
         userMessageFormat,
         preferences.replace(Regex("[^a-zA-Z0-9,;\\s]"), ""),
@@ -108,7 +108,7 @@ fun GenerateMenuScreen(navController: NavHostController) {
                         value = preferences,
                         onValueChange = { preferences = it },
                         label = { Text(stringResource(id = R.string.enter_preferences)) },
-                        placeholder = { Text(stringResource(id = R.string.placeholder_preferences)) },
+                        placeholder = { Text(stringResource(id = R.string.placeholder_preferences_menu)) },
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 2
                     )
