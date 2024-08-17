@@ -163,7 +163,7 @@ fun getThemeOptionName(): String {
 fun getLanguageOptionName(): String {
     val context = LocalContext.current
     val test = context.resources.configuration.getLocales().get(0).language
-    val option = LanguageOption.entries.firstOrNull { it.value == test } ?: LanguageOption.Español
-    return option.name
+    val option = LanguageOption.entries.firstOrNull { it.value == test } ?: LanguageOption.Spanish
+    return option.displayName
 }
 

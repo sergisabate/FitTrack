@@ -27,18 +27,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
 
-
-enum class LanguageOption(val value: String) {
-    Español("es"),
-    Català("ca"),
-    English("en")
+enum class LanguageOption(val value: String, val displayName: String) {
+    Spanish("es", "Español"),
+    Catalan("ca", "Català"),
+    English("en", "English")
 }
 
 @Composable
 fun LanguageScreen() {
     val context = LocalContext.current
     val currentLanguage = context.resources.configuration.locales[0].language
-    val initialOption = LanguageOption.entries.firstOrNull { it.value == currentLanguage } ?: LanguageOption.Español
+    val initialOption = LanguageOption.entries.firstOrNull { it.value == currentLanguage } ?: LanguageOption.Spanish
     var selectedOption by remember { mutableStateOf(initialOption) }
 
     val onOptionSelected: (LanguageOption) -> Unit = { option ->
@@ -83,7 +82,7 @@ private fun RadioButtonGroup(
                 onClick = { onOptionSelected(option) }
             )
             Text(
-                text = option.name,
+                text = option.displayName,
                 modifier = Modifier.padding(start = 7.dp)
             )
         }
