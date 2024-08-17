@@ -27,6 +27,7 @@ import com.sergisabate.fittrack.data.viewmodels.ThemeViewModelFactory
 import com.sergisabate.fittrack.ui.screens.AIToolsScreen
 import com.sergisabate.fittrack.ui.screens.ApplicationThemeScreen
 import com.sergisabate.fittrack.ui.screens.EditProfileScreen
+import com.sergisabate.fittrack.ui.screens.GenerateMenuScreen
 import com.sergisabate.fittrack.ui.screens.HomeScreen
 import com.sergisabate.fittrack.ui.screens.LanguageOption
 import com.sergisabate.fittrack.ui.screens.LanguageScreen
@@ -34,6 +35,7 @@ import com.sergisabate.fittrack.ui.screens.ProfileScreen
 import com.sergisabate.fittrack.ui.screens.ProgressScreen
 import com.sergisabate.fittrack.ui.screens.SettingsScreen
 import com.sergisabate.fittrack.ui.screens.TestScreen
+import com.sergisabate.fittrack.ui.screens.ViewMenuScreen
 import com.sergisabate.fittrack.ui.theme.ThemeOption
 
 data class NavItem(
@@ -51,11 +53,7 @@ fun getTopItems(): List<NavItem> {
             icon = Icons.Default.Settings,
             title = stringResource(R.string.settings),
             route = "Settings",
-            screen = { navController ->
-                if (navController != null) {
-                    SettingsScreen(navController)
-                }
-            }
+            screen = { navController -> navController?.let { SettingsScreen(it) } }
         )
     )
 }
@@ -79,7 +77,7 @@ fun getBottomItems(): List<NavItem> {
             icon = Icons.Default.Build,
             title = stringResource(R.string.ai_tools),
             route = "AITools",
-            screen = { AIToolsScreen() }
+            screen =  { navController -> navController?.let { AIToolsScreen(it) } }
         ),
         NavItem(
             icon = Icons.Default.Face,
@@ -123,6 +121,24 @@ fun getSettingsItems(): List<NavItem> {
             title = stringResource(R.string.about),
             route = "About",
             screen = { TestScreen() }
+        )
+    )
+}
+
+@Composable
+fun getMenuItems(): List<NavItem> {
+    return listOf(
+        NavItem(
+            icon = Icons.Default.Build,
+            title = stringResource(R.string.menu_generator_title),
+            route = "GenerateMenu",
+            screen =  { navController -> navController?.let { GenerateMenuScreen(it) } }
+        ),
+        NavItem(
+            icon = Icons.Default.Build,
+            title = stringResource(R.string.view_menu),
+            route = "ViewMenu",
+            screen = { ViewMenuScreen() }
         )
     )
 }

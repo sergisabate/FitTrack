@@ -1,6 +1,7 @@
 package com.sergisabate.fittrack.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,12 +23,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.sergisabate.fittrack.R
 
 @Composable
-fun AIToolsScreen() {
+fun AIToolsScreen(navController: NavController) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
@@ -38,48 +42,37 @@ fun AIToolsScreen() {
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Tools Header
-            Text(
-                text = "Utiliza herramientas impulsadas por IA para mejorar tu rendimiento y bienestar.",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground
-            )
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                AI_ToolCard(
+                    title = stringResource(R.string.menu_generator_title),
+                    description = stringResource(R.string.menu_generator_description),
+                    icon = painterResource(id = R.drawable.ic_launcher_foreground),
+                    onClick = {
+                        navController.navigate("GenerateMenu")
+                    }
+                )
+            }
 
-            // AI Tools List
-            AI_ToolsList()
+            // Mensaje en cursiva
+            Text(
+                text = stringResource(R.string.internet_required),
+                style = MaterialTheme.typography.bodyMedium.copy(fontStyle = FontStyle.Italic),
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(top = 16.dp)
+            )
         }
     }
 }
 
 @Composable
-fun AI_ToolsList() {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        AI_ToolCard(
-            title = "Análisis de Rendimiento",
-            description = "Recibe un análisis detallado de tu rendimiento en los entrenamientos y recomendaciones para mejorar.",
-            icon = painterResource(id = R.drawable.ic_launcher_foreground)
-        )
-        AI_ToolCard(
-            title = "Recomendaciones Personalizadas",
-            description = "Obtén recomendaciones personalizadas de ejercicios y planes de entrenamiento basados en tu historial y objetivos.",
-            icon = painterResource(id = R.drawable.ic_launcher_foreground)
-        )
-        AI_ToolCard(
-            title = "Asistente Nutricional",
-            description = "Consulta con un asistente nutricional que ofrece sugerencias y planes de dieta adaptados a tus necesidades.",
-            icon = painterResource(id = R.drawable.ic_launcher_foreground)
-        )
-    }
-}
-
-@Composable
-fun AI_ToolCard(title: String, description: String, icon: Painter) {
+fun AI_ToolCard(title: String, description: String, icon: Painter, onClick: () -> Unit) {
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary
         ),

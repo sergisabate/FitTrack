@@ -34,4 +34,24 @@
     <string name="system_default">Predeterminat del Sistema</string>
     <string name="error_saving_profile_data">Error en desar les dades del perfil</string>
     <string name="updated_successfully">Actualitzat amb èxit</string>
+    <string name="menu_generator_title">Generador de Menús</string>
+    <string name="menu_generator_description">Genera un menú diari personalitzat basat en els teus paràmetres i preferències.</string>
+    <string name="view_menu">Vista del Menú</string>
+    <string name="enter_preferences">Introdueix les teves preferències</string>
+    <string name="placeholder_preferences">Exemple: Vegetarià, Sense gluten, Baix en carbohidrats</string>
+    <string name="generate_menu">Generar Menú</string>
+    <string name="total_menus_saved">Total de Menús Guardats: %1$d/5</string>
+    <string name="generating_menu">Generant menú…</string>
+    <string name="error_saving_menu">Error en desar el menú</string>
+    <string name="no_internet_connection">No hi ha connexió a Internet</string>
+    <string name="error_selecting_menu">Error en seleccionar el menú</string>
+    <string name="chatgpt_system_message">Ets un assistent útil i detallista. Si us plau, proporciona la sortida en format JSON.</string>
+    <string name="chatgpt_user_message">Crea un menú diari basat en les següents preferències d\'alimentació: %1$s.\n\nTingues en compte la següent informació de l\'usuari per personalitzar el menú:\n- Locale: %2$s\n- Edat: %3$d\n- Pes: %4$d kg\n- Alçada: %5$d cm\n\nOrganitza el menú de la següent manera, permetent que cada àpat pugui tenir més d\'un plat (això és opcional i dependrà del teu criteri). Per als àpats i sopars, inclou un postres opcional (també opcional):\n\n{\n    "title": "Títol del menú basat en els plats escollits i les preferències (No esmentis ni la data ni informació de l'usuari)",\n    "date": "%6$s (Parseable a LocalDateTime en Kotlin)",\n    "breakfast": {\n        "meals": [\n            {\n                "description": "Descripció del plat 1 del esmorzar",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instruccions per preparar el plat 1 de l'esmorzar"\n            },\n            {\n                "description": "Descripció del plat 2 de l'esmorzar",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instruccions per preparar el plat 2 de l'esmorzar"\n            }\n        ]\n    },\n    "lunch": {\n        "meals": [\n            {\n                "description": "Descripció del plat 1 del dinar",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instruccions per preparar el plat 1 del dinar"\n            },\n            {\n                "description": "Descripció del plat 2 del dinar",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instruccions per preparar el plat 2 del dinar"\n            },\n            {\n                "description": "Descripció del postres del dinar",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instruccions per preparar el postres del dinar"\n            }\n        ]\n    },\n    "snack": {\n        "meals": [\n            {\n                "description": "Descripció del snack",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instruccions per preparar el snack"\n            }\n        ]\n    },\n    "dinner": {\n        "meals": [\n            {\n                "description": "Descripció del plat 1 del sopar",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instruccions per preparar el plat 1 del sopar"\n            },\n            {\n                "description": "Descripció del plat 2 del sopar",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instruccions per preparar el plat 2 del sopar"\n            },\n            {\n                "description": "Descripció del postres del sopar",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instruccions per preparar el postres del sopar"\n            }\n        ]\n    }\n}</string>
+    <string name="breakfast">Esmorzar</string>
+    <string name="lunch">Dinar</string>
+    <string name="snack">Snack</string>
+    <string name="dinner">Sopar</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="preparation_instructions">Instruccions de preparació</string>
+    <string name="internet_required">Aquestes funcionalitats requereixen una connexió a Internet.</string>
 </resources>

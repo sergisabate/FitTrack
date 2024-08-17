@@ -34,4 +34,24 @@
     <string name="system_default">System Default</string>
     <string name="error_saving_profile_data">Error saving profile data</string>
     <string name="updated_successfully">Successfully updated</string>
+    <string name="menu_generator_title">Menu Generator</string>
+    <string name="menu_generator_description">Generate a personalized daily menu based on your parameters and preferences.</string>
+    <string name="view_menu">View Menu</string>
+    <string name="enter_preferences">Enter your preferences</string>
+    <string name="placeholder_preferences">Example: Vegetarian, Gluten-free, Low in carbohydrates</string>
+    <string name="generate_menu">Generate Menu</string>
+    <string name="total_menus_saved">Total Saved Menus: %1$d/5</string>
+    <string name="generating_menu">Generating menu…</string>
+    <string name="error_saving_menu">Error saving the menu</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="error_selecting_menu">Error selecting the menu</string>
+    <string name="chatgpt_system_message">You are a helpful and detail-oriented assistant. Please provide the output in JSON format.</string>
+    <string name="chatgpt_user_message">Create a daily menu based on the following food preferences: %1$s.\n\nConsider the following user information to personalize the menu:\n- Locale: %2$s\n- Age: %3$d\n- Weight: %4$d kg\n- Height: %5$d cm\n\nOrganize the menu as follows, allowing each meal to have more than one dish (optional and based on your judgment). For lunch and dinner, include an optional dessert (also optional):\n\n{\n    "title": "Title of the menu based on the chosen dishes and preferences (Do not mention the date or user information)",\n    "date": "%6$s (Parseable to LocalDateTime in Kotlin)",\n    "breakfast": {\n        "meals": [\n            {\n                "description": "Description of breakfast dish 1",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instructions to prepare breakfast dish 1"\n            },\n            {\n                "description": "Description of breakfast dish 2",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instructions to prepare breakfast dish 2"\n            }\n        ]\n    },\n    "lunch": {\n        "meals": [\n            {\n                "description": "Description of lunch dish 1",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instructions to prepare lunch dish 1"\n            },\n            {\n                "description": "Description of lunch dish 2",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instructions to prepare lunch dish 2"\n            },\n            {\n                "description": "Description of lunch dessert",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instructions to prepare lunch dessert"\n            }\n        ]\n    },\n    "snack": {\n        "meals": [\n            {\n                "description": "Description of the snack",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instructions to prepare the snack"\n            }\n        ]\n    },\n    "dinner": {\n        "meals": [\n            {\n                "description": "Description of dinner dish 1",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instructions to prepare dinner dish 1"\n            },\n            {\n                "description": "Description of dinner dish 2",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instructions to prepare dinner dish 2"\n            },\n            {\n                "description": "Description of dinner dessert",\n                "ingredients": ["Ingredient 1", "Ingredient 2"],\n                "instructions": "Instructions to prepare dinner dessert"\n            }\n        ]\n    }\n}</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="snack">Snack</string>
+    <string name="dinner">Dinner</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="preparation_instructions">Preparation Instructions</string>
+    <string name="internet_required">These features require an internet connection.</string>
 </resources>
