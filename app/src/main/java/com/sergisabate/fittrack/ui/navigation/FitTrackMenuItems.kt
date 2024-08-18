@@ -26,6 +26,7 @@ import com.sergisabate.fittrack.data.viewmodels.ThemeViewModel
 import com.sergisabate.fittrack.data.viewmodels.ThemeViewModelFactory
 import com.sergisabate.fittrack.ui.screens.AIToolsScreen
 import com.sergisabate.fittrack.ui.screens.ApplicationThemeScreen
+import com.sergisabate.fittrack.ui.screens.BluetoothScreen
 import com.sergisabate.fittrack.ui.screens.EditProfileScreen
 import com.sergisabate.fittrack.ui.screens.GenerateExerciseRoutineScreen
 import com.sergisabate.fittrack.ui.screens.GenerateMenuScreen
@@ -85,7 +86,7 @@ fun getBottomItems(): List<NavItem> {
             icon = Icons.Default.Face,
             title = stringResource(R.string.profile),
             route = "Profile",
-            screen = { ProfileScreen() }
+            screen = { navController -> navController?.let { ProfileScreen(it) } }
         )
     )
 }
@@ -134,7 +135,7 @@ fun getMenuItems(): List<NavItem> {
             icon = Icons.Default.Build,
             title = stringResource(R.string.menu_generator_title),
             route = "GenerateMenu",
-            screen =  { navController -> navController?.let { GenerateMenuScreen(it) } }
+            screen = { navController -> navController?.let { GenerateMenuScreen(it) } }
         ),
         NavItem(
             icon = Icons.Default.Build,
@@ -159,6 +160,18 @@ fun getExerciseRoutineItems(): List<NavItem> {
             title = stringResource(R.string.view_routine),
             route = "ViewExerciseRoutine",
             screen = { ViewExerciseRoutineScreen() }
+        )
+    )
+}
+
+@Composable
+fun getBluetoothItems(): List<NavItem> {
+    return listOf(
+        NavItem(
+            icon = Icons.Default.Build,
+            title = "Bluetooth",
+            route = "Bluetooth",
+            screen = { navController -> navController?.let { BluetoothScreen(it) } }
         )
     )
 }

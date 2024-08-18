@@ -1,6 +1,7 @@
 package com.sergisabate.fittrack.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,8 +14,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -33,13 +37,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(navController: NavController) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
@@ -72,10 +77,7 @@ fun ProfileScreen() {
                 muscleMass = "65 kg"
             )
 
-            // Linked Devices
-            LinkedDevicesCard(
-                devices = listOf("Xiaomi Scale 2")
-            )
+            LinkedDevicesCard(navController)
         }
     }
 }
@@ -163,30 +165,34 @@ fun BodyStatisticCard(label: String, value: String, modifier: Modifier = Modifie
 }
 
 @Composable
-fun LinkedDevicesCard(devices: List<String>) {
+fun LinkedDevicesCard(navController: NavController) {
     Card(
         modifier = Modifier
             .padding(16.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable {
+                navController.navigate("Bluetooth")
+            },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary
         ),
     ) {
-        Column(
+        Row(
             modifier = Modifier
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(R.string.linked_devices),
+                text = "Vincular un Dispositivo",
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
             )
-            devices.forEach { device ->
-                Text(
-                    text = device,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Agregar dispositivo",
+                tint = MaterialTheme.colorScheme.onSecondary
+            )
         }
     }
 }

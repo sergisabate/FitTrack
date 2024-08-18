@@ -18,6 +18,7 @@ fun FitTrackNavigation(navController: NavHostController) {
     val settingsItems = getSettingsItems()
     val menuItems = getMenuItems()
     val exerciseRoutineItems = getExerciseRoutineItems()
+    val bluetoothItems = getBluetoothItems()
     NavHost(
         navController = navController,
         startDestination = "Home",
@@ -48,6 +49,13 @@ fun FitTrackNavigation(navController: NavHostController) {
             }
         }
         exerciseRoutineItems.forEach { item ->
+            composable(item.route,
+                listOf(navArgument("title") { defaultValue = item.title }),
+                enterTransition = { fadeInTransition() }) {
+                item.screen(navController)
+            }
+        }
+        bluetoothItems.forEach { item ->
             composable(item.route,
                 listOf(navArgument("title") { defaultValue = item.title }),
                 enterTransition = { fadeInTransition() }) {
