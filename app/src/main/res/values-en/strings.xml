@@ -72,4 +72,10 @@
     <string name="objectives">Objectives</string>
     <string name="equipment_needed">Equipment Needed</string>
     <string name="instructions">Instructions</string>
+    <string name="unknown">Unknown</string>
+    <string name="scan_info">Some devices require activity to appear in the search.</string>
+    <string name="searching_devices">Searching Devices…</string>
+    <string name="search_devices">Search Devices</string>
+    <string name="unable_to_pair">Unable to pair the device</string>
+    <string name="device_paired">Device Paired</string>
 </resources>

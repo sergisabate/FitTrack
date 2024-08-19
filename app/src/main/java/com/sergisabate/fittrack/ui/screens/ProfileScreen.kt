@@ -1,7 +1,6 @@
 package com.sergisabate.fittrack.ui.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,9 +15,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -42,6 +43,8 @@ import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
+import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
+import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 
 @Composable
 fun ProfileScreen(navController: NavController) {
@@ -125,16 +128,24 @@ fun BodyStatisticsCard(age: Int, weight: String, height: String, bodyFat: String
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            BodyStatisticCard(label = stringResource(R.string.age), value = age.toString(), modifier = Modifier.weight(1f).padding(16.dp, 0.dp, 0.dp, 0.dp))
+            BodyStatisticCard(label = stringResource(R.string.age), value = age.toString(), modifier = Modifier
+                .weight(1f)
+                .padding(16.dp, 0.dp, 0.dp, 0.dp))
             BodyStatisticCard(label = stringResource(R.string.weight), value = weight, modifier = Modifier.weight(1f))
-            BodyStatisticCard(label = stringResource(R.string.height), value = height, modifier = Modifier.weight(1f).padding(0.dp, 0.dp, 16.dp, 0.dp))
+            BodyStatisticCard(label = stringResource(R.string.height), value = height, modifier = Modifier
+                .weight(1f)
+                .padding(0.dp, 0.dp, 16.dp, 0.dp))
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            BodyStatisticCard(label = stringResource(R.string.muscle_mass), value = muscleMass, modifier = Modifier.weight(1f).padding(16.dp, 0.dp, 0.dp, 0.dp))
-            BodyStatisticCard(label = stringResource(R.string.body_fat), value = bodyFat, modifier = Modifier.weight(1f).padding(0.dp, 0.dp, 16.dp, 0.dp))
+            BodyStatisticCard(label = stringResource(R.string.muscle_mass), value = muscleMass, modifier = Modifier
+                .weight(1f)
+                .padding(16.dp, 0.dp, 0.dp, 0.dp))
+            BodyStatisticCard(label = stringResource(R.string.body_fat), value = bodyFat, modifier = Modifier
+                .weight(1f)
+                .padding(0.dp, 0.dp, 16.dp, 0.dp))
         }
     }
 }
@@ -166,33 +177,82 @@ fun BodyStatisticCard(label: String, value: String, modifier: Modifier = Modifie
 
 @Composable
 fun LinkedDevicesCard(navController: NavController) {
+    val preferencesViewModel: PreferencesViewModel = getThemeViewModel()
+    val currentLinkedDevice by preferencesViewModel.getBluetoothDevice().collectAsState()
+
     Card(
         modifier = Modifier
             .padding(16.dp)
-            .fillMaxWidth()
-            .clickable {
-                navController.navigate("Bluetooth")
-            },
+            .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary
         ),
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .padding(16.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth()
         ) {
-            Text(
-                text = "Vincular un Dispositivo",
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
-            )
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = "Agregar dispositivo",
-                tint = MaterialTheme.colorScheme.onSecondary
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.device_paired),
+                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
+                if (currentLinkedDevice.isEmpty()) {
+                    IconButton(
+                        onClick = { navController.navigate("Bluetooth") }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Agregar dispositivo",
+                            tint = MaterialTheme.colorScheme.onSecondary
+                        )
+                    }
+                }
+            }
+            if (currentLinkedDevice.isNotEmpty()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = getOfficialName(currentLinkedDevice),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSecondary
+                    )
+                    IconButton(
+                        onClick = { preferencesViewModel.deleteBluetoothDevice() }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Eliminar dispositivo",
+                            tint = MaterialTheme.colorScheme.onSecondary
+                        )
+                    }
+                }
+            }
         }
     }
+}
+
+fun getOfficialName(deviceName : String) : String {
+    return if (deviceName == "MI SCALE2") {
+        return "Xiaomi Mi Smart Scale 2"
+    }
+    else {
+        deviceName
+    }
+}
+
+@Composable
+private fun getThemeViewModel(): PreferencesViewModel {
+    val context = LocalContext.current
+    val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
+    return viewModel(factory = PreferencesViewModelFactory(userPreferencesRepository))
 }

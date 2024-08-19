@@ -12,11 +12,14 @@ import android.util.Log
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.core.content.ContextCompat.getSystemService
 import kotlinx.coroutines.Job
+import java.text.ParseException
+import java.text.SimpleDateFormat
 
 @SuppressLint("MissingPermission")
 fun scanBleDevices(
     context: Context,
     scanResults: SnapshotStateList<ScanResult>,
+    currentLinkedDevice: String,
     scanning: Boolean,
     scanJob: Job? = null
 ): Boolean {
@@ -36,7 +39,7 @@ fun scanBleDevices(
                 scanResults[existingDeviceIndex] = result
             } else {
                 val deviceName = result.device.name ?: return
-                if (deviceName == "MI SCALE2") {
+                if (deviceName != currentLinkedDevice) {
                     Log.d("onScanResult", "Found BLE device! Name: $deviceName, address: ${result.device.address}")
                     scanResults.add(result)
                 }
@@ -61,3 +64,40 @@ fun scanBleDevices(
     }
 }
 
+fun parseBytes(weightBytes: ByteArray) {
+    try {
+        val ctrlByte = weightBytes[0]
+
+        val isWeightRemoved = isBitSet(ctrlByte, 7)
+        val isStabilized = isBitSet(ctrlByte, 5)
+        val isLBSUnit = isBitSet(ctrlByte, 0)
+        val isCattyUnit = isBitSet(ctrlByte, 4)
+
+        if (isStabilized && !isWeightRemoved) {
+
+            val year = ((weightBytes[4].toInt() and 0xFF) shl 8) or (weightBytes[3].toInt() and 0xFF)
+            val month = weightBytes[5].toInt()
+            val day = weightBytes[6].toInt()
+            val hours = weightBytes[7].toInt()
+            val min = weightBytes[8].toInt()
+            val sec = weightBytes[9].toInt()
+
+            val weight = if (isLBSUnit || isCattyUnit) {
+                (((weightBytes[2].toInt() and 0xFF) shl 8) or (weightBytes[1].toInt() and 0xFF)) / 100.0f
+            } else {
+                (((weightBytes[2].toInt() and 0xFF) shl 8) or (weightBytes[1].toInt() and 0xFF)) / 200.0f
+            }
+
+            val dateString = "$year/$month/$day/$hours/$min"
+            val dateTime = SimpleDateFormat("yyyy/MM/dd/HH/mm").parse(dateString)
+            Log.d("OK", "Date: $dateTime")
+
+        }
+    } catch (e: ParseException) {
+        Log.e("UNEXPECTED_ERROR", "Error while decoding bluetooth date string (${e.message})")
+    }
+}
+
+fun isBitSet(value: Byte, bit: Int): Boolean {
+    return (value.toInt() and (1 shl bit)) != 0
+}

@@ -22,8 +22,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
-import com.sergisabate.fittrack.data.viewmodels.ThemeViewModel
-import com.sergisabate.fittrack.data.viewmodels.ThemeViewModelFactory
+import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
+import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 import com.sergisabate.fittrack.ui.screens.AIToolsScreen
 import com.sergisabate.fittrack.ui.screens.ApplicationThemeScreen
 import com.sergisabate.fittrack.ui.screens.BluetoothScreen
@@ -180,10 +180,10 @@ fun getBluetoothItems(): List<NavItem> {
 fun getThemeOptionName(): String {
     val context = LocalContext.current
     val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
-    val themeViewModel: ThemeViewModel = viewModel(
-        factory = ThemeViewModelFactory(userPreferencesRepository)
+    val preferencesViewModel: PreferencesViewModel = viewModel(
+        factory = PreferencesViewModelFactory(userPreferencesRepository)
     )
-    val themeSetting by themeViewModel.getDarkTheme().collectAsState()
+    val themeSetting by preferencesViewModel.getDarkTheme().collectAsState()
     val themeOption = enumValues<ThemeOption>().getOrElse(themeSetting) { ThemeOption.SystemDefault }
     return when (themeOption) {
         ThemeOption.DarkMode -> stringResource(R.string.dark_mode)

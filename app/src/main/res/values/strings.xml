@@ -71,4 +71,10 @@
     <string name="objectives">Objetivos</string>
     <string name="equipment_needed">Equipamiento necesario</string>
     <string name="instructions">Instrucciones</string>
+    <string name="unknown">Desconocido</string>
+    <string name="scan_info">Algunos dispositivos requieren actividad para aparecer en la búsqueda.</string>
+    <string name="searching_devices">Buscando Dispositivos…</string>
+    <string name="search_devices">Buscar Dispositivos</string>
+    <string name="unable_to_pair">No ha sido posible vincular el dispositivo</string>
+    <string name="device_paired">Dispositivo Vinculado</string>
 </resources>

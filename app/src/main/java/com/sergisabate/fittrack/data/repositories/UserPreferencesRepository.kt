@@ -19,13 +19,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
 
-data class ProfileData(
-    val name: String = "",
-    val age: Int = 0,
-    val weight: Int = 0,
-    val height: Int = 0,
-)
-
 private const val IS_IN_DARK_MODE_KEY = "is_in_dark_mode"
 private const val DEFAULT_DARK_MODE = 2
 
@@ -35,6 +28,8 @@ private const val WEIGHT_KEY = "weight_key"
 private const val HEIGHT_KEY = "height_key"
 private const val DEFAULT_STRING = ""
 private const val DEFAULT_INT = 0
+
+private const val BLUETOOTH_DEVICE_KEY = "bluetooth_device"
 
 private val Context.dataStore by preferencesDataStore(name = "user_preferences")
 
@@ -46,6 +41,7 @@ class UserPreferencesRepository private constructor(context: Context) {
         val AGE = intPreferencesKey(AGE_KEY)
         val WEIGHT = intPreferencesKey(WEIGHT_KEY)
         val HEIGHT = intPreferencesKey(HEIGHT_KEY)
+        val BLUETOOTH_DEVICE = stringPreferencesKey(BLUETOOTH_DEVICE_KEY)
     }
 
     private val dataStore = context.applicationContext.dataStore
@@ -62,6 +58,8 @@ class UserPreferencesRepository private constructor(context: Context) {
     val weightFlow: StateFlow<Int> = _weightFlow
     val heightFlow: StateFlow<Int> = _heightFlow
 
+    private val _bluetoothDeviceFlow = MutableStateFlow(runBlocking { getBluetoothDevice() })
+    val bluetoothDeviceFlow: StateFlow<String> = _bluetoothDeviceFlow
 
     init {
         initParameter(PreferencesKeys.IS_IN_DARK_MODE, DEFAULT_DARK_MODE, _isInDarkModeFlow)
@@ -69,6 +67,7 @@ class UserPreferencesRepository private constructor(context: Context) {
         initParameter(PreferencesKeys.AGE, DEFAULT_INT, _ageFlow)
         initParameter(PreferencesKeys.HEIGHT, DEFAULT_INT, _heightFlow)
         initParameter(PreferencesKeys.WEIGHT, DEFAULT_INT, _weightFlow)
+        initParameter(PreferencesKeys.BLUETOOTH_DEVICE, DEFAULT_STRING, _bluetoothDeviceFlow)
     }
 
     private fun <T> initParameter(key: Preferences.Key<T>, default: T, mutable: MutableStateFlow<T>) {
@@ -119,6 +118,12 @@ class UserPreferencesRepository private constructor(context: Context) {
         }
     }
 
+    suspend fun setBluetoothDevice(bluetoothDevice: String) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.BLUETOOTH_DEVICE] = bluetoothDevice
+        }
+    }
+
     private suspend fun getDarkModePreference(): Int {
         return dataStore.data
             .map { preferences ->
@@ -155,6 +160,14 @@ class UserPreferencesRepository private constructor(context: Context) {
         return dataStore.data
             .map { preferences ->
                 preferences[PreferencesKeys.HEIGHT] ?: DEFAULT_INT
+            }
+            .first()
+    }
+
+    private suspend fun getBluetoothDevice(): String {
+        return dataStore.data
+            .map { preferences ->
+                preferences[PreferencesKeys.BLUETOOTH_DEVICE] ?: DEFAULT_STRING
             }
             .first()
     }

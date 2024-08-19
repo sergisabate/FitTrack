@@ -72,4 +72,10 @@
     <string name="objectives">Objectius</string>
     <string name="equipment_needed">Equipament necessari</string>
     <string name="instructions">Instruccions</string>
+    <string name="unknown">Desconegut</string>
+    <string name="scan_info">Alguns dispositius requereixen activitat per aparèixer en la cerca.</string>
+    <string name="searching_devices">Buscant Dispositius…</string>
+    <string name="search_devices">Buscar Dispositius</string>
+    <string name="unable_to_pair">No ha estat possible vincular el dispositiu</string>
+    <string name="device_paired">Dispositiu Vinculat</string>
 </resources>

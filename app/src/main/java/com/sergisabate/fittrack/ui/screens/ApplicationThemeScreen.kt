@@ -25,19 +25,19 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
-import com.sergisabate.fittrack.data.viewmodels.ThemeViewModel
-import com.sergisabate.fittrack.data.viewmodels.ThemeViewModelFactory
+import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
+import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 import com.sergisabate.fittrack.ui.theme.ThemeOption
 
 @Composable
 fun ApplicationThemeScreen() {
     val context = LocalContext.current
     val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
-    val themeViewModel: ThemeViewModel = viewModel(
-        factory = ThemeViewModelFactory(userPreferencesRepository)
+    val preferencesViewModel: PreferencesViewModel = viewModel(
+        factory = PreferencesViewModelFactory(userPreferencesRepository)
     )
 
-    val themeSetting by themeViewModel.getDarkTheme().collectAsState()
+    val themeSetting by preferencesViewModel.getDarkTheme().collectAsState()
     val initialOption = enumValues<ThemeOption>().getOrElse(themeSetting) { ThemeOption.SystemDefault }
 
     var selectedOption by remember { mutableStateOf(initialOption) }
@@ -56,7 +56,7 @@ fun ApplicationThemeScreen() {
                     option = option,
                     isSelected = option == selectedOption,
                     onOptionSelected = {
-                        themeViewModel.setDarkTheme(option.value)
+                        preferencesViewModel.setDarkTheme(option.value)
                         selectedOption = option
                     }
                 )

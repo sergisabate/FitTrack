@@ -3,11 +3,17 @@ package com.sergisabate.fittrack.data.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.sergisabate.fittrack.data.repositories.ProfileData
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+
+data class ProfileData(
+    val name: String = "",
+    val age: Int = 0,
+    val weight: Int = 0,
+    val height: Int = 0,
+)
 
 class ProfileViewModel(private val userPreferencesRepository: UserPreferencesRepository) : ViewModel() {
 

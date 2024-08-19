@@ -22,7 +22,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.sergisabate.fittrack.R
-import com.sergisabate.fittrack.data.repositories.ProfileData
+import com.sergisabate.fittrack.data.viewmodels.ProfileData
 
 @Composable
 fun ProfileForm(profile: ProfileData? = null, onSubmit: (String, Int, Int, Int) -> Unit) {

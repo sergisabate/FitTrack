@@ -2,14 +2,22 @@ package com.sergisabate.fittrack.ui.screens
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothGatt
+import android.bluetooth.BluetoothGattCallback
+import android.bluetooth.BluetoothManager
+import android.bluetooth.BluetoothProfile
 import android.bluetooth.le.ScanResult
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,18 +27,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -38,16 +52,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.bluetooth.scanBleDevices
+import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
+import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
+import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -61,24 +79,57 @@ fun BluetoothScreen(navController: NavHostController) {
     val context = LocalContext.current
     val scanResults = remember { mutableStateListOf<ScanResult>() }
     var isScanning by remember { mutableStateOf(false) }
+    var bluetoothDevice by remember { mutableStateOf<BluetoothDevice?>(null) }
     var scanJob by remember { mutableStateOf<Job?>(null) }
 
-    // Ensure permissions are claimed
+    val preferencesViewModel: PreferencesViewModel = getThemeViewModel()
+    val currentLinkedDevice by preferencesViewModel.getBluetoothDevice().collectAsState()
+
     ClaimPermissions(navController)
 
     LaunchedEffect(isScanning) {
         if (isScanning) {
-            // Start a coroutine job to stop scanning after 15 seconds
             scanJob = CoroutineScope(Dispatchers.Main).launch {
-                delay(Duration.ofSeconds(15)) // Delay for 15 seconds
-                isScanning = scanBleDevices(context, scanResults, isScanning, scanJob)
+                delay(Duration.ofMinutes(1))
+                isScanning = scanBleDevices(context, scanResults, currentLinkedDevice, isScanning, scanJob)
             }
         } else {
-            scanJob?.cancel() // Cancel the job if scanning is stopped manually
+            scanJob?.cancel()
         }
     }
 
-    // Main Scaffold layout
+    BluetoothScaffold(
+        scanResults = scanResults,
+        isScanning = isScanning,
+        onDeviceSelected = { device -> bluetoothDevice = device },
+        onScanButtonClick = {
+            isScanning = scanBleDevices(context, scanResults, currentLinkedDevice, isScanning)
+        }
+    )
+
+    val errorMessage = stringResource(R.string.unable_to_pair)
+    bluetoothDevice?.let { device ->
+        BluetoothConnectionHandler(
+            context = context,
+            bluetoothDevice = device,
+            onConnectionComplete = { name ->
+                preferencesViewModel.setBluetoothDevice(name,
+                    onSuccess = { navController.popBackStack() },
+                    onError = { Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show() }
+                )
+            }
+        )
+    }
+}
+
+@SuppressLint("MissingPermission")
+@Composable
+fun BluetoothScaffold(
+    scanResults: List<ScanResult>,
+    isScanning: Boolean,
+    onDeviceSelected: (BluetoothDevice) -> Unit,
+    onScanButtonClick: () -> Unit
+) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -93,43 +144,115 @@ fun BluetoothScreen(navController: NavHostController) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 56.dp) // Add padding at the bottom to make space for the button
             ) {
                 LazyColumn(
                     modifier = Modifier.wrapContentHeight()
                 ) {
                     items(scanResults) { result ->
                         DeviceCard(
-                            name = result.device.name ?: "Unknown",
-                            address = result.device.address ?: "Unknown",
-                            icon = painterResource(id = R.drawable.ic_launcher_foreground)
+                            name = result.device.name ?: stringResource(R.string.unknown),
+                            onClick = { onDeviceSelected(result.device) }
                         )
                     }
                 }
             }
-
-            Button(
-                modifier = Modifier.fillMaxWidth()
-                    .align(Alignment.BottomCenter),
-                enabled = !isScanning,
-                onClick = {
-                    isScanning = scanBleDevices(
-                        context = context,
-                        scanResults = scanResults,
-                        scanning = isScanning,
-                        scanJob = scanJob
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .align(Alignment.CenterHorizontally),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(R.string.scan_info),
+                        style = MaterialTheme.typography.bodyMedium.copy(fontStyle = FontStyle.Italic),
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
-            ) {
-                Text(text = if (isScanning) "Buscando Dispositivos..." else "Buscar Dispositivos")
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    enabled = !isScanning,
+                    onClick = onScanButtonClick
+                ) {
+                    Text(text = if (isScanning) stringResource(R.string.searching_devices) else stringResource(R.string.search_devices))
+                }
             }
         }
     }
 }
 
+@SuppressLint("MissingPermission")
+@Composable
+fun BluetoothConnectionHandler(
+    context: Context,
+    bluetoothDevice: BluetoothDevice,
+    onConnectionComplete: (String) -> Unit
+) {
+    var state by remember { mutableStateOf(DeviceConnectionState.None) }
+
+    val callback = remember {
+        object : BluetoothGattCallback() {
+            @SuppressLint("MissingPermission")
+            override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
+                super.onConnectionStateChange(gatt, status, newState)
+                state = state.copy(gatt = gatt, connectionState = newState)
+
+                if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothProfile.STATE_CONNECTED) {
+                    gatt.device.name?.let(onConnectionComplete)
+                } else {
+                    Log.e("BluetoothConnectionHandler", "Error: $status")
+                }
+            }
+        }
+    }
+
+    DisposableEffect(bluetoothDevice) {
+        state = state.copy(gatt = bluetoothDevice.connectGatt(context, false, callback))
+        onDispose {
+            state.gatt?.disconnect()
+        }
+    }
+}
+
+@Composable
+fun DeviceCard(
+    name: String,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary),
+        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        onClick = onClick
+    ) {
+        Text(
+            text = name,
+            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+        )
+    }
+    Spacer(modifier = Modifier.height(16.dp))
+}
+
 @Composable
 private fun ClaimPermissions(navController: NavHostController) {
     val context = LocalContext.current
+    var allPermissionsGranted: Boolean by remember { mutableStateOf(false) }
     var getBack: Boolean by remember { mutableStateOf(false) }
 
     val bluetoothConnectPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -155,6 +278,7 @@ private fun ClaimPermissions(navController: NavHostController) {
                 permissions.entries.forEach { entry ->
                     Log.d("Permissions", "${entry.key} is granted")
                 }
+                allPermissionsGranted = true
             }
         }
 
@@ -170,45 +294,53 @@ private fun ClaimPermissions(navController: NavHostController) {
 
         if (permissionsNeeded.isNotEmpty()) {
             requestPermissionLauncher.launch(permissionsNeeded.toTypedArray())
+        } else {
+            allPermissionsGranted = true
         }
+    }
+
+    if (allPermissionsGranted) {
+        RequestEnableBluetooth(
+            onBluetoothEnabled = {
+                Log.d("Bluetooth", "Bluetooth is enabled and permissions granted")
+            },
+            onBluetoothDenied = {
+                navController.popBackStack()
+            }
+        )
     }
 }
 
 @Composable
-fun DeviceCard(name: String, address: String, icon: Painter) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondary
-        ),
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Image(
-                painter = icon,
-                contentDescription = null,
-                modifier = Modifier.size(48.dp),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSecondary)
-            )
-            Column {
-                Text(
-                    text = name,
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = address,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
+fun RequestEnableBluetooth(onBluetoothEnabled: () -> Unit, onBluetoothDenied: () -> Unit) {
+    val context = LocalContext.current
+
+    val enableBluetoothLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // El usuario habilitó el Bluetooth
+            onBluetoothEnabled()
+        } else {
+            // El usuario no habilitó el Bluetooth
+            onBluetoothDenied()
         }
     }
-    Spacer(modifier = Modifier.height(16.dp))
+
+    LaunchedEffect(Unit) {
+        val bluetoothAdapter: BluetoothAdapter? = getSystemService(context, BluetoothManager::class.java)?.adapter
+        if (bluetoothAdapter?.isEnabled == false) {
+            // Solicitar que el usuario habilite Bluetooth
+            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            enableBluetoothLauncher.launch(enableBtIntent)
+        } else {
+            onBluetoothEnabled() // Bluetooth ya estaba habilitado
+        }
+    }
+}
+
+
+@Composable
+private fun getThemeViewModel(): PreferencesViewModel {
+    val context = LocalContext.current
+    val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
+    return viewModel(factory = PreferencesViewModelFactory(userPreferencesRepository))
 }
