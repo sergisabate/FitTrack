@@ -48,16 +48,20 @@ import com.sergisabate.fittrack.data.api.getGPTContent
 import com.sergisabate.fittrack.data.api.isInternetAvailable
 import com.sergisabate.fittrack.data.repositories.ExerciseRoutinesRepository
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
+import com.sergisabate.fittrack.data.repositories.WeightsRepository
 import com.sergisabate.fittrack.data.viewmodels.ExerciseRoutine
 import com.sergisabate.fittrack.data.viewmodels.ExerciseRoutinesViewModel
 import com.sergisabate.fittrack.data.viewmodels.ExerciseRoutinesViewModelFactory
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
+import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
+import com.sergisabate.fittrack.data.viewmodels.WeightsViewModelFactory
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
+import kotlin.math.roundToInt
 
 @Composable
 fun GenerateExerciseRoutineScreen(navController: NavHostController) {
@@ -72,8 +76,10 @@ fun GenerateExerciseRoutineScreen(navController: NavHostController) {
 
     val profileViewModel: ProfileViewModel = getProfileViewModel()
     val exerciseRoutinesViewModel: ExerciseRoutinesViewModel = getExerciseRoutinesViewModel()
+    val weightsViewModel: WeightsViewModel = getWeightsViewModel()
 
     val profileData by profileViewModel.getProfileData().collectAsState()
+    val currentWeight by weightsViewModel.getCurrentWeight().collectAsState()
 
     val systemMessage = stringResource(id = R.string.chatgpt_system_message)
     val userMessageFormat = stringResource(id = R.string.chatgpt_exercise_routine_message)
@@ -82,7 +88,7 @@ fun GenerateExerciseRoutineScreen(navController: NavHostController) {
         preferences.replace(Regex("[^a-zA-Z0-9,;\\s]"), ""),
         "${locale.language}-${locale.country}",
         profileData.age,
-        profileData.weight,
+        currentWeight.roundToInt(),
         profileData.height,
         LocalDateTime.now(ZoneId.systemDefault()).toString()
     )
@@ -263,6 +269,13 @@ private fun getExerciseRoutinesViewModel(): ExerciseRoutinesViewModel {
     val context = LocalContext.current
     val exerciseRoutinesRepository = remember { ExerciseRoutinesRepository.getInstance(context) }
     return viewModel(factory = ExerciseRoutinesViewModelFactory(exerciseRoutinesRepository))
+}
+
+@Composable
+private fun getWeightsViewModel(): WeightsViewModel {
+    val context = LocalContext.current
+    val weightsRepository = remember { WeightsRepository.getInstance(context) }
+    return viewModel(factory = WeightsViewModelFactory(weightsRepository))
 }
 
 @Composable

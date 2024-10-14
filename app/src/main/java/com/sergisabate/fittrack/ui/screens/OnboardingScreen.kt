@@ -53,7 +53,7 @@ fun TypingText(
 }
 
 @Composable
-fun OnboardingScreen(modifier: Modifier, onSubmit: (String, Int, Int, Int) -> Unit) {
+fun OnboardingScreen(modifier: Modifier, onSubmit: (String, Int, Float, Int) -> Unit) {
     var showWelcome by remember { mutableStateOf(false) }
     var showExcitement by remember { mutableStateOf(false) }
     var showIntroduction by remember { mutableStateOf(false) }
@@ -144,7 +144,7 @@ fun OnboardingScreen(modifier: Modifier, onSubmit: (String, Int, Int, Int) -> Un
             } else {
                 DisplayAllTexts()
                 Spacer(modifier = modifier.height(16.dp))
-                ProfileForm(null, onSubmit)
+                ProfileForm(null, null, onSubmit)
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.sergisabate.fittrack.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,10 +42,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
-import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
-import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
+import com.sergisabate.fittrack.data.repositories.WeightsRepository
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
+import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
+import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
+import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
+import com.sergisabate.fittrack.data.viewmodels.WeightsViewModelFactory
 
 @Composable
 fun ProfileScreen(navController: NavController) {
@@ -56,7 +60,9 @@ fun ProfileScreen(navController: NavController) {
         val profileViewModel: ProfileViewModel = viewModel(
             factory = ProfileViewModelFactory(userPreferencesRepository)
         )
+        val weightsViewModel: WeightsViewModel = getWeightsViewModel()
 
+        val currentWeight by weightsViewModel.getCurrentWeight().collectAsState()
         val currentProfileData by profileViewModel.getProfileData().collectAsState()
 
         Column(
@@ -74,7 +80,7 @@ fun ProfileScreen(navController: NavController) {
             // Body Statistics
             BodyStatisticsCard(
                 age = currentProfileData.age,
-                weight = currentProfileData.weight.toString() + " kg",
+                weight = "%.2f".format(currentWeight) + " kg",
                 height = currentProfileData.height.toString() + " cm",
                 bodyFat = "15%",
                 muscleMass = "65 kg"
@@ -177,12 +183,12 @@ fun BodyStatisticCard(label: String, value: String, modifier: Modifier = Modifie
 
 @Composable
 fun LinkedDevicesCard(navController: NavController) {
-    val preferencesViewModel: PreferencesViewModel = getThemeViewModel()
+    val preferencesViewModel: PreferencesViewModel = getPreferencesViewModel()
     val currentLinkedDevice by preferencesViewModel.getBluetoothDevice().collectAsState()
 
     Card(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(top= 16.dp, start = 16.dp, end = 16.dp)
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary
@@ -239,6 +245,23 @@ fun LinkedDevicesCard(navController: NavController) {
             }
         }
     }
+
+    if (currentLinkedDevice.isNotEmpty()) {
+        Card(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth().clickable { navController.navigate("WeighScreen") },
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.secondary
+            ),
+        ) {
+            Text(
+                text = "Pesar",
+                modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+            )
+        }
+    }
 }
 
 fun getOfficialName(deviceName : String) : String {
@@ -251,7 +274,14 @@ fun getOfficialName(deviceName : String) : String {
 }
 
 @Composable
-private fun getThemeViewModel(): PreferencesViewModel {
+private fun getWeightsViewModel(): WeightsViewModel {
+    val context = LocalContext.current
+    val weightsRepository = remember { WeightsRepository.getInstance(context) }
+    return viewModel(factory = WeightsViewModelFactory(weightsRepository))
+}
+
+@Composable
+private fun getPreferencesViewModel(): PreferencesViewModel {
     val context = LocalContext.current
     val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
     return viewModel(factory = PreferencesViewModelFactory(userPreferencesRepository))

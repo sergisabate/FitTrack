@@ -39,6 +39,7 @@ import com.sergisabate.fittrack.ui.screens.SettingsScreen
 import com.sergisabate.fittrack.ui.screens.TestScreen
 import com.sergisabate.fittrack.ui.screens.ViewExerciseRoutineScreen
 import com.sergisabate.fittrack.ui.screens.ViewMenuScreen
+import com.sergisabate.fittrack.ui.screens.WeighScreen
 import com.sergisabate.fittrack.ui.theme.ThemeOption
 
 data class NavItem(
@@ -172,6 +173,12 @@ fun getBluetoothItems(): List<NavItem> {
             title = "Bluetooth",
             route = "Bluetooth",
             screen = { navController -> navController?.let { BluetoothScreen(it) } }
+        ),
+        NavItem(
+            icon = Icons.Default.Build,
+            title = "Pesar",
+            route = "WeighScreen",
+            screen = { navController -> navController?.let { WeighScreen(it) } }
         )
     )
 }

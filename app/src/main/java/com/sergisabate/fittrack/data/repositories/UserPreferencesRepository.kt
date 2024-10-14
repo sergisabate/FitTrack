@@ -20,16 +20,14 @@ import kotlinx.coroutines.runBlocking
 import java.io.IOException
 
 private const val IS_IN_DARK_MODE_KEY = "is_in_dark_mode"
-private const val DEFAULT_DARK_MODE = 2
+private const val NAME_KEY = "name"
+private const val AGE_KEY = "age"
+private const val HEIGHT_KEY = "height"
+private const val BLUETOOTH_DEVICE_KEY = "bluetooth_device"
 
-private const val NAME_KEY = "name_key"
-private const val AGE_KEY = "age_key"
-private const val WEIGHT_KEY = "weight_key"
-private const val HEIGHT_KEY = "height_key"
+private const val DEFAULT_DARK_MODE = 2
 private const val DEFAULT_STRING = ""
 private const val DEFAULT_INT = 0
-
-private const val BLUETOOTH_DEVICE_KEY = "bluetooth_device"
 
 private val Context.dataStore by preferencesDataStore(name = "user_preferences")
 
@@ -39,7 +37,6 @@ class UserPreferencesRepository private constructor(context: Context) {
         val IS_IN_DARK_MODE = intPreferencesKey(IS_IN_DARK_MODE_KEY)
         val NAME = stringPreferencesKey(NAME_KEY)
         val AGE = intPreferencesKey(AGE_KEY)
-        val WEIGHT = intPreferencesKey(WEIGHT_KEY)
         val HEIGHT = intPreferencesKey(HEIGHT_KEY)
         val BLUETOOTH_DEVICE = stringPreferencesKey(BLUETOOTH_DEVICE_KEY)
     }
@@ -51,14 +48,11 @@ class UserPreferencesRepository private constructor(context: Context) {
 
     private val _nameFlow = MutableStateFlow(runBlocking { getNamePreference() })
     private val _ageFlow = MutableStateFlow(runBlocking { getAgePreference() })
-    private val _weightFlow = MutableStateFlow(runBlocking { getWeightPreference() })
     private val _heightFlow = MutableStateFlow(runBlocking { getHeightPreference() })
+    private val _bluetoothDeviceFlow = MutableStateFlow(runBlocking { getBluetoothDevice() })
     val nameFlow: StateFlow<String> = _nameFlow
     val ageFlow: StateFlow<Int> = _ageFlow
-    val weightFlow: StateFlow<Int> = _weightFlow
     val heightFlow: StateFlow<Int> = _heightFlow
-
-    private val _bluetoothDeviceFlow = MutableStateFlow(runBlocking { getBluetoothDevice() })
     val bluetoothDeviceFlow: StateFlow<String> = _bluetoothDeviceFlow
 
     init {
@@ -66,7 +60,6 @@ class UserPreferencesRepository private constructor(context: Context) {
         initParameter(PreferencesKeys.NAME, DEFAULT_STRING, _nameFlow)
         initParameter(PreferencesKeys.AGE, DEFAULT_INT, _ageFlow)
         initParameter(PreferencesKeys.HEIGHT, DEFAULT_INT, _heightFlow)
-        initParameter(PreferencesKeys.WEIGHT, DEFAULT_INT, _weightFlow)
         initParameter(PreferencesKeys.BLUETOOTH_DEVICE, DEFAULT_STRING, _bluetoothDeviceFlow)
     }
 
@@ -112,12 +105,6 @@ class UserPreferencesRepository private constructor(context: Context) {
         }
     }
 
-    suspend fun setWeight(weight: Int) {
-        dataStore.edit { preferences ->
-            preferences[PreferencesKeys.WEIGHT] = weight
-        }
-    }
-
     suspend fun setBluetoothDevice(bluetoothDevice: String) {
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.BLUETOOTH_DEVICE] = bluetoothDevice
@@ -144,14 +131,6 @@ class UserPreferencesRepository private constructor(context: Context) {
         return dataStore.data
             .map { preferences ->
                 preferences[PreferencesKeys.AGE] ?: DEFAULT_INT
-            }
-            .first()
-    }
-
-    private suspend fun getWeightPreference(): Int {
-        return dataStore.data
-            .map { preferences ->
-                preferences[PreferencesKeys.WEIGHT] ?: DEFAULT_INT
             }
             .first()
     }

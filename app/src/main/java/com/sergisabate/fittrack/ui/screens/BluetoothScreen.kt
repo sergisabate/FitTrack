@@ -62,6 +62,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.sergisabate.fittrack.R
+import com.sergisabate.fittrack.data.bluetooth.DeviceConnectionState
 import com.sergisabate.fittrack.data.bluetooth.scanBleDevices
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel

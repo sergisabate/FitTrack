@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 data class ProfileData(
     val name: String = "",
     val age: Int = 0,
-    val weight: Int = 0,
     val height: Int = 0,
 )
 
@@ -27,7 +26,6 @@ class ProfileViewModel(private val userPreferencesRepository: UserPreferencesRep
                 userPreferencesRepository.setName(profileData.name)
                 userPreferencesRepository.setAge(profileData.age)
                 userPreferencesRepository.setHeight(profileData.height)
-                userPreferencesRepository.setWeight(profileData.weight)
                 onSuccess?.invoke()
             } catch (e: Exception) {
                 onError?.invoke(e)
@@ -39,7 +37,6 @@ class ProfileViewModel(private val userPreferencesRepository: UserPreferencesRep
         val profile = ProfileData(
             name = userPreferencesRepository.nameFlow.value,
             age = userPreferencesRepository.ageFlow.value,
-            weight = userPreferencesRepository.weightFlow.value,
             height = userPreferencesRepository.heightFlow.value
         )
         return MutableStateFlow(profile)

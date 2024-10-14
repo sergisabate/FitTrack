@@ -21,9 +21,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
+import com.sergisabate.fittrack.data.repositories.WeightsRepository
 import com.sergisabate.fittrack.data.viewmodels.ProfileData
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
+import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
+import com.sergisabate.fittrack.data.viewmodels.WeightsViewModelFactory
 import com.sergisabate.fittrack.ui.screens.MainScreen
 import com.sergisabate.fittrack.ui.screens.OnboardingScreen
 import com.sergisabate.fittrack.ui.theme.FitTrackTheme
@@ -72,17 +75,29 @@ class MainActivity : ComponentActivity() {
                     if (currentProfileData != ProfileData() || isOnboardingComplete) {
                         MainScreen(modifier = Modifier.padding(innerPadding))
                     } else {
+                        // Obtiene el ViewModel de perfil
+                        val weightsViewModel: WeightsViewModel = getWeightsViewModel()
+
                         OnboardingScreen(
                             modifier = Modifier.padding(innerPadding)
                         ) { name, age, weight, height ->
                             scope.launch {
                                 // Guarda los datos del usuario y actualiza el estado
-                                val profileData = ProfileData(name, age, weight, height)
+                                val profileData = ProfileData(name, age, height)
 
                                 profileViewModel.setProfileData(
                                     profileData,
                                     onSuccess = {
-                                        isOnboardingComplete = true
+                                        weightsViewModel.addOrUpdateWeightRecord(
+                                            weight,
+                                            onSuccess = {
+                                                isOnboardingComplete = true
+                                            },
+                                            onError = { e ->
+                                                Log.e("MainActivity", "Error al guardar los datos del perfil", e)
+                                                showErrorSnackbar = true
+                                            }
+                                        )
                                     },
                                     onError = { e ->
                                         Log.e("MainActivity", "Error al guardar los datos del perfil", e)
@@ -103,5 +118,12 @@ class MainActivity : ComponentActivity() {
         val context = LocalContext.current
         val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
         return viewModel(factory = ProfileViewModelFactory(userPreferencesRepository))
+    }
+
+    @Composable
+    private fun getWeightsViewModel(): WeightsViewModel {
+        val context = LocalContext.current
+        val weightsRepository = remember { WeightsRepository.getInstance(context) }
+        return viewModel(factory = WeightsViewModelFactory(weightsRepository))
     }
 }

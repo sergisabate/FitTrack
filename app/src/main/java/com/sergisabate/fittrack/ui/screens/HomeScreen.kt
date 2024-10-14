@@ -3,24 +3,38 @@ package com.sergisabate.fittrack.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.sergisabate.fittrack.R
-import com.sergisabate.fittrack.ui.charts.FitTrackChart
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.sergisabate.fittrack.data.repositories.WeightsRepository
+import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
+import com.sergisabate.fittrack.data.viewmodels.WeightsViewModelFactory
+import com.sergisabate.fittrack.ui.charts.FitTrackWeightsChart
+import kotlin.math.absoluteValue
 
 @Composable
 fun HomeScreen() {
@@ -33,46 +47,7 @@ fun HomeScreen() {
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            // Card 1: Summary of today's activity
-            Card(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .height(340.dp)
-                    .fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondary
-                ),
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "Resumen de Hoy",
-                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
-                    )
-                    FitTrackChart(modifier = Modifier)
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column {
-                            Text(text = stringResource(R.string.steps), style = MaterialTheme.typography.bodyLarge)
-                            Text(text = "7500", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
-                        }
-                        Column {
-                            Text(text = stringResource(R.string.calories), style = MaterialTheme.typography.bodyLarge)
-                            Text(text = "300 kcal", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
-                        }
-                        Column {
-                            Text(text = stringResource(R.string.kilometers), style = MaterialTheme.typography.bodyLarge)
-                            Text(text = "5.2 km", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
-                        }
-                    }
-                }
-            }
+            WeightControlCard()
 
             // Card 2: Workout of the Day
             Card(
@@ -214,4 +189,100 @@ fun HomeScreen() {
             }
         }
     }
+}
+
+@Composable
+private fun WeightControlCard() {
+    val weightsViewModel = getWeightsViewModel()
+    val weightRecords by weightsViewModel.getWeightHistory().collectAsState()
+
+    if (weightRecords.isNotEmpty()) {
+        Card(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.secondary
+            ),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "Control de Peso",
+                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                )
+
+                if (weightRecords.size > 1) {
+                    FitTrackWeightsChart(modifier = Modifier, weightRecords = weightRecords)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                val currentWeight = weightRecords.last().weight
+
+                val weightVariation = if (weightRecords.size > 1) {
+                    currentWeight - weightRecords[weightRecords.size - 2].weight
+                } else {
+                    0f
+                }
+
+                val trendWeight = if (weightRecords.size >= 2) {
+                    val recentWeights = weightRecords.takeLast(5).map { it.weight }
+                    val differences = recentWeights.zipWithNext { a, b -> b - a }
+                    val averageDifference = differences.average().toFloat()
+                    recentWeights.last() + averageDifference
+                } else {
+                    currentWeight
+                }
+
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column {
+                        Text(text = "Actual", style = MaterialTheme.typography.bodyLarge)
+                        Text(
+                            text = "%.2f kg".format(currentWeight),
+                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                        )
+                    }
+                    Column {
+                        Text(text = "Variación", style = MaterialTheme.typography.bodyLarge)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "%.2f kg".format(weightVariation.absoluteValue),
+                                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            if (weightVariation != 0f) {
+                                Icon(
+                                    imageVector = Icons.Filled.ArrowDropDown,
+                                    contentDescription = null,
+                                    modifier = Modifier.rotate(if (weightVariation > 0) 180f else 0f),
+                                    tint = MaterialTheme.colorScheme.onSecondary
+                                )
+                            }
+                        }
+                    }
+                    Column {
+                        Text(text = "Tendencia", style = MaterialTheme.typography.bodyLarge)
+                        Text(
+                            text = "%.2f kg".format(trendWeight),
+                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun getWeightsViewModel(): WeightsViewModel {
+    val context = LocalContext.current
+    val weightsRepository = remember { WeightsRepository.getInstance(context) }
+    return viewModel(factory = WeightsViewModelFactory(weightsRepository))
 }

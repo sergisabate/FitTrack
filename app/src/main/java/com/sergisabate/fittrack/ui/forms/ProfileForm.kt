@@ -25,10 +25,10 @@ import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.viewmodels.ProfileData
 
 @Composable
-fun ProfileForm(profile: ProfileData? = null, onSubmit: (String, Int, Int, Int) -> Unit) {
+fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmit: (String, Int, Float, Int) -> Unit) {
     val currentName = profile?.name ?: ""
     val currentAge = profile?.age?.toString() ?: ""
-    val currentWeight = profile?.weight?.toString() ?: ""
+    val currentWeight = if (weightData != null) "%.2f".format(weightData) else ""
     val currentHeight = profile?.height?.toString() ?: ""
 
     var name by remember { mutableStateOf(currentName) }
@@ -115,7 +115,7 @@ fun ProfileForm(profile: ProfileData? = null, onSubmit: (String, Int, Int, Int) 
     Button(
         onClick = {
             isLoading = true
-            onSubmit(name, age.toIntOrNull() ?: 0, weight.toIntOrNull() ?: 0, height.toIntOrNull() ?: 0)
+            onSubmit(name, age.toIntOrNull() ?: 0, weight.replace(",", ".").toFloatOrNull() ?: 0f, height.toIntOrNull() ?: 0)
             isLoading = false
         },
         enabled = isValidForm(name, age, weight, height) && !isLoading,
@@ -139,7 +139,18 @@ fun ProfileForm(profile: ProfileData? = null, onSubmit: (String, Int, Int, Int) 
 }
 
 private fun ageIsValid(age: String) = age.toIntOrNull()?.let { it in 16..120 } == true
-private fun weightIsValid(weight: String) = weight.toIntOrNull()?.let { it in 30..300 } == true
 private fun heightIsValid(height: String) = height.toIntOrNull()?.let { it in 50..300 } == true
+private fun weightIsValid(weight: String): Boolean {
+    val weightWithDot = weight.replace(",", ".")
+    val weightFloat = weightWithDot.toFloatOrNull() ?: return false
+
+    var validLength = true
+    if (weightWithDot.contains(".")) {
+        validLength = weightWithDot.substringAfter(".").length in 1..2
+    }
+
+    return weightFloat in 30f..300f && validLength
+}
+
 private fun isValidForm(name: String, age: String, weight: String, height: String) =
     name.isNotEmpty() && ageIsValid(age) && weightIsValid(weight) && heightIsValid(height)

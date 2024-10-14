@@ -24,9 +24,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
+import com.sergisabate.fittrack.data.repositories.WeightsRepository
 import com.sergisabate.fittrack.data.viewmodels.ProfileData
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
+import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
+import com.sergisabate.fittrack.data.viewmodels.WeightsViewModelFactory
 import com.sergisabate.fittrack.ui.forms.ProfileForm
 
 @Composable
@@ -36,7 +39,9 @@ fun EditProfileScreen() {
     val profileViewModel: ProfileViewModel = viewModel(
         factory = ProfileViewModelFactory(userPreferencesRepository)
     )
+    val weightsViewModel: WeightsViewModel = getWeightsViewModel()
 
+    val currentWeight by weightsViewModel.getCurrentWeight().collectAsStateWithLifecycle()
     val currentProfile by profileViewModel.getProfileData().collectAsStateWithLifecycle()
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -59,12 +64,22 @@ fun EditProfileScreen() {
     ) { innerPadding ->
         EditProfileContent(
             currentProfile = currentProfile,
+            weight = currentWeight,
             onSaveForm = { name, age, weight, height ->
-                val profileData = ProfileData(name, age, weight, height)
+                val profileData = ProfileData(name, age, height)
                 profileViewModel.setProfileData(
                     profileData,
                     onSuccess = {
-                        snackbarMessage = successMessage
+                        weightsViewModel.addOrUpdateWeightRecord(
+                            weight,
+                            onSuccess = {
+                                snackbarMessage = successMessage
+                            },
+                            onError = { e ->
+                                Log.e("EditProfileScreen", "Error al guardar los datos del perfil", e)
+                                snackbarMessage = errorMessage
+                            }
+                        )
                     },
                     onError = { e ->
                         Log.e("EditProfileScreen", "Error al guardar los datos del perfil", e)
@@ -82,7 +97,8 @@ fun EditProfileScreen() {
 @Composable
 fun EditProfileContent(
     currentProfile: ProfileData?,
-    onSaveForm: (String, Int, Int, Int) -> Unit,
+    weight: Float?,
+    onSaveForm: (String, Int, Float, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -92,7 +108,15 @@ fun EditProfileContent(
     ) {
         ProfileForm(
             profile = currentProfile,
+            weightData = weight,
             onSubmit = onSaveForm
         )
     }
+}
+
+@Composable
+private fun getWeightsViewModel(): WeightsViewModel {
+    val context = LocalContext.current
+    val weightsRepository = remember { WeightsRepository.getInstance(context) }
+    return viewModel(factory = WeightsViewModelFactory(weightsRepository))
 }
