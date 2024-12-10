@@ -11,7 +11,6 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -22,17 +21,17 @@ import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Color.White,
+    primary = White,
     secondary = Pink,
-    onSecondary = Color.White,
-    background = Color.Black
+    onSecondary = White,
+    background = Black
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color.Black,
+    primary = Black,
     secondary = Pink,
-    onSecondary = Color.White,
-    background = Color.White
+    onSecondary = White,
+    background = White
 )
 
 enum class ThemeOption(val value: Int) {
