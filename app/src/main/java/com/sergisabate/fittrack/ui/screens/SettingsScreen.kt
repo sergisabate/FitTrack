@@ -39,11 +39,17 @@ fun SettingsScreen(navController: NavHostController = rememberNavController()) {
                         )
                     },
                     headlineContent = {
-                        Text(item.title)
+                        Text(
+                            text = item.title,
+                            style = MaterialTheme.typography.titleMedium
+                        )
                     },
                     supportingContent = {
                         item.description?.let {
-                            Text(text = it)
+                            Text(
+                                text = it,
+                                style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.tertiary)
+                            )
                         }
                     },
                     colors = ListItemDefaults.colors(

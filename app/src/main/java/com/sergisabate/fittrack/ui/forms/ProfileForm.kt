@@ -40,13 +40,20 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
     OutlinedTextField(
         value = name,
         onValueChange = { name = it },
-        label = { Text(text = stringResource(R.string.full_name)) },
-        placeholder = { Text(text = "Ejemplo: Andrea García Arias") },
+        label = { Text(
+            text = stringResource(R.string.full_name),
+            style = MaterialTheme.typography.titleMedium
+        )},
+        placeholder = { Text(
+            text = "Ejemplo: Andrea García Arias",
+            style = MaterialTheme.typography.titleMedium
+        )},
         modifier = Modifier.fillMaxWidth(),
         maxLines = 1,
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Next
-        )
+        ),
+        textStyle = MaterialTheme.typography.titleMedium
     )
 
     Spacer(modifier = Modifier.height(1.dp))
@@ -54,8 +61,14 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
     OutlinedTextField(
         value = age,
         onValueChange = { age = it },
-        label = { Text(text = stringResource(R.string.age)) },
-        placeholder = { Text(text = "Ejemplo: 45") },
+        label = { Text(
+            text = stringResource(R.string.age),
+            style = MaterialTheme.typography.titleMedium
+        )},
+        placeholder = { Text(
+            text = "Ejemplo: 45",
+            style = MaterialTheme.typography.titleMedium
+        )},
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Next
@@ -65,49 +78,83 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
         isError = age.isNotEmpty() && !ageIsValid(age),
         supportingText = {
             if (age.isNotEmpty() && !ageIsValid(age)) {
-                Text(text = "Edad no válida")
+                Text(
+                    text = "Edad no válida",
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
-        }
+        },
+        textStyle = MaterialTheme.typography.titleMedium
     )
 
     OutlinedTextField(
         value = weight,
         onValueChange = { weight = it },
-        label = { Text(text = stringResource(R.string.weight)) },
-        placeholder = { Text(text = "Ejemplo: 80") },
+        label = { Text(
+            text = stringResource(R.string.weight),
+            style = MaterialTheme.typography.titleMedium
+        )},
+        placeholder = { Text(
+            text = "Ejemplo: 80",
+            style = MaterialTheme.typography.titleMedium
+        )},
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Next
         ),
         modifier = Modifier.fillMaxWidth(),
         maxLines = 1,
-        trailingIcon = { Text(text = "kg") },
+        trailingIcon = {
+            Text(
+                text = "kg",
+                style = MaterialTheme.typography.titleMedium
+            )
+        },
         isError = weight.isNotEmpty() && !weightIsValid(weight),
         supportingText = {
             if (weight.isNotEmpty() && !weightIsValid(weight)) {
-                Text(text = "Peso no válido")
+                Text(
+                    text = "Peso no válido",
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
-        }
+        },
+        textStyle = MaterialTheme.typography.titleMedium
     )
 
     OutlinedTextField(
         value = height,
         onValueChange = { height = it },
-        label = { Text(text = stringResource(R.string.height)) },
-        placeholder = { Text(text = "Ejemplo: 170") },
+        label = { Text(
+            text = stringResource(R.string.height),
+            style = MaterialTheme.typography.titleMedium
+        )},
+        placeholder = { Text(
+            text = "Ejemplo: 170",
+            style = MaterialTheme.typography.titleMedium
+        )},
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Done
         ),
         modifier = Modifier.fillMaxWidth(),
         maxLines = 1,
-        trailingIcon = { Text(text = "cm") },
+        trailingIcon = {
+            Text(
+                text = "cm",
+                style = MaterialTheme.typography.titleMedium
+            )
+        },
         isError = height.isNotEmpty() && !heightIsValid(height),
         supportingText = {
             if (height.isNotEmpty() && !heightIsValid(height)) {
-                Text(text = "Altura no válida")
+                Text(
+                    text = "Altura no válida",
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
-        }
+        },
+        textStyle = MaterialTheme.typography.titleMedium
     )
 
     Spacer(modifier = Modifier.height(16.dp))

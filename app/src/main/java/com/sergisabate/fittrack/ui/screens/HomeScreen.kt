@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -58,6 +59,7 @@ fun HomeScreen() {
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.secondary
                 ),
+                shape = RoundedCornerShape(8.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -67,11 +69,11 @@ fun HomeScreen() {
                 ) {
                     Text(
                         text = "Entrenamiento del Día",
-                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.titleLarge
                     )
                     Text(
                         text = "Full Body Workout - 45 mins",
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.titleMedium
                     )
                 }
             }
@@ -85,6 +87,7 @@ fun HomeScreen() {
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.secondary
                 ),
+                shape = RoundedCornerShape(8.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -94,23 +97,23 @@ fun HomeScreen() {
                 ) {
                     Text(
                         text = "Información Nutricional",
-                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.titleLarge
                     )
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Column {
-                            Text(text = "Proteínas", style = MaterialTheme.typography.bodyLarge)
-                            Text(text = "120 g", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
+                            Text(text = "Proteínas", style = MaterialTheme.typography.titleMedium)
+                            Text(text = "120 g", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
                         }
                         Column {
-                            Text(text = "Carbohidratos", style = MaterialTheme.typography.bodyLarge)
-                            Text(text = "250 g", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
+                            Text(text = "Carbohidratos", style = MaterialTheme.typography.titleMedium)
+                            Text(text = "250 g", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
                         }
                         Column {
-                            Text(text = "Grasas", style = MaterialTheme.typography.bodyLarge)
-                            Text(text = "70 g", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
+                            Text(text = "Grasas", style = MaterialTheme.typography.titleMedium)
+                            Text(text = "70 g", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
                         }
                     }
                 }
@@ -125,6 +128,7 @@ fun HomeScreen() {
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.secondary
                 ),
+                shape = RoundedCornerShape(8.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -134,19 +138,19 @@ fun HomeScreen() {
                 ) {
                     Text(
                         text = "Consumo de Agua",
-                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.titleLarge
                     )
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Column {
-                            Text(text = "Consumido", style = MaterialTheme.typography.bodyLarge)
-                            Text(text = "1.5 L", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
+                            Text(text = "Consumido", style = MaterialTheme.typography.titleMedium)
+                            Text(text = "1.5 L", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
                         }
                         Column {
-                            Text(text = "Meta", style = MaterialTheme.typography.bodyLarge)
-                            Text(text = "3.0 L", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
+                            Text(text = "Meta", style = MaterialTheme.typography.titleMedium)
+                            Text(text = "3.0 L", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
                         }
                     }
                 }
@@ -161,6 +165,7 @@ fun HomeScreen() {
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.secondary
                 ),
+                shape = RoundedCornerShape(8.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -170,19 +175,19 @@ fun HomeScreen() {
                 ) {
                     Text(
                         text = "Seguimiento del Sueño",
-                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.titleLarge
                     )
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Column {
-                            Text(text = "Dormido", style = MaterialTheme.typography.bodyLarge)
-                            Text(text = "7 hrs 30 mins", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
+                            Text(text = "Dormido", style = MaterialTheme.typography.titleMedium)
+                            Text(text = "7 hrs 30 mins", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
                         }
                         Column {
-                            Text(text = "Calidad", style = MaterialTheme.typography.bodyLarge)
-                            Text(text = "Buena", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold))
+                            Text(text = "Calidad", style = MaterialTheme.typography.titleMedium)
+                            Text(text = "Buena", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
                         }
                     }
                 }
@@ -204,6 +209,7 @@ private fun WeightControlCard() {
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.secondary
             ),
+            shape = RoundedCornerShape(8.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -212,7 +218,7 @@ private fun WeightControlCard() {
             ) {
                 Text(
                     text = "Control de Peso",
-                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.titleLarge
                 )
 
                 if (weightRecords.size > 1) {
@@ -243,18 +249,18 @@ private fun WeightControlCard() {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column {
-                        Text(text = "Actual", style = MaterialTheme.typography.bodyLarge)
+                        Text(text = "Actual", style = MaterialTheme.typography.titleMedium)
                         Text(
                             text = "%.2f kg".format(currentWeight),
-                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                         )
                     }
                     Column {
-                        Text(text = "Variación", style = MaterialTheme.typography.bodyLarge)
+                        Text(text = "Variación", style = MaterialTheme.typography.titleMedium)
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = "%.2f kg".format(weightVariation.absoluteValue),
-                                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             if (weightVariation != 0f) {
@@ -268,10 +274,10 @@ private fun WeightControlCard() {
                         }
                     }
                     Column {
-                        Text(text = "Tendencia", style = MaterialTheme.typography.bodyLarge)
+                        Text(text = "Tendencia", style = MaterialTheme.typography.titleMedium)
                         Text(
                             text = "%.2f kg".format(trendWeight),
-                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                         )
                     }
                 }

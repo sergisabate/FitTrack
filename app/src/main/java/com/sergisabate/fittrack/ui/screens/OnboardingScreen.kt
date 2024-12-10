@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.ui.forms.ProfileForm
@@ -95,7 +94,7 @@ fun OnboardingScreen(modifier: Modifier, onSubmit: (String, Int, Float, Int) -> 
                     ) {
                         TypingText(
                             text = stringResource(R.string.welcome_message),
-                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                            style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.secondary,
                             modifier = modifier.weight(1f)
                         )
@@ -158,7 +157,7 @@ fun DisplayAllTexts() {
     ) {
         Text(
             text = stringResource(R.string.welcome_message),
-            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.secondary
         )
         Button(

@@ -25,7 +25,6 @@ import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 import com.sergisabate.fittrack.ui.screens.AIToolsScreen
-import com.sergisabate.fittrack.ui.screens.ApplicationThemeScreen
 import com.sergisabate.fittrack.ui.screens.BluetoothScreen
 import com.sergisabate.fittrack.ui.screens.EditProfileScreen
 import com.sergisabate.fittrack.ui.screens.GenerateExerciseRoutineScreen
@@ -37,6 +36,7 @@ import com.sergisabate.fittrack.ui.screens.ProfileScreen
 import com.sergisabate.fittrack.ui.screens.ProgressScreen
 import com.sergisabate.fittrack.ui.screens.SettingsScreen
 import com.sergisabate.fittrack.ui.screens.TestScreen
+import com.sergisabate.fittrack.ui.screens.ThemeScreen
 import com.sergisabate.fittrack.ui.screens.ViewExerciseRoutineScreen
 import com.sergisabate.fittrack.ui.screens.ViewMenuScreen
 import com.sergisabate.fittrack.ui.screens.WeighScreen
@@ -99,7 +99,7 @@ fun getSettingsItems(): List<NavItem> {
             title = stringResource(R.string.theme),
             description = getThemeOptionName(),
             route = "Theme",
-            screen = { ApplicationThemeScreen() }
+            screen = { ThemeScreen() }
         ),
         NavItem(
             icon = Icons.Default.Place,

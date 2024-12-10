@@ -64,6 +64,9 @@ private fun BottomNavItemContent(icon: ImageVector, title: String) {
             imageVector = icon,
             contentDescription = title
         )
-        Text(title)
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelLarge
+        )
     }
 }

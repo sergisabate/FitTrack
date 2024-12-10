@@ -83,6 +83,7 @@ private fun RadioButtonGroup(
             )
             Text(
                 text = option.displayName,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(start = 7.dp)
             )
         }

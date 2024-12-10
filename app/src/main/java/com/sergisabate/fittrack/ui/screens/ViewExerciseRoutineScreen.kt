@@ -75,12 +75,12 @@ fun ViewExerciseRoutineScreen(exerciseRoutinesViewModel: ExerciseRoutinesViewMod
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = stringResource(R.string.additional_info),
-                            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                            style = MaterialTheme.typography.titleLarge,
                             modifier = Modifier.padding(bottom = 8.dp)
                         )
                         Text(
                             text = routine.aditionalInfo,
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
                     }
@@ -99,7 +99,7 @@ fun ExerciseRoutineSection(exerciseType: String, session: Session) {
     ) {
         Text(
             text = exerciseType,
-            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 

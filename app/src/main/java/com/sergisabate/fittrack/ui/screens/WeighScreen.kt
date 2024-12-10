@@ -269,7 +269,7 @@ fun ConnectDeviceScreen(device: BluetoothDevice, navController: NavHostControlle
             ) {
                 Text(
                     text = "¿Quieres guardar este peso?",
-                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    style = MaterialTheme.typography.titleLarge,
                     color = if (isStabilized) MaterialTheme.colorScheme.primary else Color.Gray
                 )
                 Spacer(modifier = Modifier.height(24.dp))

@@ -34,8 +34,8 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 private val bottomAxisValueFormatter = CartesianValueFormatter { x, _, _ ->
-    val test = LocalDate.ofEpochDay(x.toLong())
-    "${test.dayOfMonth}/${test.monthValue}"
+    val date = LocalDate.ofEpochDay(x.toLong())
+    "${date.dayOfMonth}/${date.monthValue}"
 }
 private val axisValueOverrider = AxisValueOverrider.adaptiveYValues(yFraction = 1.1f, round = true)
 

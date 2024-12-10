@@ -99,8 +99,8 @@ fun parseBytes(weightBytes: ByteArray) : WeightResult {
 
             val dateString = "$year/$month/$day/$hours/$min"
             val dateTime = SimpleDateFormat("yyyy/MM/dd/HH/mm").parse(dateString)
-            val test = "%.2f".format(weight)
-            Log.d("BLUETOOTH", "Weight: $test, Date: $dateTime, isStabilized: $isStabilized, LBS: $isLBSUnit, Catty: $isCattyUnit")
+            val formattedWeight = "%.2f".format(weight)
+            Log.d("BLUETOOTH", "Weight: $formattedWeight, Date: $dateTime, isStabilized: $isStabilized, LBS: $isLBSUnit, Catty: $isCattyUnit")
             return WeightResult(weight,isStabilized)
         }
     } catch (e: ParseException) {

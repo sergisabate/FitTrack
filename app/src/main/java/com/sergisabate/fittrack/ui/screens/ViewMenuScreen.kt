@@ -39,7 +39,8 @@ import com.sergisabate.fittrack.data.viewmodels.MenusViewModel
 import com.sergisabate.fittrack.data.viewmodels.MenusViewModelFactory
 
 @Composable
-fun ViewMenuScreen(menusViewModel: MenusViewModel = getMenusViewModel()) {
+fun ViewMenuScreen() {
+    val menusViewModel: MenusViewModel = getMenusViewModel()
     val menuData by menusViewModel.getMenuSelected().collectAsState()
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -89,7 +90,7 @@ fun MenuSection(mealType: String, meals: List<Meal>) {
     ) {
         Text(
             text = mealType,
-            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 

@@ -3,9 +3,9 @@ package com.sergisabate.fittrack.ui.screens
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,14 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -39,7 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -56,6 +51,7 @@ import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModelFactory
+import com.sergisabate.fittrack.ui.components.FitTrackTitleDescriptionCard
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -108,15 +104,28 @@ fun GenerateMenuScreen(navController: NavHostController) {
             LazyColumn(
                 modifier = Modifier
                     .padding(innerPadding)
+                    .padding(16.dp)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 item {
                     TextField(
                         value = preferences,
                         onValueChange = { preferences = it },
-                        label = { Text(stringResource(id = R.string.enter_preferences)) },
-                        placeholder = { Text(stringResource(id = R.string.placeholder_preferences_menu)) },
+                        label = { Text(
+                            text = stringResource(R.string.enter_preferences),
+                            style = MaterialTheme.typography.titleMedium
+                        )},
+                        placeholder = { Text(
+                            text = stringResource(id = R.string.placeholder_preferences_menu),
+                            style = MaterialTheme.typography.titleMedium
+                        )},
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Done
+                        ),
                         modifier = Modifier.fillMaxWidth(),
-                        minLines = 2
+                        minLines = 2,
+                        textStyle = MaterialTheme.typography.titleMedium,
                     )
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -162,12 +171,31 @@ fun GenerateMenuScreen(navController: NavHostController) {
                         Text(stringResource(id = R.string.generate_menu))
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(stringResource(id = R.string.total_menus_saved, totalMenus))
+                    Text(
+                        text = stringResource(id = R.string.total_menus_saved, totalMenus),
+                        style = MaterialTheme.typography.titleMedium
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
                 itemsIndexed(menusList) { index, menuData ->
-                    MenuCard(index = index, menuData = menuData, locale = locale, menusViewModel = menusViewModel, navController = navController)
+                    val errorMessage = stringResource(R.string.error_selecting_menu)
+                    FitTrackTitleDescriptionCard(
+                        title = menuData.title,
+                        description = dateFormatter(menuData.date, locale),
+                        modifier = Modifier.clickable {
+                            menusViewModel.setMenuSelected(
+                                index = index + 1,
+                                onSuccess = {
+                                    navController.navigate("ViewMenu")
+                                },
+                                onError = {
+                                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                                }
+                            )
+                        },
+                        isClickable = true
+                    )
                 }
             }
 
@@ -175,7 +203,7 @@ fun GenerateMenuScreen(navController: NavHostController) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background.copy(alpha = 0.9f)),
+                        .background(MaterialTheme.colorScheme.background),
                     contentAlignment = Alignment.Center
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -187,74 +215,13 @@ fun GenerateMenuScreen(navController: NavHostController) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = stringResource(id = R.string.generating_menu),
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun MenuCard(
-    index: Int,
-    menuData: MenuData,
-    locale: Locale,
-    menusViewModel: MenusViewModel,
-    navController: NavHostController
-) {
-    val context = LocalContext.current
-    val errorMessage = stringResource(R.string.error_selecting_menu)
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .clickable {
-                menusViewModel.setMenuSelected(
-                    index = index + 1,
-                    onSuccess = {
-                        navController.navigate("ViewMenu")
-                    },
-                    onError = {
-                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-                    }
-                )
-            }
-            .padding(4.dp),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondary
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(16.dp)
-        ) {
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    text = menuData.title,
-                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.onSecondary
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = dateFormatter(menuData.date, locale),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSecondary
-                )
-            }
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                contentDescription = "Ir al menú",
-                tint = MaterialTheme.colorScheme.onSecondary,
-                modifier = Modifier.align(Alignment.CenterVertically)
-            )
-        }
-
     }
 }
 

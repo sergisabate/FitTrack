@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -23,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sergisabate.fittrack.R
 
@@ -89,6 +89,7 @@ fun ProgressCard(title: String, progressText: String, details: String, iconResId
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary
         ),
+        shape = RoundedCornerShape(8.dp)
     ) {
         Row(
             modifier = Modifier
@@ -107,11 +108,11 @@ fun ProgressCard(title: String, progressText: String, details: String, iconResId
             ) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.titleLarge
                 )
                 Text(
                     text = progressText,
-                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.titleMedium
                 )
                 Text(
                     text = details,
@@ -131,6 +132,7 @@ fun GoalsCard(title: String, goals: List<String>) {
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary
         ),
+        shape = RoundedCornerShape(8.dp)
     ) {
         Column(
             modifier = Modifier
@@ -140,12 +142,12 @@ fun GoalsCard(title: String, goals: List<String>) {
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                style = MaterialTheme.typography.titleLarge
             )
             goals.forEach { goal ->
                 Text(
                     text = "• $goal",
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.titleMedium
                 )
             }
         }
@@ -161,6 +163,7 @@ fun SuccessStoriesCard(title: String, stories: List<String>) {
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary
         ),
+        shape = RoundedCornerShape(8.dp)
     ) {
         Column(
             modifier = Modifier
@@ -170,12 +173,12 @@ fun SuccessStoriesCard(title: String, stories: List<String>) {
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                style = MaterialTheme.typography.titleLarge
             )
             stories.forEach { story ->
                 Text(
                     text = "• $story",
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.titleMedium
                 )
             }
         }
@@ -191,6 +194,7 @@ fun ResourcesCard(title: String, resources: List<Pair<String, Int>>) {
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary
         ),
+        shape = RoundedCornerShape(8.dp)
     ) {
         Column(
             modifier = Modifier
@@ -200,7 +204,7 @@ fun ResourcesCard(title: String, resources: List<Pair<String, Int>>) {
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                style = MaterialTheme.typography.titleLarge
             )
             resources.forEach { (resourceName, iconResId) ->
                 Row(
@@ -216,7 +220,7 @@ fun ResourcesCard(title: String, resources: List<Pair<String, Int>>) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = resourceName,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.titleMedium
                     )
                 }
             }

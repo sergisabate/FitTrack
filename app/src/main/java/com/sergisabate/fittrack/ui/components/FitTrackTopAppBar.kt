@@ -11,6 +11,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavHostController
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.ui.navigation.currentNav
@@ -25,7 +26,14 @@ fun FitTrackTopAppBar(navController: NavHostController) {
     if (nav != null) {
         val title = currentTitle(nav)
         TopAppBar(
-            title = { Text(title ?: "") },
+            title = {
+                Text(
+                    text = title ?: "",
+                    style = MaterialTheme.typography.headlineLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.background,
             ),

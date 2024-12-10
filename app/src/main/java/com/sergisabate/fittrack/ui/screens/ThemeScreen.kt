@@ -30,7 +30,7 @@ import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 import com.sergisabate.fittrack.ui.theme.ThemeOption
 
 @Composable
-fun ApplicationThemeScreen() {
+fun ThemeScreen() {
     val context = LocalContext.current
     val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
     val preferencesViewModel: PreferencesViewModel = viewModel(
@@ -88,6 +88,7 @@ private fun ThemeOptionRow(
                 ThemeOption.LightMode -> stringResource(R.string.light_mode)
                 ThemeOption.SystemDefault -> stringResource(R.string.system_default)
             },
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(start = 7.dp)
         )
     }

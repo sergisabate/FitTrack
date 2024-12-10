@@ -1,18 +1,15 @@
 package com.sergisabate.fittrack.ui.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -30,16 +27,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
 import com.sergisabate.fittrack.data.repositories.WeightsRepository
@@ -49,6 +45,9 @@ import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModelFactory
+import com.sergisabate.fittrack.ui.components.FitTrackTitleCard
+import com.sergisabate.fittrack.ui.components.FitTrackTitleDescriptionCard
+import com.sergisabate.fittrack.ui.theme.FitTrackTheme
 
 @Composable
 fun ProfileScreen(navController: NavController) {
@@ -68,8 +67,9 @@ fun ProfileScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .padding(innerPadding)
+                .padding(16.dp)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Profile Header
             ProfileHeader(
@@ -94,32 +94,27 @@ fun ProfileScreen(navController: NavController) {
 @Composable
 fun ProfileHeader(profilePicture: Painter, name: String) {
     Card(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth(),
+        modifier = Modifier,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary
         ),
-        shape = MaterialTheme.shapes.medium
+        shape = RoundedCornerShape(8.dp)
     ) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Image(
+            Icon(
                 painter = profilePicture,
-                contentDescription = stringResource(R.string.profile_picture),
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape),
+                contentDescription = null,
+                modifier = Modifier.size(50.dp)
             )
-            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = name,
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, color = Color.White)
+                style = MaterialTheme.typography.titleLarge
             )
         }
     }
@@ -131,51 +126,38 @@ fun BodyStatisticsCard(age: Int, weight: String, height: String, bodyFat: String
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            BodyStatisticCard(label = stringResource(R.string.age), value = age.toString(), modifier = Modifier
-                .weight(1f)
-                .padding(16.dp, 0.dp, 0.dp, 0.dp))
-            BodyStatisticCard(label = stringResource(R.string.weight), value = weight, modifier = Modifier.weight(1f))
-            BodyStatisticCard(label = stringResource(R.string.height), value = height, modifier = Modifier
-                .weight(1f)
-                .padding(0.dp, 0.dp, 16.dp, 0.dp))
+            FitTrackTitleDescriptionCard(
+                title = stringResource(R.string.age),
+                description = age.toString(),
+                modifier = Modifier.weight(1f)
+            )
+            FitTrackTitleDescriptionCard(
+                title = stringResource(R.string.weight),
+                description = weight,
+                modifier = Modifier.weight(1f)
+            )
+            FitTrackTitleDescriptionCard(
+                title = stringResource(R.string.height),
+                description = height,
+                modifier = Modifier.weight(1f)
+            )
         }
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            BodyStatisticCard(label = stringResource(R.string.muscle_mass), value = muscleMass, modifier = Modifier
-                .weight(1f)
-                .padding(16.dp, 0.dp, 0.dp, 0.dp))
-            BodyStatisticCard(label = stringResource(R.string.body_fat), value = bodyFat, modifier = Modifier
-                .weight(1f)
-                .padding(0.dp, 0.dp, 16.dp, 0.dp))
-        }
-    }
-}
-
-@Composable
-fun BodyStatisticCard(label: String, value: String, modifier: Modifier = Modifier) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondary
-        ),
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp, 16.dp, 0.dp, 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+            FitTrackTitleDescriptionCard(
+                title = stringResource(R.string.muscle_mass),
+                description = muscleMass,
+                modifier = Modifier.weight(1f)
             )
-            Text(
-                text = value,
-                style = MaterialTheme.typography.bodyMedium
+            FitTrackTitleDescriptionCard(
+                title = stringResource(R.string.body_fat),
+                description = bodyFat,
+                modifier = Modifier.weight(1f)
             )
         }
     }
@@ -187,12 +169,11 @@ fun LinkedDevicesCard(navController: NavController) {
     val currentLinkedDevice by preferencesViewModel.getBluetoothDevice().collectAsState()
 
     Card(
-        modifier = Modifier
-            .padding(top= 16.dp, start = 16.dp, end = 16.dp)
-            .fillMaxWidth(),
+        modifier = Modifier,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary
         ),
+        shape = RoundedCornerShape(8.dp)
     ) {
         Column(
             modifier = Modifier
@@ -206,7 +187,7 @@ fun LinkedDevicesCard(navController: NavController) {
             ) {
                 Text(
                     text = stringResource(R.string.device_paired),
-                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSecondary
                 )
                 if (currentLinkedDevice.isEmpty()) {
@@ -229,7 +210,7 @@ fun LinkedDevicesCard(navController: NavController) {
                 ) {
                     Text(
                         text = getOfficialName(currentLinkedDevice),
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSecondary
                     )
                     IconButton(
@@ -247,20 +228,11 @@ fun LinkedDevicesCard(navController: NavController) {
     }
 
     if (currentLinkedDevice.isNotEmpty()) {
-        Card(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth().clickable { navController.navigate("WeighScreen") },
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.secondary
-            ),
-        ) {
-            Text(
-                text = "Pesar",
-                modifier = Modifier.padding(16.dp).fillMaxWidth(),
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
-            )
-        }
+        FitTrackTitleCard(
+            title = "Pesar",
+            isClickable = true,
+            modifier = Modifier.clickable { navController.navigate("WeighScreen") }
+        )
     }
 }
 
@@ -285,4 +257,12 @@ private fun getPreferencesViewModel(): PreferencesViewModel {
     val context = LocalContext.current
     val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
     return viewModel(factory = PreferencesViewModelFactory(userPreferencesRepository))
+}
+
+@Preview
+@Composable
+fun ProfileScreenPreview() {
+    FitTrackTheme {
+        ProfileScreen(rememberNavController())
+    }
 }
