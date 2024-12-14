@@ -6,13 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisGuidelineComponent
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisLineComponent
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisTickComponent
-import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottomAxis
-import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStartAxis
+import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
+import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLine
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
@@ -20,24 +19,25 @@ import com.patrykandpatrick.vico.compose.cartesian.rememberVicoZoomState
 import com.patrykandpatrick.vico.compose.common.component.rememberShapeComponent
 import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
 import com.patrykandpatrick.vico.compose.common.fill
-import com.patrykandpatrick.vico.compose.common.of
-import com.patrykandpatrick.vico.core.cartesian.data.AxisValueOverrider
+import com.patrykandpatrick.vico.compose.common.vicoTheme
+import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
+import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
 import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.core.common.Dimensions
-import com.patrykandpatrick.vico.core.common.shape.Shape
+import com.patrykandpatrick.vico.core.common.shape.CorneredShape
 import com.sergisabate.fittrack.data.viewmodels.WeightRecord
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
-private val bottomAxisValueFormatter = CartesianValueFormatter { x, _, _ ->
+private val bottomAxisValueFormatter = CartesianValueFormatter { _, x, _ ->
     val date = LocalDate.ofEpochDay(x.toLong())
     "${date.dayOfMonth}/${date.monthValue}"
 }
-private val axisValueOverrider = AxisValueOverrider.adaptiveYValues(yFraction = 1.1f, round = true)
+//private val axisValueOverrider = AxisValueOverrider.adaptiveYValues(yFraction = 1.1f, round = true)
 
 @Composable
 fun FitTrackWeightsChart(modifier: Modifier, weightRecords: List<WeightRecord>) {
@@ -57,32 +57,29 @@ fun FitTrackWeightsChart(modifier: Modifier, weightRecords: List<WeightRecord>) 
     val color = MaterialTheme.colorScheme.onSecondary
 
     CartesianChartHost(
-        chart =
-        rememberCartesianChart(
+        chart = rememberCartesianChart(
             rememberLineCartesianLayer(
-                LineCartesianLayer.LineProvider.series(
-                    rememberLine(
-                        fill = LineCartesianLayer.LineFill.single(fill(color))
-                    )
-                ),
-                axisValueOverrider = axisValueOverrider,
+                lineProvider = LineCartesianLayer.LineProvider.series(
+                    vicoTheme.lineCartesianLayerColors.map {
+                        LineCartesianLayer.rememberLine(LineCartesianLayer.LineFill.single(fill(color)))
+                }),
+                //axisValueOverrider = axisValueOverrider,
             ),
-            startAxis = rememberStartAxis(
-                line = rememberAxisLineComponent(color),
-                tick = rememberAxisTickComponent(color),
-                guideline = rememberAxisGuidelineComponent(color = color, strokeColor = color),
+            startAxis = VerticalAxis.rememberStart(
+                line = rememberAxisLineComponent(fill(color)),
+                tick = rememberAxisTickComponent(fill(color)),
+                guideline = rememberAxisGuidelineComponent(fill = fill(color), strokeFill = fill(color)),
                 titleComponent =
                 rememberTextComponent(
                     color = MaterialTheme.colorScheme.secondary,
-                    margins = Dimensions.of(end = 0.dp),
-                    padding = Dimensions.of(8.dp, 2.dp),
-                    background = rememberShapeComponent(color, Shape.Pill),
+                    padding = Dimensions(8f, 2f),
+                    background = rememberShapeComponent(fill(color), CorneredShape.Pill),
                 ),
                 title = "kg",
             ),
-            bottomAxis = rememberBottomAxis(
-                line = rememberAxisLineComponent(color),
-                tick = rememberAxisTickComponent(color),
+            bottomAxis = HorizontalAxis.rememberBottom(
+                line = rememberAxisLineComponent(fill(color)),
+                tick = rememberAxisTickComponent(fill(color)),
                 guideline = null,
                 valueFormatter = bottomAxisValueFormatter,
             ),

@@ -5,14 +5,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisGuidelineComponent
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisLineComponent
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisTickComponent
-import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottomAxis
-import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStartAxis
-import com.patrykandpatrick.vico.compose.cartesian.fullWidth
+import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
+import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLine
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
@@ -22,21 +20,20 @@ import com.patrykandpatrick.vico.compose.cartesian.rememberVicoZoomState
 import com.patrykandpatrick.vico.compose.common.component.rememberShapeComponent
 import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
 import com.patrykandpatrick.vico.compose.common.fill
-import com.patrykandpatrick.vico.compose.common.of
-import com.patrykandpatrick.vico.core.cartesian.HorizontalLayout
+import com.patrykandpatrick.vico.compose.common.vicoTheme
+import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
-import com.patrykandpatrick.vico.core.cartesian.data.AxisValueOverrider
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
 import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.core.common.Dimensions
-import com.patrykandpatrick.vico.core.common.shape.Shape
+import com.patrykandpatrick.vico.core.common.shape.CorneredShape
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
 private val x = (1..10).toList()
-private val axisValueOverrider = AxisValueOverrider.adaptiveYValues(yFraction = 1.2f, round = true)
+//private val axisValueOverrider = AxisValueOverrider.adaptiveYValues(yFraction = 1.2f, round = true)
 
 @Composable
 fun FitTrackChartLabeled(modifier: Modifier, label1: String, label2: String) {
@@ -56,45 +53,41 @@ fun FitTrackChartLabeled(modifier: Modifier, label1: String, label2: String) {
     CartesianChartHost(
         chart = rememberCartesianChart(
             rememberLineCartesianLayer(
-                LineCartesianLayer.LineProvider.series(
-                    rememberLine(
-                        remember { LineCartesianLayer.LineFill.single(fill(color)) }
-                    )
-                ),
-                axisValueOverrider = axisValueOverrider,
+                lineProvider = LineCartesianLayer.LineProvider.series(
+                    vicoTheme.lineCartesianLayerColors.map {
+                        LineCartesianLayer.rememberLine(LineCartesianLayer.LineFill.single(fill(color)))
+                }),
+                //axisValueOverrider = axisValueOverrider,
             ),
-            startAxis =
-            rememberStartAxis(
-                line = rememberAxisLineComponent(color),
-                tick = rememberAxisTickComponent(color),
-                guideline = rememberAxisGuidelineComponent(color),
+            startAxis = VerticalAxis.rememberStart(
+                line = rememberAxisLineComponent(fill(color)),
+                tick = rememberAxisTickComponent(fill(color)),
+                guideline = rememberAxisGuidelineComponent(fill(color)),
                 horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Inside,
                 titleComponent =
                 rememberTextComponent(
                     color = MaterialTheme.colorScheme.secondary,
-                    margins = Dimensions.of(end = 4.dp),
-                    padding = Dimensions.of(8.dp, 2.dp),
-                    background = rememberShapeComponent(color, Shape.Pill),
+                    margins = Dimensions(endDp = 4f),
+                    padding = Dimensions(8f, 2f),
+                    background = rememberShapeComponent(fill(color), CorneredShape.Pill),
                 ),
                 title = label1,
             ),
-            bottomAxis =
-            rememberBottomAxis(
-                line = rememberAxisLineComponent(color),
-                tick = rememberAxisTickComponent(color),
+            bottomAxis = HorizontalAxis.rememberBottom(
+                line = rememberAxisLineComponent(fill(color)),
+                tick = rememberAxisTickComponent(fill(color)),
                 guideline = null,
                 titleComponent =
                 rememberTextComponent(
                     color = MaterialTheme.colorScheme.secondary,
-                    margins = Dimensions.of(top = 4.dp),
-                    padding = Dimensions.of(8.dp, 2.dp),
-                    background =
-                    rememberShapeComponent(color, Shape.Pill),
+                    margins = Dimensions(topDp = 4f),
+                    padding = Dimensions(8f, 2f),
+                    background = rememberShapeComponent(fill(color), CorneredShape.Pill),
                 ),
                 title = label2,
             ),
             marker = marker,
-            horizontalLayout = HorizontalLayout.fullWidth(),
+            //horizontalLayout = HorizontalLayout.fullWidth(),
             fadingEdges = rememberFadingEdges(),
         ),
         modelProducer = modelProducer,
