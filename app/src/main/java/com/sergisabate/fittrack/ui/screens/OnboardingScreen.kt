@@ -35,7 +35,7 @@ import kotlinx.coroutines.delay
 fun TypingText(
     text: String,
     modifier: Modifier = Modifier,
-    style: TextStyle = MaterialTheme.typography.bodyMedium,
+    style: TextStyle = MaterialTheme.typography.titleMedium,
     color: Color
 ) {
     var displayedText by remember { mutableStateOf("") }
@@ -104,7 +104,10 @@ fun OnboardingScreen(modifier: Modifier, onSubmit: (String, Int, Float, Int) -> 
                             contentPadding = PaddingValues(0.dp),
                             modifier = modifier.align(Alignment.CenterVertically)
                         ) {
-                            Text(text = "Omitir")
+                            Text(
+                                text = "Omitir",
+                                style = MaterialTheme.typography.titleSmall
+                            )
                         }
                     }
                 }
@@ -112,7 +115,7 @@ fun OnboardingScreen(modifier: Modifier, onSubmit: (String, Int, Float, Int) -> 
                     TypingText(
                         text = stringResource(R.string.excited_message),
                         modifier = modifier.padding(top = 8.dp),
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -120,7 +123,7 @@ fun OnboardingScreen(modifier: Modifier, onSubmit: (String, Int, Float, Int) -> 
                     TypingText(
                         text = stringResource(R.string.claim_data_message),
                         modifier = modifier.padding(top = 8.dp),
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -128,7 +131,7 @@ fun OnboardingScreen(modifier: Modifier, onSubmit: (String, Int, Float, Int) -> 
                     TypingText(
                         text = stringResource(R.string.local_data_message),
                         modifier = modifier.padding(top = 8.dp),
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -136,7 +139,7 @@ fun OnboardingScreen(modifier: Modifier, onSubmit: (String, Int, Float, Int) -> 
                     TypingText(
                         text = stringResource(R.string.complete_form_message),
                         modifier = modifier.padding(top = 8.dp),
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -171,25 +174,25 @@ fun DisplayAllTexts() {
     Text(
         text = stringResource(R.string.excited_message),
         modifier = Modifier.padding(top = 8.dp),
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.primary
     )
     Text(
         text = stringResource(R.string.claim_data_message),
         modifier = Modifier.padding(top = 8.dp),
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.primary
     )
     Text(
         text = stringResource(R.string.local_data_message),
         modifier = Modifier.padding(top = 8.dp),
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.primary
     )
     Text(
         text = stringResource(R.string.complete_form_message),
         modifier = Modifier.padding(top = 8.dp),
-        style = MaterialTheme.typography.bodyMedium,
+        style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.primary
     )
 }

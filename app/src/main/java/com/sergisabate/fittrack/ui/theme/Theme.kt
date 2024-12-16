@@ -24,14 +24,16 @@ private val DarkColorScheme = darkColorScheme(
     primary = White,
     secondary = Pink,
     onSecondary = White,
-    background = Black
+    background = Black,
+    surface = Gray
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Black,
     secondary = Pink,
     onSecondary = White,
-    background = White
+    background = White,
+    surface = Gray
 )
 
 enum class ThemeOption(val value: Int) {

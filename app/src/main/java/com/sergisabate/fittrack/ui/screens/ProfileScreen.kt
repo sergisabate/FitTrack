@@ -82,8 +82,7 @@ fun ProfileScreen(navController: NavController) {
                 age = currentProfileData.age,
                 weight = "%.2f".format(currentWeight) + " kg",
                 height = currentProfileData.height.toString() + " cm",
-                bodyFat = "15%",
-                muscleMass = "65 kg"
+                bodyFat = "15%"
             )
 
             LinkedDevicesCard(navController)
@@ -121,7 +120,7 @@ fun ProfileHeader(profilePicture: Painter, name: String) {
 }
 
 @Composable
-fun BodyStatisticsCard(age: Int, weight: String, height: String, bodyFat: String, muscleMass: String) {
+fun BodyStatisticsCard(age: Int, weight: String, height: String, bodyFat: String) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -139,19 +138,14 @@ fun BodyStatisticsCard(age: Int, weight: String, height: String, bodyFat: String
                 description = weight,
                 modifier = Modifier.weight(1f)
             )
-            FitTrackTitleDescriptionCard(
-                title = stringResource(R.string.height),
-                description = height,
-                modifier = Modifier.weight(1f)
-            )
         }
         Row(
             modifier = Modifier,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             FitTrackTitleDescriptionCard(
-                title = stringResource(R.string.muscle_mass),
-                description = muscleMass,
+                title = stringResource(R.string.height),
+                description = height,
                 modifier = Modifier.weight(1f)
             )
             FitTrackTitleDescriptionCard(

@@ -49,7 +49,6 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
             style = MaterialTheme.typography.titleMedium
         )},
         modifier = Modifier.fillMaxWidth(),
-        maxLines = 1,
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Next
         ),
@@ -74,7 +73,6 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
             imeAction = ImeAction.Next
         ),
         modifier = Modifier.fillMaxWidth(),
-        maxLines = 1,
         isError = age.isNotEmpty() && !ageIsValid(age),
         supportingText = {
             if (age.isNotEmpty() && !ageIsValid(age)) {
@@ -103,7 +101,6 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
             imeAction = ImeAction.Next
         ),
         modifier = Modifier.fillMaxWidth(),
-        maxLines = 1,
         trailingIcon = {
             Text(
                 text = "kg",
@@ -138,7 +135,6 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
             imeAction = ImeAction.Done
         ),
         modifier = Modifier.fillMaxWidth(),
-        maxLines = 1,
         trailingIcon = {
             Text(
                 text = "cm",

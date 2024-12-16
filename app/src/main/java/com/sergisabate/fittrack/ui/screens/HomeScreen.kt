@@ -29,12 +29,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sergisabate.fittrack.data.repositories.WeightsRepository
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModelFactory
 import com.sergisabate.fittrack.ui.charts.FitTrackWeightsChart
+import com.sergisabate.fittrack.ui.theme.FitTrackTheme
 import kotlin.math.absoluteValue
 
 @Composable
@@ -45,15 +47,17 @@ fun HomeScreen() {
         Column(
             modifier = Modifier
                 .padding(innerPadding)
+                .padding(horizontal = 16.dp)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            Spacer(modifier = Modifier)
+
             WeightControlCard()
 
             // Card 2: Workout of the Day
             Card(
                 modifier = Modifier
-                    .padding(16.dp)
                     .height(150.dp)
                     .fillMaxWidth(),
                 colors = CardDefaults.cardColors(
@@ -81,7 +85,6 @@ fun HomeScreen() {
             // Card 3: Nutritional information
             Card(
                 modifier = Modifier
-                    .padding(16.dp)
                     .height(150.dp)
                     .fillMaxWidth(),
                 colors = CardDefaults.cardColors(
@@ -122,7 +125,6 @@ fun HomeScreen() {
             // Card 4: Water intake
             Card(
                 modifier = Modifier
-                    .padding(16.dp)
                     .height(150.dp)
                     .fillMaxWidth(),
                 colors = CardDefaults.cardColors(
@@ -159,7 +161,6 @@ fun HomeScreen() {
             // Card 5: Sleep tracking
             Card(
                 modifier = Modifier
-                    .padding(16.dp)
                     .height(150.dp)
                     .fillMaxWidth(),
                 colors = CardDefaults.cardColors(
@@ -192,6 +193,7 @@ fun HomeScreen() {
                     }
                 }
             }
+            Spacer(modifier = Modifier)
         }
     }
 }
@@ -203,9 +205,7 @@ private fun WeightControlCard() {
 
     if (weightRecords.isNotEmpty()) {
         Card(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
+            modifier = Modifier,
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.secondary
             ),
@@ -292,3 +292,12 @@ private fun getWeightsViewModel(): WeightsViewModel {
     val weightsRepository = remember { WeightsRepository.getInstance(context) }
     return viewModel(factory = WeightsViewModelFactory(weightsRepository))
 }
+
+@Preview
+@Composable
+fun HomeScreenPreview() {
+    FitTrackTheme {
+        HomeScreen()
+    }
+}
+

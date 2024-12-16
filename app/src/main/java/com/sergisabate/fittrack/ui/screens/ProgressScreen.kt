@@ -35,14 +35,17 @@ fun ProgressScreen() {
         Column(
             modifier = Modifier
                 .padding(innerPadding)
+                .padding(horizontal = 16.dp)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            Spacer(modifier = Modifier)
+
             // Card 1: Progress Overview
             ProgressCard(
                 title = "Resumen de Progreso",
                 progressText = "70% Completo",
-                details = "Has completado el 70% de tu objetivo de entrenamiento mensual.",
+                details = "Has completado el 70% de tu objetivo.",
                 iconResId = R.drawable.ic_launcher_foreground
             )
 
@@ -75,6 +78,8 @@ fun ProgressScreen() {
                     Pair("Recetas Saludables", R.drawable.ic_launcher_foreground)
                 )
             )
+
+            Spacer(modifier = Modifier)
         }
     }
 }
@@ -83,7 +88,6 @@ fun ProgressScreen() {
 fun ProgressCard(title: String, progressText: String, details: String, iconResId: Int) {
     Card(
         modifier = Modifier
-            .padding(16.dp)
             .height(150.dp)
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -127,7 +131,6 @@ fun ProgressCard(title: String, progressText: String, details: String, iconResId
 fun GoalsCard(title: String, goals: List<String>) {
     Card(
         modifier = Modifier
-            .padding(16.dp)
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary
@@ -158,7 +161,6 @@ fun GoalsCard(title: String, goals: List<String>) {
 fun SuccessStoriesCard(title: String, stories: List<String>) {
     Card(
         modifier = Modifier
-            .padding(16.dp)
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary
@@ -189,7 +191,6 @@ fun SuccessStoriesCard(title: String, stories: List<String>) {
 fun ResourcesCard(title: String, resources: List<Pair<String, Int>>) {
     Card(
         modifier = Modifier
-            .padding(16.dp)
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondary
