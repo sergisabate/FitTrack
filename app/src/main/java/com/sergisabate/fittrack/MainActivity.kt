@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -73,13 +73,13 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     // Verifica si se debe mostrar el onboarding o la pantalla principal
                     if (currentProfileData != ProfileData() || isOnboardingComplete) {
-                        MainScreen(modifier = Modifier.padding(innerPadding))
+                        MainScreen(modifier = Modifier.consumeWindowInsets(innerPadding))
                     } else {
                         // Obtiene el ViewModel de perfil
                         val weightsViewModel: WeightsViewModel = getWeightsViewModel()
 
                         OnboardingScreen(
-                            modifier = Modifier.padding(innerPadding)
+                            modifier = Modifier.consumeWindowInsets(innerPadding)
                         ) { name, age, weight, height ->
                             scope.launch {
                                 // Guarda los datos del usuario y actualiza el estado

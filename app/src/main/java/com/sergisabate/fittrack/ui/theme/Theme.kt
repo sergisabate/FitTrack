@@ -20,7 +20,7 @@ import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 
-private val DarkColorScheme = darkColorScheme(
+val DarkColorScheme = darkColorScheme(
     primary = White,
     secondary = Pink,
     onSecondary = White,
@@ -28,7 +28,7 @@ private val DarkColorScheme = darkColorScheme(
     surface = Gray
 )
 
-private val LightColorScheme = lightColorScheme(
+val LightColorScheme = lightColorScheme(
     primary = Black,
     secondary = Pink,
     onSecondary = White,
@@ -54,6 +54,7 @@ fun FitTrackTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.background.toArgb()
+            window.navigationBarColor = colorScheme.background.toArgb()
 
             val insetsController = WindowCompat.getInsetsController(window, view)
             insetsController.isAppearanceLightStatusBars = colorScheme == LightColorScheme

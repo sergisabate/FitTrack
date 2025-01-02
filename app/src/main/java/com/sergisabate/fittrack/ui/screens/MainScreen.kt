@@ -17,9 +17,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
     Scaffold (
         topBar = { FitTrackTopAppBar(navController)},
         bottomBar = { FitTrackBottomAppBar(navController) }
-    ) { padding ->
+    ) { innerPadding ->
         Box (
-            modifier = modifier.padding(padding).fillMaxSize()
+            modifier = modifier.padding(innerPadding).fillMaxSize()
         ) {
             FitTrackNavigation(navController)
         }
