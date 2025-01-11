@@ -20,6 +20,7 @@ import kotlinx.coroutines.runBlocking
 import java.io.IOException
 
 private const val IS_IN_DARK_MODE_KEY = "is_in_dark_mode"
+private const val LOCALE_KEY = "locale"
 private const val NAME_KEY = "name"
 private const val AGE_KEY = "age"
 private const val HEIGHT_KEY = "height"
@@ -35,6 +36,7 @@ class UserPreferencesRepository private constructor(context: Context) {
 
     private object PreferencesKeys {
         val IS_IN_DARK_MODE = intPreferencesKey(IS_IN_DARK_MODE_KEY)
+        val LOCALE = stringPreferencesKey(LOCALE_KEY)
         val NAME = stringPreferencesKey(NAME_KEY)
         val AGE = intPreferencesKey(AGE_KEY)
         val HEIGHT = intPreferencesKey(HEIGHT_KEY)
@@ -45,6 +47,9 @@ class UserPreferencesRepository private constructor(context: Context) {
 
     private val _isInDarkModeFlow = MutableStateFlow(runBlocking { getDarkModePreference() })
     val isInDarkModeFlow: StateFlow<Int> = _isInDarkModeFlow
+
+    private val _localeFlow = MutableStateFlow(runBlocking { getLocalePreference() })
+    val localeFlow: StateFlow<String> = _localeFlow
 
     private val _nameFlow = MutableStateFlow(runBlocking { getNamePreference() })
     private val _ageFlow = MutableStateFlow(runBlocking { getAgePreference() })
@@ -57,6 +62,7 @@ class UserPreferencesRepository private constructor(context: Context) {
 
     init {
         initParameter(PreferencesKeys.IS_IN_DARK_MODE, DEFAULT_DARK_MODE, _isInDarkModeFlow)
+        initParameter(PreferencesKeys.LOCALE, DEFAULT_STRING, _localeFlow)
         initParameter(PreferencesKeys.NAME, DEFAULT_STRING, _nameFlow)
         initParameter(PreferencesKeys.AGE, DEFAULT_INT, _ageFlow)
         initParameter(PreferencesKeys.HEIGHT, DEFAULT_INT, _heightFlow)
@@ -84,6 +90,12 @@ class UserPreferencesRepository private constructor(context: Context) {
     suspend fun setDarkMode(isInDarkMode: Int) {
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.IS_IN_DARK_MODE] = isInDarkMode
+        }
+    }
+
+    suspend fun setLocale(locale: String) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.LOCALE] = locale
         }
     }
 
@@ -115,6 +127,14 @@ class UserPreferencesRepository private constructor(context: Context) {
         return dataStore.data
             .map { preferences ->
                 preferences[PreferencesKeys.IS_IN_DARK_MODE] ?: DEFAULT_DARK_MODE
+            }
+            .first()
+    }
+
+    private suspend fun getLocalePreference(): String {
+        return dataStore.data
+            .map { preferences ->
+                preferences[PreferencesKeys.LOCALE] ?: DEFAULT_STRING
             }
             .first()
     }

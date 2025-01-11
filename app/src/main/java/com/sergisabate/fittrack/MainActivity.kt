@@ -1,5 +1,7 @@
 package com.sergisabate.fittrack
 
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -22,6 +24,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
 import com.sergisabate.fittrack.data.repositories.WeightsRepository
+import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
+import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 import com.sergisabate.fittrack.data.viewmodels.ProfileData
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
@@ -31,6 +35,7 @@ import com.sergisabate.fittrack.ui.screens.MainScreen
 import com.sergisabate.fittrack.ui.screens.OnboardingScreen
 import com.sergisabate.fittrack.ui.theme.FitTrackTheme
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +48,13 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             FitTrackTheme {
-                // Obtiene el ViewModel de perfil
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                    val preferencesViewModel: PreferencesViewModel = getPreferencesViewModel()
+                    val localeTag by preferencesViewModel.getLocale().collectAsState()
+                    val context = LocalContext.current
+                    setLocale(context, localeTag)
+                }
+
                 val profileViewModel: ProfileViewModel = getProfileViewModel()
                 val currentProfileData by profileViewModel.getProfileData().collectAsState()
 
@@ -111,6 +122,25 @@ class MainActivity : ComponentActivity() {
 
             }
         }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun setLocale(context: Context, localeTag: String) {
+        val locale = localeTag.ifEmpty {
+            context.resources.configuration.locales[0].language
+        }
+
+        val resources = context.resources
+        val configuration = resources.configuration
+        configuration.setLocale(Locale.forLanguageTag(locale))
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+    }
+
+    @Composable
+    private fun getPreferencesViewModel(): PreferencesViewModel {
+        val context = LocalContext.current
+        val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
+        return viewModel(factory = PreferencesViewModelFactory(userPreferencesRepository))
     }
 
     @Composable

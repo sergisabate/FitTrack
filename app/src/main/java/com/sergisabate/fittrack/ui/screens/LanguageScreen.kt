@@ -1,10 +1,11 @@
 package com.sergisabate.fittrack.ui.screens
 
+import android.app.Activity
 import android.app.LocaleManager
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.LocaleList
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,7 +26,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.os.LocaleListCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.sergisabate.fittrack.MainActivity
+import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
+import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
+import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
+
 
 enum class LanguageOption(val value: String, val displayName: String) {
     Spanish("es", "Español"),
@@ -40,8 +46,9 @@ fun LanguageScreen() {
     val initialOption = LanguageOption.entries.firstOrNull { it.value == currentLanguage } ?: LanguageOption.Spanish
     var selectedOption by remember { mutableStateOf(initialOption) }
 
+    val preferencesViewModel: PreferencesViewModel = getPreferencesViewModel()
     val onOptionSelected: (LanguageOption) -> Unit = { option ->
-        localeSelection(context, option.value)
+        localeSelection(option.value, context, preferencesViewModel)
         selectedOption = option
     }
 
@@ -90,13 +97,21 @@ private fun RadioButtonGroup(
     }
 }
 
-fun localeSelection(context: Context, localeTag: String) {
+fun localeSelection(localeTag: String, context: Context, preferencesViewModel: PreferencesViewModel) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        context.getSystemService(LocaleManager::class.java).applicationLocales =
-            LocaleList.forLanguageTags(localeTag)
+        context.getSystemService(LocaleManager::class.java).applicationLocales = LocaleList.forLanguageTags(localeTag)
     } else {
-        AppCompatDelegate.setApplicationLocales(
-            LocaleListCompat.forLanguageTags(localeTag)
-        )
+        val intent = Intent(context, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        preferencesViewModel.setLocale(localeTag)
+        context.startActivity(intent)
+        (context as? Activity)?.finish()
     }
+}
+
+@Composable
+private fun getPreferencesViewModel(): PreferencesViewModel {
+    val context = LocalContext.current
+    val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
+    return viewModel(factory = PreferencesViewModelFactory(userPreferencesRepository))
 }

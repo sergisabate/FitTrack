@@ -15,6 +15,12 @@ class PreferencesViewModel(private val userPreferencesRepository: UserPreference
         }
     }
 
+    fun setLocale(locale: String) {
+        viewModelScope.launch {
+            userPreferencesRepository.setLocale(locale)
+        }
+    }
+
     fun setBluetoothDevice(
         bluetoothDevice: String,
         onSuccess: (() -> Unit)? = null,
@@ -34,6 +40,10 @@ class PreferencesViewModel(private val userPreferencesRepository: UserPreference
 
     fun getDarkTheme(): StateFlow<Int> {
         return userPreferencesRepository.isInDarkModeFlow
+    }
+
+    fun getLocale(): StateFlow<String> {
+        return userPreferencesRepository.localeFlow
     }
 
     fun getBluetoothDevice(): StateFlow<String> {
