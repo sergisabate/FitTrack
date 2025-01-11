@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -67,10 +68,12 @@ fun ProfileScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            Spacer(modifier = Modifier)
+
             // Profile Header
             ProfileHeader(
                 profilePicture = painterResource(id = R.drawable.ic_launcher_foreground),
@@ -86,6 +89,8 @@ fun ProfileScreen(navController: NavController) {
             )
 
             LinkedDevicesCard(navController)
+
+            Spacer(modifier = Modifier)
         }
     }
 }

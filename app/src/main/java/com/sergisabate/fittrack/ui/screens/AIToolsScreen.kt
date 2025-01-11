@@ -4,8 +4,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Icon
@@ -33,9 +36,12 @@ fun AIToolsScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(16.dp),
+                .padding(horizontal = 16.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            Spacer(modifier = Modifier)
+
             FitTrackTitleDescriptionCard(
                 title = stringResource(R.string.menu_generator_title),
                 description = stringResource(R.string.menu_generator_description),
@@ -65,6 +71,8 @@ fun AIToolsScreen(navController: NavController) {
                     color = MaterialTheme.colorScheme.primary
                 )
             }
+
+            Spacer(modifier = Modifier)
         }
     }
 }
