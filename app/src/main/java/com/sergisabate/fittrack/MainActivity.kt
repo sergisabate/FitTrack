@@ -22,10 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.sergisabate.fittrack.data.helpers.applyLocale
+import com.sergisabate.fittrack.data.helpers.getSavedLocale
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
 import com.sergisabate.fittrack.data.repositories.WeightsRepository
-import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
-import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 import com.sergisabate.fittrack.data.viewmodels.ProfileData
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
@@ -38,8 +38,22 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: Context) {
+        var context = newBase
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            val locale = getSavedLocale(newBase)
+            context = applyLocale(newBase, locale)
+        }
+        super.attachBaseContext(context)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            val savedLocale = getSavedLocale(this)
+            Locale.setDefault(savedLocale)
+        }
 
         // Mantiene la splash screen visible hasta que se complete la inicialización
         var keepSplashScreenVisible = true
@@ -48,13 +62,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             FitTrackTheme {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                    val preferencesViewModel: PreferencesViewModel = getPreferencesViewModel()
-                    val localeTag by preferencesViewModel.getLocale().collectAsState()
-                    val context = LocalContext.current
-                    setLocale(context, localeTag)
-                }
-
                 val profileViewModel: ProfileViewModel = getProfileViewModel()
                 val currentProfileData by profileViewModel.getProfileData().collectAsState()
 
@@ -122,25 +129,6 @@ class MainActivity : ComponentActivity() {
 
             }
         }
-    }
-
-    @Suppress("DEPRECATION")
-    private fun setLocale(context: Context, localeTag: String) {
-        val locale = localeTag.ifEmpty {
-            context.resources.configuration.locales[0].language
-        }
-
-        val resources = context.resources
-        val configuration = resources.configuration
-        configuration.setLocale(Locale.forLanguageTag(locale))
-        resources.updateConfiguration(configuration, resources.displayMetrics)
-    }
-
-    @Composable
-    private fun getPreferencesViewModel(): PreferencesViewModel {
-        val context = LocalContext.current
-        val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
-        return viewModel(factory = PreferencesViewModelFactory(userPreferencesRepository))
     }
 
     @Composable
