@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
@@ -113,12 +112,6 @@ fun getSettingsItems(): List<NavItem> {
             title = stringResource(R.string.edit_profile),
             route = "EditProfile",
             screen = { EditProfileScreen() }
-        ),
-        NavItem(
-            icon = Icons.Default.Notifications,
-            title = stringResource(R.string.notifications),
-            route = "Notifications",
-            screen = { TestScreen() }
         ),
         NavItem(
             icon = Icons.Default.Info,

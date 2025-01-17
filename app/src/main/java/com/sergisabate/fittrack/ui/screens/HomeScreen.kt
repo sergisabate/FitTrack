@@ -193,6 +193,7 @@ fun HomeScreen() {
                     }
                 }
             }
+
             Spacer(modifier = Modifier)
         }
     }
