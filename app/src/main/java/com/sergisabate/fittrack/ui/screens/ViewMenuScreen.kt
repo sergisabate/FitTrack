@@ -27,16 +27,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sergisabate.fittrack.R
-import com.sergisabate.fittrack.data.repositories.MenusRepository
+import com.sergisabate.fittrack.data.helpers.getMenusViewModel
 import com.sergisabate.fittrack.data.viewmodels.Meal
 import com.sergisabate.fittrack.data.viewmodels.MenusViewModel
-import com.sergisabate.fittrack.data.viewmodels.MenusViewModelFactory
 
 @Composable
 fun ViewMenuScreen() {
@@ -49,31 +46,31 @@ fun ViewMenuScreen() {
                 .fillMaxSize()
                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
         ) {
-            menuData.let {
+            menuData.let { menu ->
                 LazyColumn {
                     item {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = it.title,
+                            text = menu.title,
                             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                     item {
-                        MenuSection(stringResource(R.string.breakfast), it.breakfast.meals)
+                        MenuSection(stringResource(R.string.breakfast), menu.breakfast.meals)
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                     item {
-                        MenuSection(stringResource(id = R.string.lunch), it.lunch.meals)
+                        MenuSection(stringResource(id = R.string.lunch), menu.lunch.meals)
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                     item {
-                        MenuSection(stringResource(id = R.string.snack), it.snack.meals)
+                        MenuSection(stringResource(id = R.string.snack), menu.snack.meals)
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                     item {
-                        MenuSection(stringResource(id = R.string.dinner), it.dinner.meals)
+                        MenuSection(stringResource(id = R.string.dinner), menu.dinner.meals)
                     }
                 }
             }
@@ -166,12 +163,4 @@ fun MealCard(meal: Meal) {
             )
         }
     }
-}
-
-// Helper function to get the MenusViewModel
-@Composable
-private fun getMenusViewModel(): MenusViewModel {
-    val context = LocalContext.current
-    val menusRepository = remember { MenusRepository.getInstance(context) }
-    return viewModel(factory = MenusViewModelFactory(menusRepository))
 }

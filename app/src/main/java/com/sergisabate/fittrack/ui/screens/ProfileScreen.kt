@@ -38,14 +38,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sergisabate.fittrack.R
+import com.sergisabate.fittrack.data.helpers.getPreferencesViewModel
+import com.sergisabate.fittrack.data.helpers.getWeightsViewModel
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
-import com.sergisabate.fittrack.data.repositories.WeightsRepository
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
-import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
-import com.sergisabate.fittrack.data.viewmodels.WeightsViewModelFactory
 import com.sergisabate.fittrack.ui.components.FitTrackTitleCard
 import com.sergisabate.fittrack.ui.components.FitTrackTitleDescriptionCard
 import com.sergisabate.fittrack.ui.theme.FitTrackTheme
@@ -242,20 +241,6 @@ fun getOfficialName(deviceName : String) : String {
     else {
         deviceName
     }
-}
-
-@Composable
-private fun getWeightsViewModel(): WeightsViewModel {
-    val context = LocalContext.current
-    val weightsRepository = remember { WeightsRepository.getInstance(context) }
-    return viewModel(factory = WeightsViewModelFactory(weightsRepository))
-}
-
-@Composable
-private fun getPreferencesViewModel(): PreferencesViewModel {
-    val context = LocalContext.current
-    val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
-    return viewModel(factory = PreferencesViewModelFactory(userPreferencesRepository))
 }
 
 @Preview

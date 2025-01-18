@@ -36,21 +36,17 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.api.getGPTContent
 import com.sergisabate.fittrack.data.api.isInternetAvailable
-import com.sergisabate.fittrack.data.repositories.MenusRepository
-import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
-import com.sergisabate.fittrack.data.repositories.WeightsRepository
+import com.sergisabate.fittrack.data.helpers.getMenusViewModel
+import com.sergisabate.fittrack.data.helpers.getProfileViewModel
+import com.sergisabate.fittrack.data.helpers.getWeightsViewModel
 import com.sergisabate.fittrack.data.viewmodels.MenuData
 import com.sergisabate.fittrack.data.viewmodels.MenusViewModel
-import com.sergisabate.fittrack.data.viewmodels.MenusViewModelFactory
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
-import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
-import com.sergisabate.fittrack.data.viewmodels.WeightsViewModelFactory
 import com.sergisabate.fittrack.ui.components.FitTrackTitleDescriptionCard
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -225,28 +221,6 @@ fun GenerateMenuScreen(navController: NavHostController) {
     }
 }
 
-@Composable
-private fun getProfileViewModel(): ProfileViewModel {
-    val context = LocalContext.current
-    val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
-    return viewModel(factory = ProfileViewModelFactory(userPreferencesRepository))
-}
-
-@Composable
-private fun getMenusViewModel(): MenusViewModel {
-    val context = LocalContext.current
-    val menusRepository = remember { MenusRepository.getInstance(context) }
-    return viewModel(factory = MenusViewModelFactory(menusRepository))
-}
-
-@Composable
-private fun getWeightsViewModel(): WeightsViewModel {
-    val context = LocalContext.current
-    val weightsRepository = remember { WeightsRepository.getInstance(context) }
-    return viewModel(factory = WeightsViewModelFactory(weightsRepository))
-}
-
-@Composable
 private fun dateFormatter(date: String, locale: Locale): String {
     val dateTime = LocalDateTime.parse(date)
 

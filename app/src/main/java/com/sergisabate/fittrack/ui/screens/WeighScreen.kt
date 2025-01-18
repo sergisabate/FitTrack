@@ -57,19 +57,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.sergisabate.fittrack.data.bluetooth.CHARACTERISTIC_UUID
 import com.sergisabate.fittrack.data.bluetooth.DeviceConnectionState
 import com.sergisabate.fittrack.data.bluetooth.SERVICE_UUID
 import com.sergisabate.fittrack.data.bluetooth.parseBytes
 import com.sergisabate.fittrack.data.bluetooth.scanBleDevices
-import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
-import com.sergisabate.fittrack.data.repositories.WeightsRepository
+import com.sergisabate.fittrack.data.helpers.getPreferencesViewModel
+import com.sergisabate.fittrack.data.helpers.getWeightsViewModel
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
-import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
-import com.sergisabate.fittrack.data.viewmodels.WeightsViewModelFactory
 
 @SuppressLint("MissingPermission")
 @Composable
@@ -395,20 +392,6 @@ private fun BLEConnectEffect(
             state = DeviceConnectionState.None
         }
     }
-}
-
-@Composable
-private fun getWeightsViewModel(): WeightsViewModel {
-    val context = LocalContext.current
-    val weightsRepository = remember { WeightsRepository.getInstance(context) }
-    return viewModel(factory = WeightsViewModelFactory(weightsRepository))
-}
-
-@Composable
-private fun getPreferencesViewModel(): PreferencesViewModel {
-    val context = LocalContext.current
-    val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
-    return viewModel(factory = PreferencesViewModelFactory(userPreferencesRepository))
 }
 
 private fun getBluetoothConnectPermission(): String {

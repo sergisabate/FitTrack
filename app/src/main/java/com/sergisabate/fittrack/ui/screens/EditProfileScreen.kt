@@ -23,13 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sergisabate.fittrack.R
+import com.sergisabate.fittrack.data.helpers.getWeightsViewModel
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
-import com.sergisabate.fittrack.data.repositories.WeightsRepository
 import com.sergisabate.fittrack.data.viewmodels.ProfileData
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
-import com.sergisabate.fittrack.data.viewmodels.WeightsViewModelFactory
 import com.sergisabate.fittrack.ui.forms.ProfileForm
 
 @Composable
@@ -112,11 +111,4 @@ fun EditProfileContent(
             onSubmit = onSaveForm
         )
     }
-}
-
-@Composable
-private fun getWeightsViewModel(): WeightsViewModel {
-    val context = LocalContext.current
-    val weightsRepository = remember { WeightsRepository.getInstance(context) }
-    return viewModel(factory = WeightsViewModelFactory(weightsRepository))
 }

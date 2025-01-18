@@ -23,18 +23,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.sergisabate.fittrack.data.repositories.WeightsRepository
+import com.sergisabate.fittrack.data.helpers.getWeightsViewModel
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
-import com.sergisabate.fittrack.data.viewmodels.WeightsViewModelFactory
 import com.sergisabate.fittrack.ui.charts.FitTrackWeightsChart
 import com.sergisabate.fittrack.ui.theme.FitTrackTheme
 import kotlin.math.absoluteValue
@@ -201,7 +197,7 @@ fun HomeScreen() {
 
 @Composable
 private fun WeightControlCard() {
-    val weightsViewModel = getWeightsViewModel()
+    val weightsViewModel: WeightsViewModel = getWeightsViewModel()
     val weightRecords by weightsViewModel.getWeightHistory().collectAsState()
 
     if (weightRecords.isNotEmpty()) {
@@ -285,13 +281,6 @@ private fun WeightControlCard() {
             }
         }
     }
-}
-
-@Composable
-private fun getWeightsViewModel(): WeightsViewModel {
-    val context = LocalContext.current
-    val weightsRepository = remember { WeightsRepository.getInstance(context) }
-    return viewModel(factory = WeightsViewModelFactory(weightsRepository))
 }
 
 @Preview

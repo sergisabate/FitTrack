@@ -27,20 +27,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sergisabate.fittrack.R
-import com.sergisabate.fittrack.data.repositories.ExerciseRoutinesRepository
+import com.sergisabate.fittrack.data.helpers.getExerciseRoutinesViewModel
 import com.sergisabate.fittrack.data.viewmodels.Exercise
 import com.sergisabate.fittrack.data.viewmodels.ExerciseRoutinesViewModel
-import com.sergisabate.fittrack.data.viewmodels.ExerciseRoutinesViewModelFactory
 import com.sergisabate.fittrack.data.viewmodels.Session
 
 @Composable
-fun ViewExerciseRoutineScreen(exerciseRoutinesViewModel: ExerciseRoutinesViewModel = getExerciseRoutinesViewModel()) {
+fun ViewExerciseRoutineScreen() {
+    val exerciseRoutinesViewModel: ExerciseRoutinesViewModel = getExerciseRoutinesViewModel()
     val routineData by exerciseRoutinesViewModel.getExerciseRoutineSelected().collectAsState()
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -192,11 +190,4 @@ fun ExerciseCard(exercise: Exercise) {
             }
         }
     }
-}
-
-@Composable
-private fun getExerciseRoutinesViewModel(): ExerciseRoutinesViewModel {
-    val context = LocalContext.current
-    val exerciseRoutinesRepository = remember { ExerciseRoutinesRepository.getInstance(context) }
-    return viewModel(factory = ExerciseRoutinesViewModelFactory(exerciseRoutinesRepository))
 }

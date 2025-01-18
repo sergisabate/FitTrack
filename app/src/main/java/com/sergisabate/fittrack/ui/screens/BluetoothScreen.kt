@@ -58,14 +58,12 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.bluetooth.DeviceConnectionState
 import com.sergisabate.fittrack.data.bluetooth.scanBleDevices
-import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
+import com.sergisabate.fittrack.data.helpers.getPreferencesViewModel
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
-import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -82,7 +80,7 @@ fun BluetoothScreen(navController: NavHostController) {
     var bluetoothDevice by remember { mutableStateOf<BluetoothDevice?>(null) }
     var scanJob by remember { mutableStateOf<Job?>(null) }
 
-    val preferencesViewModel: PreferencesViewModel = getThemeViewModel()
+    val preferencesViewModel: PreferencesViewModel = getPreferencesViewModel()
     val currentLinkedDevice by preferencesViewModel.getBluetoothDevice().collectAsState()
 
     ClaimPermissions(navController)
@@ -334,12 +332,4 @@ fun RequestEnableBluetooth(onBluetoothEnabled: () -> Unit, onBluetoothDenied: ()
             onBluetoothEnabled() // Bluetooth ya estaba habilitado
         }
     }
-}
-
-
-@Composable
-private fun getThemeViewModel(): PreferencesViewModel {
-    val context = LocalContext.current
-    val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
-    return viewModel(factory = PreferencesViewModelFactory(userPreferencesRepository))
 }

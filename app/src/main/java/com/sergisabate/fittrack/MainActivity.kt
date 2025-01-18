@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,18 +18,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sergisabate.fittrack.data.helpers.applyLocale
+import com.sergisabate.fittrack.data.helpers.getProfileViewModel
 import com.sergisabate.fittrack.data.helpers.getSavedLocale
-import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
-import com.sergisabate.fittrack.data.repositories.WeightsRepository
+import com.sergisabate.fittrack.data.helpers.getWeightsViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileData
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
-import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
-import com.sergisabate.fittrack.data.viewmodels.WeightsViewModelFactory
 import com.sergisabate.fittrack.ui.screens.MainScreen
 import com.sergisabate.fittrack.ui.screens.OnboardingScreen
 import com.sergisabate.fittrack.ui.theme.FitTrackTheme
@@ -129,19 +124,5 @@ class MainActivity : ComponentActivity() {
 
             }
         }
-    }
-
-    @Composable
-    private fun getProfileViewModel(): ProfileViewModel {
-        val context = LocalContext.current
-        val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
-        return viewModel(factory = ProfileViewModelFactory(userPreferencesRepository))
-    }
-
-    @Composable
-    private fun getWeightsViewModel(): WeightsViewModel {
-        val context = LocalContext.current
-        val weightsRepository = remember { WeightsRepository.getInstance(context) }
-        return viewModel(factory = WeightsViewModelFactory(weightsRepository))
     }
 }
