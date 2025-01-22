@@ -24,6 +24,7 @@ import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 import com.sergisabate.fittrack.ui.screens.AIToolsScreen
+import com.sergisabate.fittrack.ui.screens.AboutScreen
 import com.sergisabate.fittrack.ui.screens.BluetoothScreen
 import com.sergisabate.fittrack.ui.screens.EditProfileScreen
 import com.sergisabate.fittrack.ui.screens.GenerateExerciseRoutineScreen
@@ -34,7 +35,6 @@ import com.sergisabate.fittrack.ui.screens.LanguageScreen
 import com.sergisabate.fittrack.ui.screens.ProfileScreen
 import com.sergisabate.fittrack.ui.screens.ProgressScreen
 import com.sergisabate.fittrack.ui.screens.SettingsScreen
-import com.sergisabate.fittrack.ui.screens.TestScreen
 import com.sergisabate.fittrack.ui.screens.ThemeScreen
 import com.sergisabate.fittrack.ui.screens.ViewExerciseRoutineScreen
 import com.sergisabate.fittrack.ui.screens.ViewMenuScreen
@@ -117,7 +117,7 @@ fun getSettingsItems(): List<NavItem> {
             icon = Icons.Default.Info,
             title = stringResource(R.string.about),
             route = "About",
-            screen = { TestScreen() }
+            screen = { AboutScreen() }
         )
     )
 }
@@ -195,7 +195,7 @@ fun getThemeOptionName(): String {
 @Composable
 fun getLanguageOptionName(): String {
     val context = LocalContext.current
-    val test = context.resources.configuration.getLocales().get(0).language
+    val test = context.resources.configuration.locales.get(0).language
     val option = LanguageOption.entries.firstOrNull { it.value == test } ?: LanguageOption.Spanish
     return option.displayName
 }

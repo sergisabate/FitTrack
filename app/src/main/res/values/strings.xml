@@ -77,4 +77,8 @@
     <string name="search_devices">Buscar Dispositivos</string>
     <string name="unable_to_pair">No ha sido posible vincular el dispositivo</string>
     <string name="device_paired">Dispositivo Vinculado</string>
+    <string name="version_x">Versión %1$s</string>
+    <string name="about_fittrack">Acerca de FitTrack</string>
+    <string name="about_description">FitTrack es una aplicación diseñada para ayudarte a alcanzar tus objetivos de salud y bienestar. Con un diseño moderno desarrollado con Kotlin Jetpack Compose, FitTrack ofrece funcionalidades avanzadas como:\n\n- Sincronización en tiempo real con la báscula Xiaomi Mi Smart Scale 2.\n- Generación de menús y rutinas de ejercicio personalizadas con ayuda de OpenAI.\n- Seguimiento de tu progreso con gráficas de peso.\n- Almacenamiento seguro y local de tus datos.\n\nCompatible con Android 15, soporte multilingüe y un diseño pensado en ti.</string>
+    <string name="copyright">© %1$d Sergi Sabaté. Todos los derechos reservados.</string>
 </resources>
