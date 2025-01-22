@@ -10,15 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
+import com.sergisabate.fittrack.data.helpers.getPreferencesViewModel
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
-import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 
 val DarkColorScheme = darkColorScheme(
     primary = White,
@@ -71,11 +67,7 @@ fun FitTrackTheme(
 
 @Composable
 private fun getThemeOption(): Int {
-    val context = LocalContext.current
-    val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
-    val preferencesViewModel: PreferencesViewModel = viewModel(
-        factory = PreferencesViewModelFactory(userPreferencesRepository)
-    )
+    val preferencesViewModel: PreferencesViewModel = getPreferencesViewModel()
     val themeOption by preferencesViewModel.getDarkTheme().collectAsState()
     return themeOption
 }
