@@ -3,6 +3,7 @@ package com.sergisabate.fittrack.ui.components
 import android.app.Activity
 import android.content.res.Configuration
 import android.os.Build
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -21,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
@@ -82,8 +82,8 @@ private fun AdjustNavigationBarColor(
     isCurrentRouteBottom: Boolean
 ) {
     val view = LocalView.current
-    val context = LocalContext.current as Activity
-    val window = context.window
+    val activity = LocalActivity.current as Activity
+    val window = activity.window
     val insetsController = WindowCompat.getInsetsController(window, view)
 
     val isPortrait = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT

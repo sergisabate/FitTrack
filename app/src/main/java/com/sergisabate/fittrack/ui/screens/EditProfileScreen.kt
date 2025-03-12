@@ -25,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.helpers.getWeightsViewModel
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
+import com.sergisabate.fittrack.data.viewmodels.GenderOption
 import com.sergisabate.fittrack.data.viewmodels.ProfileData
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
@@ -64,8 +65,8 @@ fun EditProfileScreen() {
         EditProfileContent(
             currentProfile = currentProfile,
             weight = currentWeight,
-            onSaveForm = { name, age, weight, height ->
-                val profileData = ProfileData(name, age, height)
+            onSaveForm = { name, birthdate, gender, weight, height ->
+                val profileData = ProfileData(name, birthdate, gender, height)
                 profileViewModel.setProfileData(
                     profileData,
                     onSuccess = {
@@ -97,7 +98,7 @@ fun EditProfileScreen() {
 fun EditProfileContent(
     currentProfile: ProfileData?,
     weight: Float?,
-    onSaveForm: (String, Int, Float, Int) -> Unit,
+    onSaveForm: (String, Long, GenderOption, Float, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(

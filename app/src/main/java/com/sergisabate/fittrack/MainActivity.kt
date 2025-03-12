@@ -93,10 +93,10 @@ class MainActivity : ComponentActivity() {
 
                         OnboardingScreen(
                             modifier = Modifier.consumeWindowInsets(innerPadding)
-                        ) { name, age, weight, height ->
+                        ) { name, birthdate, gender, weight, height ->
                             scope.launch {
                                 // Guarda los datos del usuario y actualiza el estado
-                                val profileData = ProfileData(name, age, height)
+                                val profileData = ProfileData(name, birthdate, gender, height)
 
                                 profileViewModel.setProfileData(
                                     profileData,

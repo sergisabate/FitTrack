@@ -3,6 +3,7 @@ package com.sergisabate.fittrack.data.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,9 +11,17 @@ import kotlinx.coroutines.launch
 
 data class ProfileData(
     val name: String = "",
-    val age: Int = 0,
+    val birthDate: Long = 0L,
+    val gender: GenderOption = GenderOption.None,
     val height: Int = 0,
 )
+
+enum class GenderOption(val value: Int, val displayName: Int) {
+    None(0, 0),
+    Male(1, R.string.male),
+    Female(2, R.string.female),
+    Other(3, R.string.other)
+}
 
 class ProfileViewModel(private val userPreferencesRepository: UserPreferencesRepository) : ViewModel() {
 
@@ -24,7 +33,8 @@ class ProfileViewModel(private val userPreferencesRepository: UserPreferencesRep
         viewModelScope.launch {
             try {
                 userPreferencesRepository.setName(profileData.name)
-                userPreferencesRepository.setAge(profileData.age)
+                userPreferencesRepository.setBirthDate(profileData.birthDate)
+                userPreferencesRepository.setGender(profileData.gender.value)
                 userPreferencesRepository.setHeight(profileData.height)
                 onSuccess?.invoke()
             } catch (e: Exception) {
@@ -36,7 +46,8 @@ class ProfileViewModel(private val userPreferencesRepository: UserPreferencesRep
     fun getProfileData(): StateFlow<ProfileData> {
         val profile = ProfileData(
             name = userPreferencesRepository.nameFlow.value,
-            age = userPreferencesRepository.ageFlow.value,
+            birthDate = userPreferencesRepository.birthDateFlow.value,
+            gender = GenderOption.entries[userPreferencesRepository.genderFlow.value],
             height = userPreferencesRepository.heightFlow.value
         )
         return MutableStateFlow(profile)

@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.CoroutineScope
@@ -21,13 +22,15 @@ import java.io.IOException
 
 private const val IS_IN_DARK_MODE_KEY = "is_in_dark_mode"
 private const val NAME_KEY = "name"
-private const val AGE_KEY = "age"
+private const val BIRTHDATE_KEY = "birthDate"
+private const val GENDER_KEY = "gender"
 private const val HEIGHT_KEY = "height"
 private const val BLUETOOTH_DEVICE_KEY = "bluetooth_device"
 
 private const val DEFAULT_DARK_MODE = 2
 private const val DEFAULT_STRING = ""
 private const val DEFAULT_INT = 0
+private const val DEFAULT_LONG = 0L
 
 private val Context.dataStore by preferencesDataStore(name = "user_preferences")
 
@@ -36,7 +39,8 @@ class UserPreferencesRepository private constructor(context: Context) {
     private object PreferencesKeys {
         val IS_IN_DARK_MODE = intPreferencesKey(IS_IN_DARK_MODE_KEY)
         val NAME = stringPreferencesKey(NAME_KEY)
-        val AGE = intPreferencesKey(AGE_KEY)
+        val BIRTHDATE = longPreferencesKey(BIRTHDATE_KEY)
+        val GENDER = intPreferencesKey(GENDER_KEY)
         val HEIGHT = intPreferencesKey(HEIGHT_KEY)
         val BLUETOOTH_DEVICE = stringPreferencesKey(BLUETOOTH_DEVICE_KEY)
     }
@@ -47,18 +51,22 @@ class UserPreferencesRepository private constructor(context: Context) {
     val isInDarkModeFlow: StateFlow<Int> = _isInDarkModeFlow
 
     private val _nameFlow = MutableStateFlow(runBlocking { getNamePreference() })
-    private val _ageFlow = MutableStateFlow(runBlocking { getAgePreference() })
+    private val _birthDateFlow = MutableStateFlow(runBlocking { getBirthDatePreference() })
+    private val _genderFlow = MutableStateFlow(runBlocking { getGenderPreference() })
     private val _heightFlow = MutableStateFlow(runBlocking { getHeightPreference() })
     private val _bluetoothDeviceFlow = MutableStateFlow(runBlocking { getBluetoothDevice() })
+
     val nameFlow: StateFlow<String> = _nameFlow
-    val ageFlow: StateFlow<Int> = _ageFlow
+    val birthDateFlow: StateFlow<Long> = _birthDateFlow
+    val genderFlow: StateFlow<Int> = _genderFlow
     val heightFlow: StateFlow<Int> = _heightFlow
     val bluetoothDeviceFlow: StateFlow<String> = _bluetoothDeviceFlow
 
     init {
         initParameter(PreferencesKeys.IS_IN_DARK_MODE, DEFAULT_DARK_MODE, _isInDarkModeFlow)
         initParameter(PreferencesKeys.NAME, DEFAULT_STRING, _nameFlow)
-        initParameter(PreferencesKeys.AGE, DEFAULT_INT, _ageFlow)
+        initParameter(PreferencesKeys.BIRTHDATE, DEFAULT_LONG, _birthDateFlow)
+        initParameter(PreferencesKeys.GENDER, DEFAULT_INT, _genderFlow)
         initParameter(PreferencesKeys.HEIGHT, DEFAULT_INT, _heightFlow)
         initParameter(PreferencesKeys.BLUETOOTH_DEVICE, DEFAULT_STRING, _bluetoothDeviceFlow)
     }
@@ -75,8 +83,8 @@ class UserPreferencesRepository private constructor(context: Context) {
             .map { preferences ->
                 preferences[key] ?: default
             }
-            .onEach { darkMode ->
-                mutable.value = darkMode
+            .onEach { value ->
+                mutable.value = value
             }
             .launchIn(CoroutineScope(Dispatchers.IO))
     }
@@ -93,9 +101,15 @@ class UserPreferencesRepository private constructor(context: Context) {
         }
     }
 
-    suspend fun setAge(age: Int) {
+    suspend fun setBirthDate(birthDate: Long) {
         dataStore.edit { preferences ->
-            preferences[PreferencesKeys.AGE] = age
+            preferences[PreferencesKeys.BIRTHDATE] = birthDate
+        }
+    }
+
+    suspend fun setGender(gender: Int) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.GENDER] = gender
         }
     }
 
@@ -127,10 +141,18 @@ class UserPreferencesRepository private constructor(context: Context) {
             .first()
     }
 
-    private suspend fun getAgePreference(): Int {
+    private suspend fun getBirthDatePreference(): Long {
         return dataStore.data
             .map { preferences ->
-                preferences[PreferencesKeys.AGE] ?: DEFAULT_INT
+                preferences[PreferencesKeys.BIRTHDATE] ?: DEFAULT_LONG
+            }
+            .first()
+    }
+
+    private suspend fun getGenderPreference(): Int {
+        return dataStore.data
+            .map { preferences ->
+                preferences[PreferencesKeys.GENDER] ?: DEFAULT_INT
             }
             .first()
     }

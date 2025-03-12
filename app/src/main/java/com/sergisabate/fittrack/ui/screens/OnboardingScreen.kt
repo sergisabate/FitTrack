@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.sergisabate.fittrack.R
+import com.sergisabate.fittrack.data.viewmodels.GenderOption
 import com.sergisabate.fittrack.ui.forms.ProfileForm
 import kotlinx.coroutines.delay
 
@@ -52,7 +53,7 @@ fun TypingText(
 }
 
 @Composable
-fun OnboardingScreen(modifier: Modifier, onSubmit: (String, Int, Float, Int) -> Unit) {
+fun OnboardingScreen(modifier: Modifier, onSubmit: (String, Long, GenderOption, Float, Int) -> Unit) {
     var showWelcome by remember { mutableStateOf(false) }
     var showExcitement by remember { mutableStateOf(false) }
     var showIntroduction by remember { mutableStateOf(false) }
@@ -105,7 +106,7 @@ fun OnboardingScreen(modifier: Modifier, onSubmit: (String, Int, Float, Int) -> 
                             modifier = modifier.align(Alignment.CenterVertically)
                         ) {
                             Text(
-                                text = "Omitir",
+                                text = stringResource(R.string.skip),
                                 style = MaterialTheme.typography.titleSmall
                             )
                         }

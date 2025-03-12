@@ -195,8 +195,8 @@ fun getThemeOptionName(): String {
 @Composable
 fun getLanguageOptionName(): String {
     val context = LocalContext.current
-    val test = context.resources.configuration.locales.get(0).language
-    val option = LanguageOption.entries.firstOrNull { it.value == test } ?: LanguageOption.Spanish
+    val language = context.resources.configuration.locales.get(0).language
+    val option = LanguageOption.entries.firstOrNull { it.value == language } ?: LanguageOption.Spanish
     return option.displayName
 }
 

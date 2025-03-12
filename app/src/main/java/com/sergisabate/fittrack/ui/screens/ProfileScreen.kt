@@ -48,6 +48,9 @@ import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
 import com.sergisabate.fittrack.ui.components.FitTrackTitleCard
 import com.sergisabate.fittrack.ui.components.FitTrackTitleDescriptionCard
 import com.sergisabate.fittrack.ui.theme.FitTrackTheme
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
+import kotlin.math.pow
 
 @Composable
 fun ProfileScreen(navController: NavController) {
@@ -76,15 +79,16 @@ fun ProfileScreen(navController: NavController) {
             // Profile Header
             ProfileHeader(
                 profilePicture = painterResource(id = R.drawable.ic_launcher_foreground),
-                name = currentProfileData.name
+                name = currentProfileData.name,
+                gender = stringResource(currentProfileData.gender.displayName)
             )
 
             // Body Statistics
             BodyStatisticsCard(
-                age = currentProfileData.age,
+                age = ChronoUnit.YEARS.between(LocalDate.ofEpochDay(currentProfileData.birthDate), LocalDate.now()).toInt(),
                 weight = "%.2f".format(currentWeight) + " kg",
                 height = currentProfileData.height.toString() + " cm",
-                bodyFat = "15%"
+                bmi = "%.2f".format(currentWeight / (currentProfileData.height / 100.0).pow(2))
             )
 
             LinkedDevicesCard(navController)
@@ -95,7 +99,7 @@ fun ProfileScreen(navController: NavController) {
 }
 
 @Composable
-fun ProfileHeader(profilePicture: Painter, name: String) {
+fun ProfileHeader(profilePicture: Painter, name: String, gender: String) {
     Card(
         modifier = Modifier,
         colors = CardDefaults.cardColors(
@@ -108,7 +112,7 @@ fun ProfileHeader(profilePicture: Painter, name: String) {
                 .padding(16.dp)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Icon(
                 painter = profilePicture,
@@ -119,12 +123,17 @@ fun ProfileHeader(profilePicture: Painter, name: String) {
                 text = name,
                 style = MaterialTheme.typography.titleLarge
             )
+            Text(
+                text = gender,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSecondary
+            )
         }
     }
 }
 
 @Composable
-fun BodyStatisticsCard(age: Int, weight: String, height: String, bodyFat: String) {
+fun BodyStatisticsCard(age: Int, weight: String, height: String, bmi: String) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -153,8 +162,8 @@ fun BodyStatisticsCard(age: Int, weight: String, height: String, bodyFat: String
                 modifier = Modifier.weight(1f)
             )
             FitTrackTitleDescriptionCard(
-                title = stringResource(R.string.body_fat),
-                description = bodyFat,
+                title = stringResource(R.string.bmi),
+                description = bmi,
                 modifier = Modifier.weight(1f)
             )
         }

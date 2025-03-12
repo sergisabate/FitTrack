@@ -48,10 +48,12 @@ import com.sergisabate.fittrack.data.viewmodels.ExerciseRoutinesViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
 import com.sergisabate.fittrack.ui.components.FitTrackTitleDescriptionCard
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import java.time.temporal.ChronoUnit
 import java.util.Locale
 import kotlin.math.roundToInt
 
@@ -79,7 +81,8 @@ fun GenerateExerciseRoutineScreen(navController: NavHostController) {
         userMessageFormat,
         preferences.replace(Regex("[^a-zA-Z0-9,;\\s]"), ""),
         "${locale.language}-${locale.country}",
-        profileData.age,
+        stringResource(profileData.gender.displayName),
+        ChronoUnit.YEARS.between(LocalDate.ofEpochDay(profileData.birthDate), LocalDate.now()).toInt(),
         currentWeight.roundToInt(),
         profileData.height,
         LocalDateTime.now(ZoneId.systemDefault()).toString()
