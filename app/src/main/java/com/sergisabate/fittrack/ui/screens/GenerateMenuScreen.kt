@@ -48,6 +48,9 @@ import com.sergisabate.fittrack.data.viewmodels.MenusViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
 import com.sergisabate.fittrack.ui.components.FitTrackTitleDescriptionCard
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -141,8 +144,10 @@ fun GenerateMenuScreen(navController: NavHostController) {
                                     userMessage = userMessage
                                 ) { newMenu ->
                                     if (newMenu.isEmpty()){
-                                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-                                        isLoading = false
+                                        CoroutineScope(Dispatchers.Main).launch {
+                                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                                            isLoading = false
+                                        }
                                     }
                                     else{
                                         menusViewModel.setMenuJson(

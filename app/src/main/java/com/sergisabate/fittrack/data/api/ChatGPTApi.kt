@@ -1,6 +1,7 @@
 package com.sergisabate.fittrack.data.api
 
 import com.google.gson.annotations.SerializedName
+import com.sergisabate.fittrack.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -11,14 +12,12 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 import java.util.concurrent.TimeUnit
 
-const val API_KEY = "REDACTED_OPENAI_KEY"
-
-class AuthInterceptor(private val apiKey: String) : Interceptor {
+class AuthInterceptor() : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         val requestBuilder = original.newBuilder()
             .header("Content-Type", "application/json")
-            .header("Authorization", "Bearer $apiKey")
+            .header("Authorization", "Bearer ${BuildConfig.OPENAI_API_KEY}")
         val request = requestBuilder.build()
         return chain.proceed(request)
     }
@@ -37,7 +36,7 @@ data class Choice(val message: Message)
 data class Message(val role: String, val content: String)
 
 val client: OkHttpClient = OkHttpClient.Builder()
-    .addInterceptor(AuthInterceptor(API_KEY))
+    .addInterceptor(AuthInterceptor())
     .connectTimeout(30, TimeUnit.SECONDS)
     .readTimeout(60, TimeUnit.SECONDS)
     .writeTimeout(60, TimeUnit.SECONDS)
@@ -55,4 +54,3 @@ interface ChatGPTApi {
 }
 
 val chatGPTApi: ChatGPTApi = retrofit.create(ChatGPTApi::class.java)
-

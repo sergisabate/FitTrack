@@ -3,7 +3,6 @@ package com.sergisabate.fittrack.data.api
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,19 +35,14 @@ fun getGPTContent(
 
     CoroutineScope(Dispatchers.IO).launch {
         try {
-            Log.d("ChatGPT", "Request: $request")
             val response = chatGPTApi.getChatGPTResponse(request).execute()
-            Log.d("ChatGPT", "Response: $response")
             if (response.isSuccessful) {
                 val menu = response.body()?.choices?.get(0)?.message?.content ?: ""
-                Log.d("ChatGPT", "Menu: $menu")
                 onResult(menu)
             } else {
-                Log.e("ChatGPT", "Error en la respuesta de la API: ${response.message()}")
                 onResult("")
             }
-        } catch (e: Exception) {
-            Log.e("ChatGPT", "Error al realizar la petición: ${e.message}")
+        } catch (_: Exception) {
             onResult("")
         }
     }
