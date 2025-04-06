@@ -1,9 +1,5 @@
 package com.sergisabate.fittrack.ui.components
 
-import android.app.Activity
-import android.content.res.Configuration
-import android.os.Build
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -19,21 +15,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import com.sergisabate.fittrack.ui.navigation.currentRoute
 import com.sergisabate.fittrack.ui.navigation.getBottomItems
 import com.sergisabate.fittrack.ui.navigation.isCurrentRouteBottom
-import com.sergisabate.fittrack.ui.theme.LightColorScheme
 
 @Composable
 fun FitTrackBottomAppBar(navController: NavHostController) {
     val isCurrentRouteBottom = isCurrentRouteBottom(navController)
+    val currentRoute = currentRoute(navController)
 
     if (isCurrentRouteBottom) {
         BottomAppBar(
@@ -42,22 +34,28 @@ fun FitTrackBottomAppBar(navController: NavHostController) {
             containerColor = MaterialTheme.colorScheme.secondary
         ) {
             getBottomItems().forEach { item ->
-                val isSelected = currentRoute(navController) == item.route
+                val isSelected = currentRoute == item.route
+
                 NavigationBarItem(
                     selected = isSelected,
-                    onClick = { if (!isSelected) navController.navigate(item.route) },
+                    onClick = {
+                        if (!isSelected) {
+                            navController.navigate(item.route) {
+                                popUpTo("Home")
+                                launchSingleTop = true
+                            }
+                        }
+                    },
                     icon = { BottomNavItemContent(item.icon, item.title) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.secondary,
                         unselectedIconColor = MaterialTheme.colorScheme.onSecondary,
-                        indicatorColor = MaterialTheme.colorScheme.background,
+                        indicatorColor = MaterialTheme.colorScheme.background
                     )
                 )
             }
         }
     }
-
-    AdjustNavigationBarColor(isCurrentRouteBottom)
 }
 
 @Composable
@@ -74,42 +72,5 @@ private fun BottomNavItemContent(icon: ImageVector, title: String) {
             text = title,
             style = MaterialTheme.typography.labelLarge
         )
-    }
-}
-
-@Composable
-private fun AdjustNavigationBarColor(
-    isCurrentRouteBottom: Boolean
-) {
-    val view = LocalView.current
-    val activity = LocalActivity.current as Activity
-    val window = activity.window
-    val insetsController = WindowCompat.getInsetsController(window, view)
-
-    val isPortrait = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT
-    val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
-    val isOldVersion = Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM
-    val isVanillaIceCream = Build.VERSION.SDK_INT == Build.VERSION_CODES.VANILLA_ICE_CREAM
-
-    if (isCurrentRouteBottom) {
-        if (isOldVersion) {
-            window.navigationBarColor = if (isPortrait) {
-                MaterialTheme.colorScheme.secondary.toArgb()
-            } else {
-                MaterialTheme.colorScheme.background.toArgb()
-            }
-        }
-
-        insetsController.isAppearanceLightNavigationBars = if (isVanillaIceCream && isLandscape) {
-            MaterialTheme.colorScheme == LightColorScheme
-        } else {
-            false
-        }
-    } else if (!view.isInEditMode) {
-        if (isOldVersion) {
-            window.navigationBarColor = MaterialTheme.colorScheme.background.toArgb()
-        }
-
-        insetsController.isAppearanceLightNavigationBars = MaterialTheme.colorScheme == LightColorScheme
     }
 }
