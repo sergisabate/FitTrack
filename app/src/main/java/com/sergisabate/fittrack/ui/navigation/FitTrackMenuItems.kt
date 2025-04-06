@@ -1,6 +1,7 @@
 package com.sergisabate.fittrack.ui.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Face
@@ -27,6 +28,7 @@ import com.sergisabate.fittrack.ui.screens.AIToolsScreen
 import com.sergisabate.fittrack.ui.screens.AboutScreen
 import com.sergisabate.fittrack.ui.screens.BluetoothScreen
 import com.sergisabate.fittrack.ui.screens.EditProfileScreen
+import com.sergisabate.fittrack.ui.screens.EditWeightsScreen
 import com.sergisabate.fittrack.ui.screens.GenerateExerciseRoutineScreen
 import com.sergisabate.fittrack.ui.screens.GenerateMenuScreen
 import com.sergisabate.fittrack.ui.screens.HomeScreen
@@ -112,6 +114,12 @@ fun getSettingsItems(): List<NavItem> {
             title = stringResource(R.string.edit_profile),
             route = "EditProfile",
             screen = { EditProfileScreen() }
+        ),
+        NavItem(
+            icon = Icons.Default.AddCircle,
+            title = stringResource(R.string.edit_weights),
+            route = "EditWeights",
+            screen = { EditWeightsScreen() }
         ),
         NavItem(
             icon = Icons.Default.Info,

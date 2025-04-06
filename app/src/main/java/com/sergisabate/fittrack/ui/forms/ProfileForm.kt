@@ -1,9 +1,11 @@
 package com.sergisabate.fittrack.ui.forms
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -72,7 +74,7 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
             style = MaterialTheme.typography.titleMedium
         )},
         placeholder = { Text(
-            text = "Ejemplo: Andrea García Arias",
+            text = stringResource(R.string.placeholder_name_example),
             style = MaterialTheme.typography.titleMedium
         )},
         modifier = Modifier.fillMaxWidth(),
@@ -100,7 +102,7 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
             style = MaterialTheme.typography.titleMedium
         )},
         placeholder = { Text(
-            text = "Ejemplo: 80",
+            text = stringResource(R.string.placeholder_weight_example),
             style = MaterialTheme.typography.titleMedium
         )},
         keyboardOptions = KeyboardOptions.Default.copy(
@@ -118,7 +120,7 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
         supportingText = {
             if (weight.isNotEmpty() && !weightIsValid(weight)) {
                 Text(
-                    text = "Peso no válido",
+                    text = stringResource(R.string.invalid_weight),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -134,7 +136,7 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
             style = MaterialTheme.typography.titleMedium
         )},
         placeholder = { Text(
-            text = "Ejemplo: 170",
+            text = stringResource(R.string.placeholder_height_example),
             style = MaterialTheme.typography.titleMedium
         )},
         keyboardOptions = KeyboardOptions.Default.copy(
@@ -152,7 +154,7 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
         supportingText = {
             if (height.isNotEmpty() && !heightIsValid(height)) {
                 Text(
-                    text = "Altura no válida",
+                    text = stringResource(R.string.invalid_height),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -190,7 +192,7 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatePickerField(selectedDate: Long?, onDateSelected: (Long?) -> Unit) {
+private fun DatePickerField(selectedDate: Long?, onDateSelected: (Long?) -> Unit) {
     val focusManager = LocalFocusManager.current
     var showModal by remember { mutableStateOf(false) }
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -208,8 +210,8 @@ fun DatePickerField(selectedDate: Long?, onDateSelected: (Long?) -> Unit) {
     OutlinedTextField(
         value = selectedDate?.toFormattedDate() ?: "",
         onValueChange = {},
-        label = { Text("Fecha de nacimiento", style = MaterialTheme.typography.titleMedium) },
-        placeholder = { Text("Ejemplo: 24/06/1987", style = MaterialTheme.typography.titleMedium) },
+        label = { Text(stringResource(R.string.date_of_birth), style = MaterialTheme.typography.titleMedium) },
+        placeholder = { Text(stringResource(R.string.placeholder_date_example), style = MaterialTheme.typography.titleMedium) },
         readOnly = true,
         textStyle = MaterialTheme.typography.titleMedium,
         singleLine = true,
@@ -224,6 +226,8 @@ fun DatePickerField(selectedDate: Long?, onDateSelected: (Long?) -> Unit) {
     )
 
     if (showModal) {
+        val datePickerTitlePadding = PaddingValues(start = 24.dp, end = 12.dp, top = 16.dp)
+
         DatePickerDialog(
             onDismissRequest = { showModal = false },
             confirmButton = {
@@ -231,17 +235,24 @@ fun DatePickerField(selectedDate: Long?, onDateSelected: (Long?) -> Unit) {
                     onDateSelected(datePickerState.selectedDateMillis?.toEpochDay())
                     showModal = false
                 }) {
-                    Text("Aceptar")
+                    Text(stringResource(R.string.accept))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showModal = false }) {
-                    Text("Cancelar")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         ) {
             DatePicker(
                 state = datePickerState,
+                title = {
+                    Text(
+                        text = stringResource(R.string.date_of_birth),
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(datePickerTitlePadding)
+                    )
+                },
                 showModeToggle = true,
                 colors = DatePickerDefaults.colors(
                     currentYearContentColor = DatePickerDefaults.colors().disabledYearContentColor,
@@ -253,10 +264,10 @@ fun DatePickerField(selectedDate: Long?, onDateSelected: (Long?) -> Unit) {
     }
 }
 
-fun LocalDate.toEpochMilli(): Long = this.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
-fun Long.toEpochDay(): Long = Instant.ofEpochMilli(this).atZone(ZoneOffset.UTC).toLocalDate().toEpochDay()
-fun Long.toUtcMillis(): Long = LocalDate.ofEpochDay(this).toEpochMilli()
-fun Long.toFormattedDate(): String {
+private fun LocalDate.toEpochMilli(): Long = this.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+private fun Long.toEpochDay(): Long = Instant.ofEpochMilli(this).atZone(ZoneOffset.UTC).toLocalDate().toEpochDay()
+private fun Long.toUtcMillis(): Long = LocalDate.ofEpochDay(this).toEpochMilli()
+private fun Long.toFormattedDate(): String {
     val locale = Locale.getDefault()
     val pattern = when (locale.language) {
         "en" -> "MM/dd/yyyy"
@@ -282,8 +293,7 @@ fun GenderDropdownField(
             onValueChange = {},
             label = {
                 Text(
-                    text = "Género",
-                    //text = stringResource(R.string.gender),
+                    text = stringResource(R.string.gender),
                     style = MaterialTheme.typography.titleMedium
                 )},
             readOnly = true,
@@ -330,7 +340,7 @@ private fun isValidForm(name: String, birthday: Long?, gender: GenderOption?, we
 
 
 @OptIn(ExperimentalMaterial3Api::class)
-class FutureSelectableDates : SelectableDates {
+private class FutureSelectableDates : SelectableDates {
     private val minSelectableDate: Long
     private val minSelectableYear: Int
 

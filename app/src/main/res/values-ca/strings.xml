@@ -85,4 +85,22 @@
     <string name="male">Home</string>
     <string name="female">Dona</string>
     <string name="other">Altre</string>
+    <string name="edit_weights">Editar Pesos</string>
+    <string name="placeholder_name_example">Exemple: Andrea García Arias</string>
+    <string name="placeholder_weight_example">Exemple: 80</string>
+    <string name="invalid_weight">Pes no vàlid</string>
+    <string name="placeholder_height_example">Exemple: 170</string>
+    <string name="invalid_height">Alçada no vàlida</string>
+    <string name="date_of_birth">Data de naixement</string>
+    <string name="placeholder_date_example">Exemple: 24/06/1987</string>
+    <string name="accept">Acceptar</string>
+    <string name="cancel">Cancel·lar</string>
+    <string name="gender">Genère</string>
+    <string name="weight_added">Pes afegit</string>
+    <string name="error_saving_weight">Error en desar el pes</string>
+    <string name="add_weight">Afegir pes</string>
+    <string name="last_weight_cannot_be_deleted">No es pot eliminar l\'últim pes</string>
+    <string name="weight_deleted">Pes eliminat</string>
+    <string name="error_deleting_weight">Error en eliminar el pes</string>
+    <string name="date">Data</string>
 </resources>
