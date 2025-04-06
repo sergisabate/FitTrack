@@ -22,21 +22,29 @@ data class WeightRecord(
 
 class WeightsViewModel(private val weightsRepository: WeightsRepository) : ViewModel() {
 
+    private val _weightHistory = MutableStateFlow<MutableList<WeightRecord>>(mutableListOf())
+    val weightHistory: StateFlow<MutableList<WeightRecord>> = _weightHistory
+
+    init {
+        getWeightRecords()
+    }
+
     fun getCurrentWeight(): StateFlow<Float> {
         return weightsRepository.currentWeightFlow
     }
 
-    fun getWeightHistory(): StateFlow<MutableList<WeightRecord>> {
+    fun getWeightRecords(): StateFlow<MutableList<WeightRecord>> {
         val currentWeightHistoryJson = weightsRepository.weightHistoryFlow.value
         val weightHistoryList: MutableList<WeightRecord> = if (currentWeightHistoryJson.isNotEmpty()) {
             Gson().fromJson(currentWeightHistoryJson, object : TypeToken<List<WeightRecord>>() {}.type)
         } else {
             mutableListOf()
         }
+        _weightHistory.value = weightHistoryList
         return MutableStateFlow(weightHistoryList)
     }
 
-    fun addOrUpdateWeightRecord(
+    fun addOrUpdateLastWeightRecord(
         weight: Float,
         onSuccess: (() -> Unit)? = null,
         onError: ((Throwable) -> Unit)? = null
@@ -76,8 +84,83 @@ class WeightsViewModel(private val weightsRepository: WeightsRepository) : ViewM
                 val updatedWeightHistoryJson = Gson().toJson(weightHistoryList)
                 weightsRepository.setWeightHistory(updatedWeightHistoryJson)
 
-                weightsRepository.setCurrentWeight(weight)
-                weightsRepository.setLastDate(today)
+                val lastWeightRecord = weightHistoryList.last()
+                weightsRepository.setCurrentWeight(lastWeightRecord.weight)
+                weightsRepository.setLastDate(lastWeightRecord.date)
+
+                _weightHistory.value = weightHistoryList
+
+                onSuccess?.invoke()
+            } catch (e: Exception) {
+                onError?.invoke(e)
+            }
+        }
+    }
+
+    fun addOrUpdateWeightRecord(
+        weight: Float,
+        date: Long,
+        onSuccess: (() -> Unit)? = null,
+        onError: ((Throwable) -> Unit)? = null
+    ) {
+        viewModelScope.launch {
+            try {
+                val currentWeightHistoryJson = weightsRepository.weightHistoryFlow.value
+                val weightHistoryList: MutableList<WeightRecord> = if (currentWeightHistoryJson.isNotEmpty()) {
+                    Gson().fromJson(currentWeightHistoryJson, object : TypeToken<List<WeightRecord>>() {}.type)
+                } else {
+                    mutableListOf()
+                }
+
+                val index = weightHistoryList.indexOfFirst { it.date == date }
+                if (index != -1) {
+                    weightHistoryList[index] = WeightRecord(weight, date)
+                } else {
+                    val newRecord = WeightRecord(weight, date)
+                    weightHistoryList.add(newRecord)
+                    weightHistoryList.sortBy { it.date }
+                }
+
+                val updatedWeightHistoryJson = Gson().toJson(weightHistoryList)
+                weightsRepository.setWeightHistory(updatedWeightHistoryJson)
+
+                val lastWeightRecord = weightHistoryList.last()
+                weightsRepository.setCurrentWeight(lastWeightRecord.weight)
+                weightsRepository.setLastDate(lastWeightRecord.date)
+
+                _weightHistory.value = weightHistoryList
+
+                onSuccess?.invoke()
+            } catch (e: Exception) {
+                onError?.invoke(e)
+            }
+        }
+    }
+
+    fun deleteWeightRecord(
+        weightRecord: WeightRecord,
+        onSuccess: (() -> Unit)? = null,
+        onError: ((Throwable) -> Unit)? = null
+    ) {
+        viewModelScope.launch {
+            try {
+                val currentWeightHistoryJson = weightsRepository.weightHistoryFlow.value
+                val weightHistoryList: MutableList<WeightRecord> = if (currentWeightHistoryJson.isNotEmpty()) {
+                    Gson().fromJson(currentWeightHistoryJson, object : TypeToken<List<WeightRecord>>() {}.type)
+                } else {
+                    mutableListOf()
+                }
+
+                weightHistoryList.remove(weightRecord)
+
+                val updatedWeightHistoryJson = Gson().toJson(weightHistoryList)
+                weightsRepository.setWeightHistory(updatedWeightHistoryJson)
+
+                val lastWeightRecord = weightHistoryList.last()
+                weightsRepository.setCurrentWeight(lastWeightRecord.weight)
+                weightsRepository.setLastDate(lastWeightRecord.date)
+
+                _weightHistory.value = weightHistoryList
 
                 onSuccess?.invoke()
             } catch (e: Exception) {

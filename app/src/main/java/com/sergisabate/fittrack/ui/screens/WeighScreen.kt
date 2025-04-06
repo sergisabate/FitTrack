@@ -276,7 +276,7 @@ fun ConnectDeviceScreen(device: BluetoothDevice, navController: NavHostControlle
                 ) {
                     Button(
                         onClick = { if (isStabilized) {
-                            weightsViewModel.addOrUpdateWeightRecord(
+                            weightsViewModel.addOrUpdateLastWeightRecord(
                                 weight,
                                 onSuccess = { navController.popBackStack()},
                                 onError = { Toast.makeText(context, "No se ha podido guardar el peso", Toast.LENGTH_SHORT).show()}

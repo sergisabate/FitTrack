@@ -70,7 +70,7 @@ fun EditProfileScreen() {
                 profileViewModel.setProfileData(
                     profileData,
                     onSuccess = {
-                        weightsViewModel.addOrUpdateWeightRecord(
+                        weightsViewModel.addOrUpdateLastWeightRecord(
                             weight,
                             onSuccess = {
                                 snackbarMessage = successMessage

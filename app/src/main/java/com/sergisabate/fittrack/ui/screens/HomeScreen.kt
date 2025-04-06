@@ -198,7 +198,7 @@ fun HomeScreen() {
 @Composable
 private fun WeightControlCard() {
     val weightsViewModel: WeightsViewModel = getWeightsViewModel()
-    val weightRecords by weightsViewModel.getWeightHistory().collectAsState()
+    val weightRecords by weightsViewModel.getWeightRecords().collectAsState()
 
     if (weightRecords.isNotEmpty()) {
         Card(
