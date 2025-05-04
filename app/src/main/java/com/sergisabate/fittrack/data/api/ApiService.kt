@@ -25,7 +25,7 @@ fun getGPTContent(
     onResult: (String) -> Unit
 ) {
     val request = ChatGPTRequest(
-        model = "gpt-4o-mini",
+        model = "gpt-4.1-mini",
         responseFormat = mapOf("type" to "json_object"),
         messages = listOf(
             Message("system", systemMessage),
