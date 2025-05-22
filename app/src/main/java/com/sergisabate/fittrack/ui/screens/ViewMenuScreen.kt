@@ -2,6 +2,7 @@ package com.sergisabate.fittrack.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,7 +45,7 @@ fun ViewMenuScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+                .padding(horizontal = 16.dp)
         ) {
             menuData.let { menu ->
                 LazyColumn {
@@ -106,7 +107,10 @@ fun MealCard(meal: Meal) {
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(8.dp))
-            .clickable { expanded = !expanded }
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) { expanded = !expanded }
     ) {
         Row(
             modifier = Modifier

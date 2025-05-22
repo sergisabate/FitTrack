@@ -18,9 +18,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -31,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -106,12 +107,14 @@ fun GenerateExerciseRoutineScreen(navController: NavHostController) {
             LazyColumn(
                 modifier = Modifier
                     .padding(innerPadding)
-                    .padding(16.dp)
+                    .padding(horizontal = 16.dp)
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 item {
-                    TextField(
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    OutlinedTextField(
                         value = preferences,
                         onValueChange = { preferences = it },
                         label = { Text(
@@ -129,6 +132,7 @@ fun GenerateExerciseRoutineScreen(navController: NavHostController) {
                         minLines = 2,
                         textStyle = MaterialTheme.typography.titleMedium,
                     )
+
                     Spacer(modifier = Modifier.height(16.dp))
 
                     val errorMessage = stringResource(id = R.string.error_saving_exercise_routine)
@@ -201,13 +205,24 @@ fun GenerateExerciseRoutineScreen(navController: NavHostController) {
                         isClickable = true
                     )
                 }
+
+                item {
+                    Spacer(modifier = Modifier)
+                }
             }
 
             if (isLoading) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background),
+                        .background(MaterialTheme.colorScheme.background)
+                        .pointerInput(Unit) {
+                            awaitPointerEventScope {
+                                while (true) {
+                                    awaitPointerEvent()
+                                }
+                            }
+                        },
                     contentAlignment = Alignment.Center
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {

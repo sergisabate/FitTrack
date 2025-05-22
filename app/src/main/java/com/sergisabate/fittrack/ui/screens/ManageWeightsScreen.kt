@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -58,139 +57,138 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun EditWeightsScreen() {
+fun ManageWeightsScreen() {
     val context = LocalContext.current
     val locale = Locale(context.resources.configuration.locales[0].language)
 
     val weightsViewModel: WeightsViewModel = getWeightsViewModel()
     val weightRecords by weightsViewModel.weightHistory.collectAsState()
-    //val weightRecords by weightsViewModel.getWeightHistory().collectAsState()
-    val weightRecordsReversed = remember(weightRecords) { weightRecords.reversed() }
 
     Scaffold { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
-        ) {
-            var weight by remember { mutableStateOf("") }
-            var date by remember { mutableStateOf<Long?>(null) }
-
-            val context = LocalContext.current
-            val weightsViewModel: WeightsViewModel = getWeightsViewModel()
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            DatePickerField(
-                selectedDate = date,
-                onDateSelected = { date = it }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            OutlinedTextField(
-                value = weight,
-                onValueChange = { weight = it },
-                label = {
-                    Text(
-                        text = stringResource(R.string.weight),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                },
-                placeholder = {
-                    Text(
-                        text = stringResource(R.string.placeholder_weight_example),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
-                ),
-                modifier = Modifier.fillMaxWidth(),
-                trailingIcon = {
-                    Text(
-                        text = "kg",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                },
-                isError = weight.isNotEmpty() && !weightIsValid(weight),
-                supportingText = {
-                    if (weight.isNotEmpty() && !weightIsValid(weight)) {
-                        Text(
-                            text = stringResource(R.string.invalid_weight),
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                    }
-                },
-                textStyle = MaterialTheme.typography.titleMedium
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            val onSuccessMessage = stringResource(R.string.weight_added)
-            val onErrorMessage = stringResource(R.string.error_saving_weight)
-            Button(
-                onClick = {
-                    val weightValue = weight.replace(",", ".").toFloatOrNull()
-                    if (isValidWeight(weight, date)) {
-                        weightsViewModel.addOrUpdateWeightRecord(
-                            weight = weightValue!!,
-                            date = date!!,
-                            onSuccess = {
-                                Toast.makeText(context, onSuccessMessage, Toast.LENGTH_SHORT).show()
-                            },
-                            onError = {
-                                Toast.makeText(context, onErrorMessage, Toast.LENGTH_SHORT).show()
-                            }
-                        )
-                    }
-                },
-                enabled = isValidWeight(weight, date),
+        Box(modifier = Modifier.fillMaxSize()) {
+            val lastWeightError = stringResource(R.string.last_weight_cannot_be_deleted)
+            val onSuccessMessage = stringResource(R.string.weight_deleted)
+            val onErrorMessage = stringResource(R.string.error_deleting_weight)
+            LazyColumn(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text(stringResource(R.string.add_weight))
-            }
+                item {
+                    var weight by remember { mutableStateOf("") }
+                    var date by remember { mutableStateOf<Long?>(null) }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                    val context = LocalContext.current
+                    val weightsViewModel: WeightsViewModel = getWeightsViewModel()
 
-            Box(modifier = Modifier.fillMaxSize()) {
-                val lastWeightError = stringResource(R.string.last_weight_cannot_be_deleted)
-                val onSuccessMessage = stringResource(R.string.weight_deleted)
-                val onErrorMessage = stringResource(R.string.error_deleting_weight)
-                LazyColumn(
-                    modifier = Modifier
-                        .padding(innerPadding)
-                        .fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    item {
-                        Spacer(modifier = Modifier)
-                    }
-                    itemsIndexed(weightRecordsReversed) { _, weightRecord ->
-                        FitTrackTitleDescriptionClickableIconCard(
-                            title = "%.2f kg".format(weightRecord.weight),
-                            description = dateFormatter(weightRecord.date, locale),
-                            icon = Icons.Default.Delete,
-                            onClick = {
-                                if (weightRecordsReversed.size == 1) {
-                                    Toast.makeText(context, lastWeightError, Toast.LENGTH_SHORT).show()
-                                } else {
-                                    weightsViewModel.deleteWeightRecord(
-                                        weightRecord = weightRecord,
-                                        onSuccess = {
-                                            Toast.makeText(context, onSuccessMessage, Toast.LENGTH_SHORT).show()
-                                        },
-                                        onError = {
-                                            Toast.makeText(context, onErrorMessage, Toast.LENGTH_SHORT).show()
-                                        }
-                                    )
-                                }
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    DatePickerField(
+                        selectedDate = date,
+                        onDateSelected = { date = it }
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    OutlinedTextField(
+                        value = weight,
+                        onValueChange = { weight = it },
+                        label = {
+                            Text(
+                                text = stringResource(R.string.weight),
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        },
+                        placeholder = {
+                            Text(
+                                text = stringResource(R.string.placeholder_weight_example),
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        },
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Done
+                        ),
+                        modifier = Modifier.fillMaxWidth(),
+                        trailingIcon = {
+                            Text(
+                                text = "kg",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        },
+                        isError = weight.isNotEmpty() && !weightIsValid(weight),
+                        supportingText = {
+                            if (weight.isNotEmpty() && !weightIsValid(weight)) {
+                                Text(
+                                    text = stringResource(R.string.invalid_weight),
+                                    style = MaterialTheme.typography.titleMedium
+                                )
                             }
-                        )
+                        },
+                        textStyle = MaterialTheme.typography.titleMedium
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    val onSuccessMessage = stringResource(R.string.weight_added)
+                    val onErrorMessage = stringResource(R.string.error_saving_weight)
+
+                    Button(
+                        onClick = {
+                            val weightValue = weight.replace(",", ".").toFloatOrNull()
+                            if (isValidWeight(weight, date)) {
+                                weightsViewModel.addOrUpdateWeightRecord(
+                                    weight = weightValue!!,
+                                    date = date!!,
+                                    onSuccess = {
+                                        Toast.makeText(context, onSuccessMessage, Toast.LENGTH_SHORT).show()
+                                    },
+                                    onError = {
+                                        Toast.makeText(context, onErrorMessage, Toast.LENGTH_SHORT).show()
+                                    }
+                                )
+                            }
+                        },
+                        enabled = isValidWeight(weight, date),
+                    ) {
+                        Text(stringResource(R.string.add_weight))
                     }
-                    item {
-                        Spacer(modifier = Modifier)
-                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = stringResource(id = R.string.total_weights_saved, weightRecords.size),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                itemsIndexed(weightRecords.reversed()) { _, weightRecord ->
+                    FitTrackTitleDescriptionClickableIconCard(
+                        title = "%.2f kg".format(weightRecord.weight),
+                        description = dateFormatter(weightRecord.date, locale),
+                        icon = Icons.Default.Delete,
+                        onClick = {
+                            if (weightRecords.size == 1) {
+                                Toast.makeText(context, lastWeightError, Toast.LENGTH_SHORT).show()
+                            } else {
+                                weightsViewModel.deleteWeightRecord(
+                                    weightRecord = weightRecord,
+                                    onSuccess = {
+                                        Toast.makeText(context, onSuccessMessage, Toast.LENGTH_SHORT).show()
+                                    },
+                                    onError = {
+                                        Toast.makeText(context, onErrorMessage, Toast.LENGTH_SHORT).show()
+                                    }
+                                )
+                            }
+                        }
+                    )
+                }
+
+                item {
+                    Spacer(modifier = Modifier)
                 }
             }
         }
