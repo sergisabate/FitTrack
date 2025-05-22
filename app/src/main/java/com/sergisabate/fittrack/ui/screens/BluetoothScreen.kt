@@ -266,7 +266,6 @@ private fun ClaimPermissions(navController: NavHostController) {
 
     val requestPermissionLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            // Verifica si alguno de los permisos fue denegado
             getBack = permissions.values.any { !it }
 
             if (getBack) {
@@ -279,7 +278,6 @@ private fun ClaimPermissions(navController: NavHostController) {
             }
         }
 
-    // Check and request permissions if necessary
     LaunchedEffect(Unit) {
         val permissionsNeeded = listOf(
             bluetoothConnectPermission,
@@ -314,10 +312,8 @@ fun RequestEnableBluetooth(onBluetoothEnabled: () -> Unit, onBluetoothDenied: ()
 
     val enableBluetoothLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            // El usuario habilitó el Bluetooth
             onBluetoothEnabled()
         } else {
-            // El usuario no habilitó el Bluetooth
             onBluetoothDenied()
         }
     }
@@ -325,11 +321,10 @@ fun RequestEnableBluetooth(onBluetoothEnabled: () -> Unit, onBluetoothDenied: ()
     LaunchedEffect(Unit) {
         val bluetoothAdapter: BluetoothAdapter? = getSystemService(context, BluetoothManager::class.java)?.adapter
         if (bluetoothAdapter?.isEnabled == false) {
-            // Solicitar que el usuario habilite Bluetooth
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             enableBluetoothLauncher.launch(enableBtIntent)
         } else {
-            onBluetoothEnabled() // Bluetooth ya estaba habilitado
+            onBluetoothEnabled()
         }
     }
 }

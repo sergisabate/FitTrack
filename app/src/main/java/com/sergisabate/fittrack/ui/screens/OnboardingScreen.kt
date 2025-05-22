@@ -61,7 +61,6 @@ fun OnboardingScreen(modifier: Modifier, onSubmit: (String, Long, GenderOption, 
     var showPrompt by remember { mutableStateOf(false) }
     var skipAnimation by remember { mutableStateOf(false) }
 
-    // Control del orden de aparición de los textos
     LaunchedEffect(Unit) {
         delay(1500)
         showWelcome = true

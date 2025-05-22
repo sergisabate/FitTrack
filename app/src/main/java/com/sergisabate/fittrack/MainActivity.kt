@@ -52,7 +52,6 @@ class MainActivity : ComponentActivity() {
             Locale.setDefault(savedLocale)
         }
 
-        // Mantiene la splash screen visible hasta que se complete la inicialización
         var keepSplashScreenVisible = true
         val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition { keepSplashScreenVisible }
@@ -62,20 +61,16 @@ class MainActivity : ComponentActivity() {
                 val profileViewModel: ProfileViewModel = getProfileViewModel()
                 val currentProfileData by profileViewModel.getProfileData().collectAsState()
 
-                // Controla si se ha completado el onboarding
                 var isOnboardingComplete by remember { mutableStateOf(false) }
                 val scope = rememberCoroutineScope()
 
-                // Estado para manejar el Snackbar
                 val snackbarHostState = remember { SnackbarHostState() }
                 var showErrorSnackbar by remember { mutableStateOf(false) }
 
-                // Desactiva la splash screen cuando lo anterior esté listo
                 LaunchedEffect(currentProfileData) {
                     keepSplashScreenVisible = false
                 }
 
-                // Mostrar el Snackbar si hay un error
                 LaunchedEffect(showErrorSnackbar) {
                     if (showErrorSnackbar) {
                         snackbarHostState.showSnackbar("Error al guardar los datos del perfil")
@@ -86,18 +81,15 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
                 ) { innerPadding ->
-                    // Verifica si se debe mostrar el onboarding o la pantalla principal
                     if (currentProfileData != ProfileData() || isOnboardingComplete) {
                         MainScreen(modifier = Modifier.consumeWindowInsets(innerPadding))
                     } else {
-                        // Obtiene el ViewModel de perfil
                         val weightsViewModel: WeightsViewModel = getWeightsViewModel()
 
                         OnboardingScreen(
                             modifier = Modifier.consumeWindowInsets(innerPadding)
                         ) { name, birthdate, gender, weight, height ->
                             scope.launch {
-                                // Guarda los datos del usuario y actualiza el estado
                                 val profileData = ProfileData(name, birthdate, gender, height)
 
                                 profileViewModel.setProfileData(

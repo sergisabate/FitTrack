@@ -177,38 +177,31 @@ private fun BluetoothEnabler() {
 fun ConnectDeviceScreen(device: BluetoothDevice, navController: NavHostController) {
     val context = LocalContext.current
 
-    // Estado de la conexión del dispositivo Bluetooth
     var connectionState by remember(device) {
         mutableStateOf<DeviceConnectionState?>(null)
     }
 
-    // Obtener el servicio específico
     val service = remember(connectionState?.services) {
         connectionState?.services?.find { it.uuid == SERVICE_UUID }
     }
 
-    // Obtener la característica específica del servicio
     val characteristic = remember(service) {
         service?.getCharacteristic(CHARACTERISTIC_UUID)
     }
 
     val weightsViewModel: WeightsViewModel = getWeightsViewModel()
 
-    // Estado de la habilitación de notificaciones y la recepción de datos
     var notificationEnabled by remember { mutableStateOf(false) }
     var blockDataReception by remember { mutableStateOf(false) }
 
-    // Efecto para gestionar el estado de la conexión y actualizar la UI
     BLEConnectEffect(device = device, blockDataReception = blockDataReception) {
         connectionState = it
     }
 
-    // Descubrir servicios cuando se monta el Composable
     LaunchedEffect(connectionState?.gatt) {
         connectionState?.gatt?.discoverServices()
     }
 
-    // Habilitar notificaciones para la característica específica si es necesario
     LaunchedEffect(characteristic, notificationEnabled) {
         if (connectionState?.gatt != null && !notificationEnabled) {
             if (connectionState?.gatt?.services.isNullOrEmpty()) {
@@ -220,7 +213,6 @@ fun ConnectDeviceScreen(device: BluetoothDevice, navController: NavHostControlle
         }
     }
 
-    // Reconectar si la conexión se pierde
     LaunchedEffect(connectionState?.connectionState) {
         if (connectionState?.connectionState == BluetoothProfile.STATE_DISCONNECTED) {
             connectionState?.gatt?.connect()
@@ -244,10 +236,8 @@ fun ConnectDeviceScreen(device: BluetoothDevice, navController: NavHostControlle
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // Este Spacer empuja el contenido hacia el centro
             Spacer(modifier = Modifier.weight(1f))
 
-            // El peso se centra en la pantalla
             val weightString = "%.2f".format(weight)
             Text(
                 text = "$weightString kg",
@@ -255,10 +245,8 @@ fun ConnectDeviceScreen(device: BluetoothDevice, navController: NavHostControlle
                 color = if (isStabilized) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary
             )
 
-            // Este Spacer empuja el contenido hacia abajo
             Spacer(modifier = Modifier.weight(1f))
 
-            // El contenido inferior
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -288,7 +276,9 @@ fun ConnectDeviceScreen(device: BluetoothDevice, navController: NavHostControlle
                     ) {
                         Text(text = "Sí", style = MaterialTheme.typography.titleLarge)
                     }
+
                     Spacer(modifier = Modifier.width(16.dp))
+
                     Button(
                         onClick = { if (isStabilized) {
                             blockDataReception = false
@@ -318,14 +308,11 @@ private fun BLEConnectEffect(
     val currentOnStateChange by rememberUpdatedState(onStateChange)
     val currentBlockDataReception by rememberUpdatedState(blockDataReception)
 
-    // Keep the current connection state
     var state by remember {
         mutableStateOf(DeviceConnectionState.None)
     }
 
     DisposableEffect(lifecycleOwner, device) {
-        // This callback will notify us when things change in the GATT connection so we can update
-        // our state
         val callback = object : BluetoothGattCallback() {
             override fun onConnectionStateChange(
                 gatt: BluetoothGatt,
@@ -355,11 +342,10 @@ private fun BLEConnectEffect(
             ) {
                 super.onCharacteristicChanged(gatt, characteristic, value)
 
-                // Bloquear la recepción de nuevos datos si isStabilized es true
                 Log.d("BLEConnectEffect", "blockDataReception: $currentBlockDataReception")
                 if (currentBlockDataReception) return
 
-                if (value.size != 10) return  // Salir si el tamaño de value no es el esperado
+                if (value.size != 10) return
 
                 val record = parseBytes(value)
 

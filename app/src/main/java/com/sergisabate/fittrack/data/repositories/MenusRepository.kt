@@ -26,6 +26,7 @@ private const val MENU4_JSON_KEY = "menu4_json"
 private const val MENU5_JSON_KEY = "menu5_json"
 private const val TOTAL_MENUS_KEY = "total_menus"
 private const val MENU_SELECTED_KEY = "menu_selected"
+
 private const val DEFAULT_STRING = ""
 private const val DEFAULT_INT = 0
 
