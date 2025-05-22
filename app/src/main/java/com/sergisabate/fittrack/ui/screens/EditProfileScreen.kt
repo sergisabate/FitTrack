@@ -17,28 +17,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sergisabate.fittrack.R
+import com.sergisabate.fittrack.data.helpers.getProfileViewModel
 import com.sergisabate.fittrack.data.helpers.getWeightsViewModel
-import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
 import com.sergisabate.fittrack.data.viewmodels.GenderOption
 import com.sergisabate.fittrack.data.viewmodels.ProfileData
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
-import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
 import com.sergisabate.fittrack.ui.forms.ProfileForm
 
 @Composable
 fun EditProfileScreen() {
-    val context = LocalContext.current
-    val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
-    val profileViewModel: ProfileViewModel = viewModel(
-        factory = ProfileViewModelFactory(userPreferencesRepository)
-    )
+    val profileViewModel: ProfileViewModel = getProfileViewModel()
     val weightsViewModel: WeightsViewModel = getWeightsViewModel()
 
     val currentWeight by weightsViewModel.getCurrentWeight().collectAsStateWithLifecycle()

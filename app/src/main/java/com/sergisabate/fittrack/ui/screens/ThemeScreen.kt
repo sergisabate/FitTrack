@@ -19,24 +19,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sergisabate.fittrack.R
-import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
+import com.sergisabate.fittrack.data.helpers.getPreferencesViewModel
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
-import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 import com.sergisabate.fittrack.ui.theme.ThemeOption
 
 @Composable
 fun ThemeScreen() {
-    val context = LocalContext.current
-    val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
-    val preferencesViewModel: PreferencesViewModel = viewModel(
-        factory = PreferencesViewModelFactory(userPreferencesRepository)
-    )
-
+    val preferencesViewModel: PreferencesViewModel = getPreferencesViewModel()
     val themeSetting by preferencesViewModel.getDarkTheme().collectAsState()
     val initialOption = enumValues<ThemeOption>().getOrElse(themeSetting) { ThemeOption.SystemDefault }
 

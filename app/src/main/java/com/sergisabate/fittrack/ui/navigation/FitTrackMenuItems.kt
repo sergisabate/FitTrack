@@ -18,12 +18,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.sergisabate.fittrack.R
-import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
+import com.sergisabate.fittrack.data.helpers.getPreferencesViewModel
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
-import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModelFactory
 import com.sergisabate.fittrack.ui.screens.AIToolsScreen
 import com.sergisabate.fittrack.ui.screens.AboutScreen
 import com.sergisabate.fittrack.ui.screens.BluetoothScreen
@@ -186,11 +184,7 @@ fun getBluetoothItems(): List<NavItem> {
 
 @Composable
 fun getThemeOptionName(): String {
-    val context = LocalContext.current
-    val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
-    val preferencesViewModel: PreferencesViewModel = viewModel(
-        factory = PreferencesViewModelFactory(userPreferencesRepository)
-    )
+    val preferencesViewModel: PreferencesViewModel = getPreferencesViewModel()
     val themeSetting by preferencesViewModel.getDarkTheme().collectAsState()
     val themeOption = enumValues<ThemeOption>().getOrElse(themeSetting) { ThemeOption.SystemDefault }
     return when (themeOption) {

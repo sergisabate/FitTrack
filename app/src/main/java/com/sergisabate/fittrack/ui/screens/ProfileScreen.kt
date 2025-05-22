@@ -25,27 +25,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.helpers.getPreferencesViewModel
+import com.sergisabate.fittrack.data.helpers.getProfileViewModel
 import com.sergisabate.fittrack.data.helpers.getWeightsViewModel
-import com.sergisabate.fittrack.data.repositories.UserPreferencesRepository
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
-import com.sergisabate.fittrack.data.viewmodels.ProfileViewModelFactory
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
-import com.sergisabate.fittrack.ui.components.FitTrackTitleCard
 import com.sergisabate.fittrack.ui.components.FitTrackTitleDescriptionCard
 import com.sergisabate.fittrack.ui.theme.FitTrackTheme
 import java.time.LocalDate
@@ -57,11 +52,7 @@ fun ProfileScreen(navController: NavController) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
-        val context = LocalContext.current
-        val userPreferencesRepository = remember { UserPreferencesRepository.getInstance(context) }
-        val profileViewModel: ProfileViewModel = viewModel(
-            factory = ProfileViewModelFactory(userPreferencesRepository)
-        )
+        val profileViewModel: ProfileViewModel = getProfileViewModel()
         val weightsViewModel: WeightsViewModel = getWeightsViewModel()
 
         val currentWeight by weightsViewModel.getCurrentWeight().collectAsState()
