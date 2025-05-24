@@ -3,15 +3,13 @@
     <string name="app_name">FitTrack</string>
     <string name="home">Inici</string>
     <string name="progress">Progrés</string>
-    <string name="ai_tools">Eines IA</string>
+    <string name="ai">IA</string>
     <string name="profile">Perfil</string>
     <string name="settings">Configuració</string>
     <string name="go_back">Anar enrere</string>
-    <string name="profile_picture">Foto de Perfil</string>
     <string name="age">Anys</string>
     <string name="weight">Pes</string>
     <string name="height">Alçada</string>
-    <string name="muscle_mass">Massa Muscular</string>
     <string name="bmi">IMC</string>
     <string name="theme">Tema</string>
     <string name="language">Idioma</string>
@@ -85,7 +83,7 @@
     <string name="male">Home</string>
     <string name="female">Dona</string>
     <string name="other">Altre</string>
-    <string name="edit_weights">Editar Pesos</string>
+    <string name="manage_weights">Gestionar Pesos</string>
     <string name="placeholder_name_example">Exemple: Andrea García Arias</string>
     <string name="placeholder_weight_example">Exemple: 80</string>
     <string name="invalid_weight">Pes no vàlid</string>
@@ -130,5 +128,15 @@
     <string name="sleep_hours">Hores de Son</string>
     <string name="liters_amount">%1$.2f litres</string>
     <string name="hours_and_minutes_amount">%1$d hores i %2$d minuts</string>
+    <string name="weigh">Pesar</string>
+    <string name="weight_control">Control del Pes</string>
+    <string name="current">Actual</string>
+    <string name="variation">Variació</string>
+    <string name="trend">Tendència</string>
+    <string name="do_you_want_to_save_this_weight">Vols guardar aquest pes?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="manage_weights_description">Fes un seguiment precís del teu pes afegint o eliminant registres històrics.</string>
+    <string name="weigh_description">Mesura el teu pes actual a l\'instant amb la bàscula vinculada per Bluetooth.</string>
     <string name="plan">Pla</string>
 </resources>

@@ -66,9 +66,6 @@ fun ManageWeightsScreen() {
 
     Scaffold { innerPadding ->
         Box(modifier = Modifier.fillMaxSize()) {
-            val lastWeightError = stringResource(R.string.last_weight_cannot_be_deleted)
-            val onSuccessMessage = stringResource(R.string.weight_deleted)
-            val onErrorMessage = stringResource(R.string.error_deleting_weight)
             LazyColumn(
                 modifier = Modifier
                     .padding(innerPadding)
@@ -79,9 +76,6 @@ fun ManageWeightsScreen() {
                 item {
                     var weight by remember { mutableStateOf("") }
                     var date by remember { mutableStateOf<Long?>(null) }
-
-                    val context = LocalContext.current
-                    val weightsViewModel: WeightsViewModel = getWeightsViewModel()
 
                     Spacer(modifier = Modifier.height(8.dp))
 
@@ -132,9 +126,6 @@ fun ManageWeightsScreen() {
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    val onSuccessMessage = stringResource(R.string.weight_added)
-                    val onErrorMessage = stringResource(R.string.error_saving_weight)
-
                     Button(
                         onClick = {
                             val weightValue = weight.replace(",", ".").toFloatOrNull()
@@ -143,10 +134,10 @@ fun ManageWeightsScreen() {
                                     weight = weightValue!!,
                                     date = date!!,
                                     onSuccess = {
-                                        Toast.makeText(context, onSuccessMessage, Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, context.getString(R.string.weight_added), Toast.LENGTH_SHORT).show()
                                     },
                                     onError = {
-                                        Toast.makeText(context, onErrorMessage, Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, context.getString(R.string.error_saving_weight), Toast.LENGTH_SHORT).show()
                                     }
                                 )
                             }
@@ -171,15 +162,15 @@ fun ManageWeightsScreen() {
                         icon = Icons.Default.Delete,
                         onClick = {
                             if (weightRecords.size == 1) {
-                                Toast.makeText(context, lastWeightError, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, context.getString(R.string.last_weight_cannot_be_deleted), Toast.LENGTH_SHORT).show()
                             } else {
                                 weightsViewModel.deleteWeightRecord(
                                     weightRecord = weightRecord,
                                     onSuccess = {
-                                        Toast.makeText(context, onSuccessMessage, Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, context.getString(R.string.weight_deleted), Toast.LENGTH_SHORT).show()
                                     },
                                     onError = {
-                                        Toast.makeText(context, onErrorMessage, Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, context.getString(R.string.error_deleting_weight), Toast.LENGTH_SHORT).show()
                                     }
                                 )
                             }

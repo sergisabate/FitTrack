@@ -1,6 +1,5 @@
 package com.sergisabate.fittrack.ui.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,7 +43,7 @@ import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
 import com.sergisabate.fittrack.ui.components.FitTrackTitleDescriptionCard
 import com.sergisabate.fittrack.ui.theme.FitTrackTheme
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
+import java.time.Period
 import kotlin.math.pow
 
 @Composable
@@ -67,16 +66,14 @@ fun ProfileScreen(navController: NavController) {
         ) {
             Spacer(modifier = Modifier)
 
-            // Profile Header
             ProfileHeader(
                 profilePicture = painterResource(id = R.drawable.ic_launcher_foreground),
                 name = currentProfileData.name,
                 gender = stringResource(currentProfileData.gender.displayName)
             )
 
-            // Body Statistics
             BodyStatisticsCard(
-                age = ChronoUnit.YEARS.between(LocalDate.ofEpochDay(currentProfileData.birthDate), LocalDate.now()).toInt(),
+                age = Period.between(LocalDate.ofEpochDay(currentProfileData.birthDate), LocalDate.now()).years,
                 weight = "%.2f".format(currentWeight) + " kg",
                 height = currentProfileData.height.toString() + " cm",
                 bmi = "%.2f".format(currentWeight / (currentProfileData.height / 100.0).pow(2))
@@ -162,7 +159,7 @@ fun BodyStatisticsCard(age: Int, weight: String, height: String, bmi: String) {
 }
 
 @Composable
-fun LinkedDevicesCard(navController: NavController) {
+private fun LinkedDevicesCard(navController: NavController) {
     val preferencesViewModel: PreferencesViewModel = getPreferencesViewModel()
     val currentLinkedDevice by preferencesViewModel.getBluetoothDevice().collectAsState()
 
@@ -224,17 +221,9 @@ fun LinkedDevicesCard(navController: NavController) {
             }
         }
     }
-
-    if (currentLinkedDevice.isNotEmpty()) {
-        FitTrackTitleCard(
-            title = "Pesar",
-            isClickable = true,
-            modifier = Modifier.clickable { navController.navigate("WeighScreen") }
-        )
-    }
 }
 
-fun getOfficialName(deviceName : String) : String {
+private fun getOfficialName(deviceName : String) : String {
     return if (deviceName == "MI SCALE2") {
         return "Xiaomi Mi Smart Scale 2"
     }

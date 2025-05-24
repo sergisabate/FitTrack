@@ -1,16 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FitTrack</string>
     <string name="home">Inicio</string>
     <string name="progress">Progreso</string>
-    <string name="ai_tools">IA</string>
+    <string name="ai">IA</string>
     <string name="profile">Perfil</string>
     <string name="settings">Ajustes</string>
     <string name="go_back">Ir Atrás</string>
-    <string name="profile_picture">Foto de Perfil</string>
     <string name="age">Edad</string>
     <string name="weight">Peso</string>
     <string name="height">Altura</string>
-    <string name="muscle_mass">Masa Muscular</string>
     <string name="bmi">IMC</string>
     <string name="theme">Tema</string>
     <string name="language">Idioma</string>
@@ -84,7 +83,7 @@
     <string name="male">Hombre</string>
     <string name="female">Mujer</string>
     <string name="other">Otro</string>
-    <string name="edit_weights">Editar Pesos</string>
+    <string name="manage_weights">Gestionar Pesos</string>
     <string name="placeholder_name_example">Ejemplo: Andrea García Arias</string>
     <string name="placeholder_weight_example">Ejemplo: 80</string>
     <string name="invalid_weight">Peso no válido</string>
@@ -129,5 +128,15 @@
     <string name="sleep_hours">Horas de Sueño</string>
     <string name="liters_amount">%1$.2f litros</string>
     <string name="hours_and_minutes_amount">%1$d horas y %2$d minutos</string>
+    <string name="weigh">Pesar</string>
+    <string name="weight_control">Control del Peso</string>
+    <string name="current">Actual</string>
+    <string name="variation">Variación</string>
+    <string name="trend">Tendencia</string>
+    <string name="do_you_want_to_save_this_weight">¿Quieres guardar este peso?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="manage_weights_description">Lleva un control preciso de tu peso añadiendo o eliminando registros históricos.</string>
+    <string name="weigh_description">Mide tu peso actual al instante con tu báscula vinculada por Bluetooth.</string>
     <string name="plan">Plan</string>
 </resources>

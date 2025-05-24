@@ -3,6 +3,7 @@ package com.sergisabate.fittrack.data.helpers
 import android.content.Context
 import android.content.res.Configuration
 import android.os.LocaleList
+import androidx.core.content.edit
 import java.util.Locale
 
 private const val PREF_NAME = "locale_prefs"
@@ -10,7 +11,7 @@ private const val KEY_LOCALE = "selected_locale"
 
 fun saveLocale(context: Context, locale: Locale) {
     val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-    sharedPreferences.edit().putString(KEY_LOCALE, locale.language).apply()
+    sharedPreferences.edit { putString(KEY_LOCALE, locale.language) }
 }
 
 fun getSavedLocale(context: Context): Locale {

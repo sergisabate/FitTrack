@@ -41,7 +41,7 @@ fun FitTrackBottomAppBar(navController: NavHostController) {
                     onClick = {
                         if (!isSelected) {
                             navController.navigate(item.route) {
-                                popUpTo("Home")
+                                popUpTo("Weight")
                                 launchSingleTop = true
                             }
                         }

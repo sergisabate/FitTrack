@@ -1,20 +1,20 @@
 package com.sergisabate.fittrack.ui.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -22,23 +22,23 @@ import androidx.navigation.NavHostController
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.helpers.getPreferencesViewModel
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
-import com.sergisabate.fittrack.ui.screens.AIToolsScreen
+import com.sergisabate.fittrack.ui.screens.AIScreen
 import com.sergisabate.fittrack.ui.screens.AboutScreen
 import com.sergisabate.fittrack.ui.screens.BluetoothScreen
 import com.sergisabate.fittrack.ui.screens.EditProfileScreen
-import com.sergisabate.fittrack.ui.screens.EditWeightsScreen
 import com.sergisabate.fittrack.ui.screens.GenerateExerciseRoutineScreen
 import com.sergisabate.fittrack.ui.screens.GenerateMenuScreen
-import com.sergisabate.fittrack.ui.screens.HomeScreen
 import com.sergisabate.fittrack.ui.screens.LanguageOption
 import com.sergisabate.fittrack.ui.screens.LanguageScreen
+import com.sergisabate.fittrack.ui.screens.ManageWeightsScreen
+import com.sergisabate.fittrack.ui.screens.PlanScreen
 import com.sergisabate.fittrack.ui.screens.ProfileScreen
-import com.sergisabate.fittrack.ui.screens.ProgressScreen
 import com.sergisabate.fittrack.ui.screens.SettingsScreen
 import com.sergisabate.fittrack.ui.screens.ThemeScreen
 import com.sergisabate.fittrack.ui.screens.ViewExerciseRoutineScreen
 import com.sergisabate.fittrack.ui.screens.ViewMenuScreen
 import com.sergisabate.fittrack.ui.screens.WeighScreen
+import com.sergisabate.fittrack.ui.screens.WeightScreen
 import com.sergisabate.fittrack.ui.theme.ThemeOption
 
 data class NavItem(
@@ -65,10 +65,10 @@ fun getTopItems(): List<NavItem> {
 fun getBottomItems(): List<NavItem> {
     return listOf(
         NavItem(
-            icon = Icons.Default.Home,
-            title = stringResource(R.string.home),
-            route = "Home",
-            screen = { HomeScreen() }
+            icon = Icons.AutoMirrored.Filled.ShowChart,
+            title = stringResource(R.string.weight),
+            route = "Weight",
+            screen = { navController -> navController?.let { WeightScreen(it) } }
         ),
         NavItem(
             icon = Icons.AutoMirrored.Filled.List,
@@ -77,10 +77,10 @@ fun getBottomItems(): List<NavItem> {
             screen = { PlanScreen() }
         ),
         NavItem(
-            icon = Icons.Default.Build,
-            title = stringResource(R.string.ai_tools),
-            route = "AITools",
-            screen =  { navController -> navController?.let { AIToolsScreen(it) } }
+            icon = Icons.Default.AutoAwesome,
+            title = stringResource(R.string.ai),
+            route = "AI",
+            screen = { navController -> navController?.let { AIScreen(it) } }
         ),
         NavItem(
             icon = Icons.Default.Face,
@@ -90,6 +90,7 @@ fun getBottomItems(): List<NavItem> {
         )
     )
 }
+
 @Composable
 fun getSettingsItems(): List<NavItem> {
     return listOf(
@@ -114,12 +115,6 @@ fun getSettingsItems(): List<NavItem> {
             screen = { EditProfileScreen() }
         ),
         NavItem(
-            icon = Icons.Default.AddCircle,
-            title = stringResource(R.string.edit_weights),
-            route = "EditWeights",
-            screen = { EditWeightsScreen() }
-        ),
-        NavItem(
             icon = Icons.Default.Info,
             title = stringResource(R.string.about),
             route = "About",
@@ -129,7 +124,7 @@ fun getSettingsItems(): List<NavItem> {
 }
 
 @Composable
-fun getMenuItems(): List<NavItem> {
+fun getAIItems(): List<NavItem> {
     return listOf(
         NavItem(
             icon = Icons.Default.Build,
@@ -139,21 +134,15 @@ fun getMenuItems(): List<NavItem> {
         ),
         NavItem(
             icon = Icons.Default.Build,
-            title = stringResource(R.string.view_menu),
-            route = "ViewMenu",
-            screen = { ViewMenuScreen() }
-        )
-    )
-}
-
-@Composable
-fun getExerciseRoutineItems(): List<NavItem> {
-    return listOf(
-        NavItem(
-            icon = Icons.Default.Build,
             title = stringResource(R.string.routine_generator_title),
             route = "GenerateExerciseRoutine",
             screen =  { navController -> navController?.let { GenerateExerciseRoutineScreen(it) } }
+        ),
+        NavItem(
+            icon = Icons.Default.Build,
+            title = stringResource(R.string.view_menu),
+            route = "ViewMenu",
+            screen = { ViewMenuScreen() }
         ),
         NavItem(
             icon = Icons.Default.Build,
@@ -165,7 +154,7 @@ fun getExerciseRoutineItems(): List<NavItem> {
 }
 
 @Composable
-fun getBluetoothItems(): List<NavItem> {
+fun getWeightItems(): List<NavItem> {
     return listOf(
         NavItem(
             icon = Icons.Default.Build,
@@ -175,10 +164,16 @@ fun getBluetoothItems(): List<NavItem> {
         ),
         NavItem(
             icon = Icons.Default.Build,
-            title = "Pesar",
+            title = stringResource(R.string.weigh),
             route = "WeighScreen",
             screen = { navController -> navController?.let { WeighScreen(it) } }
-        )
+        ),
+        NavItem(
+            icon = Icons.Default.AddCircle,
+            title = stringResource(R.string.manage_weights),
+            route = "ManageWeights",
+            screen = { ManageWeightsScreen() }
+        ),
     )
 }
 

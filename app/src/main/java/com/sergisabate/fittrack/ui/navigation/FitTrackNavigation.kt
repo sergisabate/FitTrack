@@ -18,14 +18,13 @@ fun FitTrackNavigation(navController: NavHostController) {
         getTopItems(),
         getBottomItems(),
         getSettingsItems(),
-        getMenuItems(),
-        getExerciseRoutineItems(),
-        getBluetoothItems()
+        getAIItems(),
+        getWeightItems()
     ).flatten()
 
     NavHost(
         navController = navController,
-        startDestination = "Home",
+        startDestination = "Weight",
     ) {
         allItems.forEach { item -> buildComposable(item, navController) }
     }

@@ -49,6 +49,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -58,6 +59,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
+import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.bluetooth.CHARACTERISTIC_UUID
 import com.sergisabate.fittrack.data.bluetooth.DeviceConnectionState
 import com.sergisabate.fittrack.data.bluetooth.SERVICE_UUID
@@ -225,8 +227,8 @@ fun ConnectDeviceScreen(device: BluetoothDevice, navController: NavHostControlle
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
-        val isStabilized = connectionState?.isStabilized == true
         val weight = connectionState?.weight ?: 0f
+        val isStabilized = connectionState?.isStabilized == true && weight in 30f..300f
 
         if (isStabilized) {
             blockDataReception = true
@@ -253,7 +255,7 @@ fun ConnectDeviceScreen(device: BluetoothDevice, navController: NavHostControlle
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "¿Quieres guardar este peso?",
+                    text = stringResource(R.string.do_you_want_to_save_this_weight),
                     style = MaterialTheme.typography.titleLarge,
                     color = if (isStabilized) MaterialTheme.colorScheme.primary else Color.Gray
                 )
@@ -263,32 +265,41 @@ fun ConnectDeviceScreen(device: BluetoothDevice, navController: NavHostControlle
                     modifier = Modifier.fillMaxWidth(0.6f)
                 ) {
                     Button(
-                        onClick = { if (isStabilized) {
-                            weightsViewModel.addOrUpdateLastWeightRecord(
-                                weight,
-                                onSuccess = { navController.popBackStack()},
-                                onError = { Toast.makeText(context, "No se ha podido guardar el peso", Toast.LENGTH_SHORT).show()}
-                            )
-                        }
+                        onClick = {
+                            if (isStabilized) {
+                                weightsViewModel.addOrUpdateLastWeightRecord(
+                                    weight,
+                                    onSuccess = { navController.popBackStack() },
+                                    onError = {
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.error_saving_weight),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                )
+                            }
                         },
                         modifier = Modifier.weight(1f),
                         enabled = isStabilized
                     ) {
-                        Text(text = "Sí", style = MaterialTheme.typography.titleLarge)
+                        Text(text = stringResource(R.string.yes), style = MaterialTheme.typography.titleLarge)
                     }
 
                     Spacer(modifier = Modifier.width(16.dp))
 
                     Button(
-                        onClick = { if (isStabilized) {
-                            blockDataReception = false
-                            connectionState = connectionState?.copy(isStabilized = false)
-                            connectionState = connectionState?.copy(weight = 0f)
-                        } },
+                        onClick = {
+                            if (isStabilized) {
+                                blockDataReception = false
+                                connectionState = connectionState?.copy(isStabilized = false)
+                                connectionState = connectionState?.copy(weight = 0f)
+                            }
+                        },
                         modifier = Modifier.weight(1f),
                         enabled = isStabilized
                     ) {
-                        Text(text = "No", style = MaterialTheme.typography.titleLarge)
+                        Text(text = stringResource(R.string.no), style = MaterialTheme.typography.titleLarge)
                     }
                 }
             }
