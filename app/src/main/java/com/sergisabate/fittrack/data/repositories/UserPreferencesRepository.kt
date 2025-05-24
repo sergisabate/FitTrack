@@ -26,11 +26,15 @@ private const val BIRTHDATE_KEY = "birthDate"
 private const val GENDER_KEY = "gender"
 private const val HEIGHT_KEY = "height"
 private const val BLUETOOTH_DEVICE_KEY = "bluetooth_device"
+private const val ACTIVITY_LEVEL_KEY = "activity_level"
+private const val CALORIE_GOAL_KEY = "calorie_goal"
+private const val MACRO_DISTRIBUTION_KEY = "macro_distribution"
 
 private const val DEFAULT_DARK_MODE = 2
 private const val DEFAULT_STRING = ""
 private const val DEFAULT_INT = 0
 private const val DEFAULT_LONG = 0L
+private const val DEFAULT_LIFESTYLE = 1
 
 private val Context.dataStore by preferencesDataStore(name = "user_preferences")
 
@@ -43,24 +47,32 @@ class UserPreferencesRepository private constructor(context: Context) {
         val GENDER = intPreferencesKey(GENDER_KEY)
         val HEIGHT = intPreferencesKey(HEIGHT_KEY)
         val BLUETOOTH_DEVICE = stringPreferencesKey(BLUETOOTH_DEVICE_KEY)
+        val ACTIVITY_LEVEL = intPreferencesKey(ACTIVITY_LEVEL_KEY)
+        val CALORIE_GOAL = intPreferencesKey(CALORIE_GOAL_KEY)
+        val MACRO_DISTRIBUTION = intPreferencesKey(MACRO_DISTRIBUTION_KEY)
     }
 
     private val dataStore = context.applicationContext.dataStore
 
     private val _isInDarkModeFlow = MutableStateFlow(runBlocking { getDarkModePreference() })
-    val isInDarkModeFlow: StateFlow<Int> = _isInDarkModeFlow
-
     private val _nameFlow = MutableStateFlow(runBlocking { getNamePreference() })
     private val _birthDateFlow = MutableStateFlow(runBlocking { getBirthDatePreference() })
     private val _genderFlow = MutableStateFlow(runBlocking { getGenderPreference() })
     private val _heightFlow = MutableStateFlow(runBlocking { getHeightPreference() })
     private val _bluetoothDeviceFlow = MutableStateFlow(runBlocking { getBluetoothDevice() })
+    private val _activityLevelFlow = MutableStateFlow(runBlocking { getActivityLevelPreference() })
+    private val _calorieGoalFlow = MutableStateFlow(runBlocking { getCalorieGoalPreference() })
+    private val _macroDistributionFlow = MutableStateFlow(runBlocking { getMacroDistributionPreference() })
 
+    val isInDarkModeFlow: StateFlow<Int> = _isInDarkModeFlow
     val nameFlow: StateFlow<String> = _nameFlow
     val birthDateFlow: StateFlow<Long> = _birthDateFlow
     val genderFlow: StateFlow<Int> = _genderFlow
     val heightFlow: StateFlow<Int> = _heightFlow
     val bluetoothDeviceFlow: StateFlow<String> = _bluetoothDeviceFlow
+    val activityLevelFlow: StateFlow<Int> = _activityLevelFlow
+    val calorieGoalFlow: StateFlow<Int> = _calorieGoalFlow
+    val macroDistributionFlow: StateFlow<Int> = _macroDistributionFlow
 
     init {
         initParameter(PreferencesKeys.IS_IN_DARK_MODE, DEFAULT_DARK_MODE, _isInDarkModeFlow)
@@ -69,6 +81,9 @@ class UserPreferencesRepository private constructor(context: Context) {
         initParameter(PreferencesKeys.GENDER, DEFAULT_INT, _genderFlow)
         initParameter(PreferencesKeys.HEIGHT, DEFAULT_INT, _heightFlow)
         initParameter(PreferencesKeys.BLUETOOTH_DEVICE, DEFAULT_STRING, _bluetoothDeviceFlow)
+        initParameter(PreferencesKeys.ACTIVITY_LEVEL, DEFAULT_INT, _activityLevelFlow)
+        initParameter(PreferencesKeys.CALORIE_GOAL, DEFAULT_LIFESTYLE, _calorieGoalFlow)
+        initParameter(PreferencesKeys.MACRO_DISTRIBUTION, DEFAULT_LIFESTYLE, _macroDistributionFlow)
     }
 
     private fun <T> initParameter(key: Preferences.Key<T>, default: T, mutable: MutableStateFlow<T>) {
@@ -125,6 +140,24 @@ class UserPreferencesRepository private constructor(context: Context) {
         }
     }
 
+    suspend fun setActivityLevel(activityLevel: Int) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.ACTIVITY_LEVEL] = activityLevel
+        }
+    }
+
+    suspend fun setCalorieGoal(calorieGoal: Int) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.CALORIE_GOAL] = calorieGoal
+        }
+    }
+
+    suspend fun setMacroDistribution(macroDistribution: Int) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.MACRO_DISTRIBUTION] = macroDistribution
+        }
+    }
+
     private suspend fun getDarkModePreference(): Int {
         return dataStore.data
             .map { preferences ->
@@ -169,6 +202,30 @@ class UserPreferencesRepository private constructor(context: Context) {
         return dataStore.data
             .map { preferences ->
                 preferences[PreferencesKeys.BLUETOOTH_DEVICE] ?: DEFAULT_STRING
+            }
+            .first()
+    }
+
+    private suspend fun getActivityLevelPreference(): Int {
+        return dataStore.data
+            .map { preferences ->
+                preferences[PreferencesKeys.ACTIVITY_LEVEL] ?: DEFAULT_INT
+            }
+            .first()
+    }
+
+    private suspend fun getCalorieGoalPreference(): Int {
+        return dataStore.data
+            .map { preferences ->
+                preferences[PreferencesKeys.CALORIE_GOAL] ?: DEFAULT_LIFESTYLE
+            }
+            .first()
+    }
+
+    private suspend fun getMacroDistributionPreference(): Int {
+        return dataStore.data
+            .map { preferences ->
+                preferences[PreferencesKeys.MACRO_DISTRIBUTION] ?: DEFAULT_LIFESTYLE
             }
             .first()
     }

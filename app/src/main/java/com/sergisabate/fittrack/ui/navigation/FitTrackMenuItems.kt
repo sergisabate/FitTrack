@@ -71,10 +71,10 @@ fun getBottomItems(): List<NavItem> {
             screen = { HomeScreen() }
         ),
         NavItem(
-            icon = Icons.Default.Menu,
-            title = stringResource(R.string.progress),
-            route = "Progress",
-            screen = { ProgressScreen() }
+            icon = Icons.AutoMirrored.Filled.List,
+            title = stringResource(R.string.plan),
+            route = "Plan",
+            screen = { PlanScreen() }
         ),
         NavItem(
             icon = Icons.Default.Build,
