@@ -65,9 +65,9 @@ fun PlanScreen(navController: NavController) {
             )
 
             FitTrackTitleDescriptionCard(
-                title = stringResource(R.string.define_lifestyle),
-                description = stringResource(R.string.define_lifestyle_description),
-                modifier = Modifier.clickable { navController.navigate("DefineLifestyle") },
+                title = stringResource(R.string.lifestyle_preferences),
+                description = stringResource(R.string.lifestyle_preferences_description),
+                modifier = Modifier.clickable { navController.navigate("LifestylePreferences") },
                 isClickable = true
             )
 

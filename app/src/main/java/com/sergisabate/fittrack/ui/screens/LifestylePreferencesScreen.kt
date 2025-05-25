@@ -23,7 +23,7 @@ import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.ui.forms.LifestyleForm
 
 @Composable
-fun DefineLifestyleScreen() {
+fun LifestylePreferencesScreen() {
     val context = LocalContext.current
     val profileViewModel: ProfileViewModel = getProfileViewModel()
     val currentLifestyleData by profileViewModel.getLifestyleData().collectAsState()
@@ -47,11 +47,11 @@ fun DefineLifestyleScreen() {
                     profileViewModel.setLifestyleData(
                         lifestyleData = lifestyleData,
                         onSuccess = {
-                            Toast.makeText(context, context.getString(R.string.lifestyle_successfully_updated), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.lifestyle_updated), Toast.LENGTH_SHORT).show()
                         },
                         onError = { e ->
                             Toast.makeText(context, context.getString(R.string.error_saving_lifestyle_data), Toast.LENGTH_SHORT).show()
-                            Log.e("DefineLifestyleScreen", context.getString(R.string.error_saving_lifestyle_data), e)
+                            Log.e("LifestylePreferencesScreen", context.getString(R.string.error_saving_lifestyle_data), e)
                         }
                     )
                 }

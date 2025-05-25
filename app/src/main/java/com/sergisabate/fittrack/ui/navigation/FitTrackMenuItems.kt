@@ -23,21 +23,21 @@ import com.sergisabate.fittrack.data.helpers.getPreferencesViewModel
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
 import com.sergisabate.fittrack.ui.screens.AIScreen
 import com.sergisabate.fittrack.ui.screens.AboutScreen
-import com.sergisabate.fittrack.ui.screens.BluetoothScreen
-import com.sergisabate.fittrack.ui.screens.DefineLifestyleScreen
 import com.sergisabate.fittrack.ui.screens.EditProfileScreen
 import com.sergisabate.fittrack.ui.screens.GenerateExerciseRoutineScreen
 import com.sergisabate.fittrack.ui.screens.GenerateMenuScreen
 import com.sergisabate.fittrack.ui.screens.LanguageOption
 import com.sergisabate.fittrack.ui.screens.LanguageScreen
-import com.sergisabate.fittrack.ui.screens.ManageWeightsScreen
+import com.sergisabate.fittrack.ui.screens.LifestylePreferencesScreen
+import com.sergisabate.fittrack.ui.screens.PairScaleScreen
 import com.sergisabate.fittrack.ui.screens.PlanScreen
 import com.sergisabate.fittrack.ui.screens.ProfileScreen
 import com.sergisabate.fittrack.ui.screens.SettingsScreen
 import com.sergisabate.fittrack.ui.screens.ThemeScreen
 import com.sergisabate.fittrack.ui.screens.ViewExerciseRoutineScreen
 import com.sergisabate.fittrack.ui.screens.ViewMenuScreen
-import com.sergisabate.fittrack.ui.screens.WeighScreen
+import com.sergisabate.fittrack.ui.screens.WeighInScreen
+import com.sergisabate.fittrack.ui.screens.WeightManagerScreen
 import com.sergisabate.fittrack.ui.screens.WeightScreen
 import com.sergisabate.fittrack.ui.theme.ThemeOption
 
@@ -158,21 +158,21 @@ fun getWeightItems(): List<NavItem> {
     return listOf(
         NavItem(
             icon = Icons.Default.Build,
-            title = "Bluetooth",
-            route = "Bluetooth",
-            screen = { navController -> navController?.let { BluetoothScreen(it) } }
+            title = stringResource(R.string.pair_scale),
+            route = "PairScale",
+            screen = { navController -> navController?.let { PairScaleScreen(it) } }
         ),
         NavItem(
             icon = Icons.Default.Build,
-            title = stringResource(R.string.weigh),
-            route = "Weigh",
-            screen = { navController -> navController?.let { WeighScreen(it) } }
+            title = stringResource(R.string.weigh_in),
+            route = "WeighIn",
+            screen = { navController -> navController?.let { WeighInScreen(it) } }
         ),
         NavItem(
             icon = Icons.Default.Build,
-            title = stringResource(R.string.manage_weights),
-            route = "ManageWeights",
-            screen = { ManageWeightsScreen() }
+            title = stringResource(R.string.weight_manager),
+            route = "WeightManager",
+            screen = { WeightManagerScreen() }
         ),
     )
 }
@@ -182,9 +182,9 @@ fun getPlanItems(): List<NavItem> {
     return listOf(
         NavItem(
             icon = Icons.Default.Build,
-            title = stringResource(R.string.define_lifestyle),
-            route = "DefineLifestyle",
-            screen = { DefineLifestyleScreen() }
+            title = stringResource(R.string.lifestyle_preferences),
+            route = "LifestylePreferences",
+            screen = { LifestylePreferencesScreen() }
         )
     )
 }

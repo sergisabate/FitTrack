@@ -72,7 +72,7 @@ import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
 
 @SuppressLint("MissingPermission")
 @Composable
-fun WeighScreen(navController: NavHostController) {
+fun WeighInScreen(navController: NavHostController) {
     val context = LocalContext.current
     val scanResults = remember { mutableStateListOf<ScanResult>() }
     val isScanning by remember { mutableStateOf(false) }
@@ -158,9 +158,9 @@ private fun BluetoothEnabler() {
 
     val enableBluetoothLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            Log.d("Bluetooth", "Bluetooth enabled")
+            Log.d("PairScale", "Bluetooth enabled")
         } else {
-            Log.d("Bluetooth", "Bluetooth not enabled")
+            Log.d("PairScale", "Bluetooth not enabled")
         }
     }
 

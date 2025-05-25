@@ -18,11 +18,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -73,7 +72,7 @@ import java.time.Duration
 
 @SuppressLint("MissingPermission")
 @Composable
-fun BluetoothScreen(navController: NavHostController) {
+fun PairScaleScreen(navController: NavHostController) {
     val context = LocalContext.current
     val scanResults = remember { mutableStateListOf<ScanResult>() }
     var isScanning by remember { mutableStateOf(false) }
@@ -105,15 +104,21 @@ fun BluetoothScreen(navController: NavHostController) {
         }
     )
 
-    val errorMessage = stringResource(R.string.unable_to_pair)
     bluetoothDevice?.let { device ->
         BluetoothConnectionHandler(
             context = context,
             bluetoothDevice = device,
             onConnectionComplete = { name ->
-                preferencesViewModel.setBluetoothDevice(name,
-                    onSuccess = { navController.popBackStack() },
-                    onError = { Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show() }
+                preferencesViewModel.setBluetoothDevice(
+                    bluetoothDevice = name,
+                    onSuccess = {
+                        Toast.makeText(context, context.getString(R.string.scale_paired), Toast.LENGTH_SHORT).show()
+                        navController.popBackStack()
+                    },
+                    onError = { e ->
+                        Toast.makeText(context, context.getString(R.string.error_pairing_scale), Toast.LENGTH_SHORT).show()
+                        Log.e("BluetoothScreen", context.getString(R.string.error_pairing_scale), e)
+                    }
                 )
             }
         )
@@ -129,23 +134,19 @@ fun BluetoothScaffold(
     onScanButtonClick: () -> Unit
 ) {
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp),
+        modifier = Modifier.padding(horizontal = 16.dp),
         contentColor = MaterialTheme.colorScheme.background
-    ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier.padding(innerPadding)
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier = Modifier.weight(1f)
             ) {
-                LazyColumn(
-                    modifier = Modifier.wrapContentHeight()
-                ) {
+                LazyColumn {
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                     items(scanResults) { result ->
                         DeviceCard(
                             name = result.device.name ?: stringResource(R.string.unknown),
@@ -155,13 +156,12 @@ fun BluetoothScaffold(
                 }
             }
             Column(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
+                modifier = Modifier.wrapContentHeight().padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Spacer(modifier = Modifier.height(16.dp))
                 Row(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .align(Alignment.CenterHorizontally),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
@@ -179,13 +179,13 @@ fun BluetoothScaffold(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     enabled = !isScanning,
                     onClick = onScanButtonClick
                 ) {
-                    Text(text = if (isScanning) stringResource(R.string.searching_devices) else stringResource(R.string.search_devices))
+                    Text(text = if (isScanning) stringResource(R.string.searching_scales) else stringResource(R.string.search_scales))
                 }
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
     }
@@ -297,7 +297,7 @@ private fun ClaimPermissions(navController: NavHostController) {
     if (allPermissionsGranted) {
         RequestEnableBluetooth(
             onBluetoothEnabled = {
-                Log.d("Bluetooth", "Bluetooth is enabled and permissions granted")
+                Log.d("PairScale", "Bluetooth is enabled and permissions granted")
             },
             onBluetoothDenied = {
                 navController.popBackStack()

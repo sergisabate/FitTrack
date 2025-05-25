@@ -31,7 +31,7 @@
     <string name="light_mode">Mode Clar</string>
     <string name="system_default">Predeterminat del Sistema</string>
     <string name="error_saving_profile_data">Error en desar les dades del perfil</string>
-    <string name="profile_successfully_updated">Perfil actualitzat amb èxit</string>
+    <string name="profile_updated">Perfil actualitzat</string>
     <string name="menu_generator_title">Generador de Menús</string>
     <string name="menu_generator_description">Genera un menú diari personalitzat basat en els teus paràmetres i preferències.</string>
     <string name="view_menu">Vista del Menú</string>
@@ -71,11 +71,10 @@
     <string name="equipment_needed">Equipament necessari</string>
     <string name="instructions">Instruccions</string>
     <string name="unknown">Desconegut</string>
-    <string name="scan_info">Alguns dispositius requereixen activitat per aparèixer en la cerca.</string>
-    <string name="searching_devices">Buscant Dispositius…</string>
-    <string name="search_devices">Buscar Dispositius</string>
-    <string name="unable_to_pair">No ha estat possible vincular el dispositiu</string>
-    <string name="device_paired">Dispositiu Vinculat</string>
+    <string name="scan_info">Algunes bàscules requereixen activitat per aparèixer en la cerca.</string>
+    <string name="searching_scales">Buscant Bàscules…</string>
+    <string name="search_scales">Buscar Bàscules</string>
+    <string name="scale_paired_title">Bàscula Vinculada</string>
     <string name="version_x">Versió %1$s</string>
     <string name="about_fittrack">Sobre FitTrack</string>
     <string name="about_description">FitTrack és una aplicació dissenyada per ajudar-te a assolir els teus objectius de salut i benestar. Amb un disseny modern desenvolupat amb Kotlin Jetpack Compose, FitTrack ofereix funcionalitats avançades com:\n\n- Sincronització en temps real amb la bàscula Xiaomi Mi Smart Scale 2.\n- Generació de menús i rutines d\'exercici personalitzades amb l\'ajuda d\'OpenAI.\n- Seguiment del teu progrés amb gràfics de pes.\n- Emmagatzematge segur i local de les teves dades.\n\nCompatible amb Android 15, suport multilingüe i un disseny pensat per a tu.</string>
@@ -83,7 +82,7 @@
     <string name="male">Home</string>
     <string name="female">Dona</string>
     <string name="other">Altre</string>
-    <string name="manage_weights">Gestionar Pesos</string>
+    <string name="weight_manager">Gestor de Pesos</string>
     <string name="placeholder_name_example">Exemple: Andrea García Arias</string>
     <string name="placeholder_weight_example">Exemple: 80</string>
     <string name="invalid_weight">Pes no vàlid</string>
@@ -128,8 +127,8 @@
     <string name="sleep_hours">Hores de Son</string>
     <string name="liters_amount">%1$.2f litres</string>
     <string name="hours_and_minutes_amount">%1$d h i %2$d min</string>
-    <string name="weigh">Pesar</string>
-    <string name="weight_control">Control del Pes</string>
+    <string name="weigh_in">Pesar-se</string>
+    <string name="weight_progress">Evolució del Pes</string>
     <string name="current">Actual</string>
     <string name="variation">Variació</string>
     <string name="trend">Tendència</string>
@@ -139,8 +138,13 @@
     <string name="manage_weights_description">Fes un seguiment precís del teu pes afegint o eliminant registres històrics.</string>
     <string name="weigh_description">Mesura el teu pes actual a l\'instant amb la bàscula vinculada per Bluetooth.</string>
     <string name="plan">Pla</string>
-    <string name="define_lifestyle">Definir Estil de Vida</string>
-    <string name="define_lifestyle_description">Ajusta les teves preferències d\'estil de vida per obtenir recomanacions personalitzades.</string>
+    <string name="lifestyle_preferences">Preferències d\'Estil de Vida</string>
+    <string name="lifestyle_preferences_description">Ajusta les teves preferències d\'estil de vida per obtenir recomanacions personalitzades.</string>
     <string name="error_saving_lifestyle_data">Error en desar les dades de l\'estil de vida</string>
-    <string name="lifestyle_successfully_updated">Estil de vida actualitzat amb èxit</string>
+    <string name="lifestyle_updated">Estil de vida actualitzat</string>
+    <string name="pair_scale">Vincular Bàscula</string>
+    <string name="scale_unpaired">Bàscula desvinculada</string>
+    <string name="scale_paired">Bàscula vinculada</string>
+    <string name="error_unpairing_scale">Error en desvincular la bàscula</string>
+    <string name="error_pairing_scale">Error en vincular la bàscula</string>
 </resources>

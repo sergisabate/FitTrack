@@ -31,7 +31,7 @@
     <string name="light_mode">Light Mode</string>
     <string name="system_default">System Default</string>
     <string name="error_saving_profile_data">Error saving profile data</string>
-    <string name="profile_successfully_updated">Profile successfully updated</string>
+    <string name="profile_updated">Profile updated</string>
     <string name="menu_generator_title">Menu Generator</string>
     <string name="menu_generator_description">Generate a personalized daily menu based on your parameters and preferences.</string>
     <string name="view_menu">View Menu</string>
@@ -71,11 +71,10 @@
     <string name="equipment_needed">Equipment Needed</string>
     <string name="instructions">Instructions</string>
     <string name="unknown">Unknown</string>
-    <string name="scan_info">Some devices require activity to appear in the search.</string>
-    <string name="searching_devices">Searching Devices…</string>
-    <string name="search_devices">Search Devices</string>
-    <string name="unable_to_pair">Unable to pair the device</string>
-    <string name="device_paired">Device Paired</string>
+    <string name="scan_info">Some scales require activity to appear in the search.</string>
+    <string name="searching_scales">Searching Scales…</string>
+    <string name="search_scales">Search Scales</string>
+    <string name="scale_paired_title">Scale Paired</string>
     <string name="version_x">Version %1$s</string>
     <string name="about_fittrack">About FitTrack</string>
     <string name="about_description">FitTrack is an application designed to help you achieve your health and wellness goals. With a modern design developed with Kotlin Jetpack Compose, FitTrack offers advanced features such as:\n\n- Real-time synchronization with the Xiaomi Mi Smart Scale 2.\n- Personalized menu and exercise routine generation with the help of OpenAI.\n- Progress tracking with weight charts.\n- Secure and local storage of your data.\n\nCompatible with Android 15, multilingual support, and a design made with you in mind.</string>
@@ -83,7 +82,7 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="other">Other</string>
-    <string name="manage_weights">Manage Weights</string>
+    <string name="weight_manager">Weight Manager</string>
     <string name="placeholder_name_example">Example: Andrea García Arias</string>
     <string name="placeholder_weight_example">Example: 80</string>
     <string name="invalid_weight">Invalid weight</string>
@@ -105,7 +104,7 @@
     <string name="activity_sedentary">No exercise</string>
     <string name="activity_lightly_active">1–3 days of exercise per week</string>
     <string name="activity_moderately_active">3–5 days of exercise per week</string>
-    <string name="activity_very_active">6–7 days of exercise per week</string>
+    <string name="activity_very_active">Version %1$s</string>
     <string name="activity_extra_active">Physical job and consistent training</string>
     <string name="activity_athlete">Professional athlete</string>
     <string name="goal_cutting">Cutting</string>
@@ -128,8 +127,8 @@
     <string name="sleep_hours">Sleep Hours</string>
     <string name="liters_amount">%1$.2f liters</string>
     <string name="hours_and_minutes_amount">%1$d h and %2$d min</string>
-    <string name="weigh">Weigh</string>
-    <string name="weight_control">Weight Control</string>
+    <string name="weigh_in">Weigh In</string>
+    <string name="weight_progress">Weight Progress</string>
     <string name="current">Current</string>
     <string name="variation">Variation</string>
     <string name="trend">Trend</string>
@@ -139,8 +138,13 @@
     <string name="manage_weights_description">Keep precise track of your weight by adding or removing past records.</string>
     <string name="weigh_description">Measure your current weight instantly with your connected Bluetooth scale.</string>
     <string name="plan">Plan</string>
-    <string name="define_lifestyle">Define Lifestyle</string>
-    <string name="define_lifestyle_description">Adjust your lifestyle preferences to receive personalized recommendations.</string>
+    <string name="lifestyle_preferences">Lifestyle Preferences</string>
+    <string name="lifestyle_preferences_description">Adjust your lifestyle preferences to receive personalized recommendations.</string>
     <string name="error_saving_lifestyle_data">Error saving lifestyle data</string>
-    <string name="lifestyle_successfully_updated">Lifestyle successfully updated</string>
+    <string name="lifestyle_updated">Lifestyle updated</string>
+    <string name="pair_scale">Pair Scale</string>
+    <string name="scale_unpaired">Scale unpaired</string>
+    <string name="scale_paired">Scale paired</string>
+    <string name="error_unpairing_scale">Error unpairing scale</string>
+    <string name="error_pairing_scale">Error pairing scale</string>
 </resources>

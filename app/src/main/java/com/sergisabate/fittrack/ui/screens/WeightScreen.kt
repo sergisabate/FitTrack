@@ -57,21 +57,21 @@ fun WeightScreen(navController: NavController) {
         ) {
             Spacer(modifier = Modifier)
 
-            WeightControlCard()
+            WeightProgressCard()
 
             FitTrackTitleDescriptionCard(
-                title = stringResource(R.string.manage_weights),
+                title = stringResource(R.string.weight_manager),
                 description = stringResource(R.string.manage_weights_description),
                 isClickable = true,
-                modifier = Modifier.clickable { navController.navigate("ManageWeights") }
+                modifier = Modifier.clickable { navController.navigate("WeightManager") }
             )
 
             if (currentLinkedDevice.isNotEmpty()) {
                 FitTrackTitleDescriptionCard(
-                    title = stringResource(R.string.weigh),
+                    title = stringResource(R.string.weigh_in),
                     description = stringResource(R.string.weigh_description),
                     isClickable = true,
-                    modifier = Modifier.clickable { navController.navigate("WeighScreen") }
+                    modifier = Modifier.clickable { navController.navigate("WeighIn") }
                 )
             }
 
@@ -81,7 +81,7 @@ fun WeightScreen(navController: NavController) {
 }
 
 @Composable
-private fun WeightControlCard() {
+private fun WeightProgressCard() {
     val weightsViewModel: WeightsViewModel = getWeightsViewModel()
     val weightRecords by weightsViewModel.getWeightRecords().collectAsState()
 
@@ -99,7 +99,7 @@ private fun WeightControlCard() {
                     .padding(16.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.weight_control),
+                    text = stringResource(R.string.weight_progress),
                     style = MaterialTheme.typography.titleLarge
                 )
 

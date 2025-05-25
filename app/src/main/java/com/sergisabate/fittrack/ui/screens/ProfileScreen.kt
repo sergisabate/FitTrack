@@ -1,5 +1,7 @@
 package com.sergisabate.fittrack.ui.screens
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,7 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -27,12 +29,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.helpers.getPreferencesViewModel
 import com.sergisabate.fittrack.data.helpers.getProfileViewModel
@@ -41,7 +42,6 @@ import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
 import com.sergisabate.fittrack.ui.components.FitTrackTitleDescriptionCard
-import com.sergisabate.fittrack.ui.theme.FitTrackTheme
 import java.time.LocalDate
 import java.time.Period
 import kotlin.math.pow
@@ -87,7 +87,7 @@ fun ProfileScreen(navController: NavController) {
 }
 
 @Composable
-fun ProfileHeader(profilePicture: Painter, name: String, gender: String) {
+private fun ProfileHeader(profilePicture: Painter, name: String, gender: String) {
     Card(
         modifier = Modifier,
         colors = CardDefaults.cardColors(
@@ -121,7 +121,7 @@ fun ProfileHeader(profilePicture: Painter, name: String, gender: String) {
 }
 
 @Composable
-fun BodyStatisticsCard(age: Int, weight: String, height: String, bmi: String) {
+private fun BodyStatisticsCard(age: Int, weight: String, height: String, bmi: String) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -160,6 +160,7 @@ fun BodyStatisticsCard(age: Int, weight: String, height: String, bmi: String) {
 
 @Composable
 private fun LinkedDevicesCard(navController: NavController) {
+    val context = LocalContext.current
     val preferencesViewModel: PreferencesViewModel = getPreferencesViewModel()
     val currentLinkedDevice by preferencesViewModel.getBluetoothDevice().collectAsState()
 
@@ -180,14 +181,14 @@ private fun LinkedDevicesCard(navController: NavController) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = stringResource(R.string.device_paired),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSecondary
-                )
                 if (currentLinkedDevice.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.pair_scale),
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSecondary
+                    )
                     IconButton(
-                        onClick = { navController.navigate("Bluetooth") }
+                        onClick = { navController.navigate("PairScale") }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Add,
@@ -195,6 +196,12 @@ private fun LinkedDevicesCard(navController: NavController) {
                             tint = MaterialTheme.colorScheme.onSecondary
                         )
                     }
+                } else {
+                    Text(
+                        text = stringResource(R.string.scale_paired_title),
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSecondary
+                    )
                 }
             }
             if (currentLinkedDevice.isNotEmpty()) {
@@ -209,10 +216,20 @@ private fun LinkedDevicesCard(navController: NavController) {
                         color = MaterialTheme.colorScheme.onSecondary
                     )
                     IconButton(
-                        onClick = { preferencesViewModel.deleteBluetoothDevice() }
+                        onClick = {
+                            preferencesViewModel.deleteBluetoothDevice(
+                                onSuccess = {
+                                    Toast.makeText(context, context.getString(R.string.scale_unpaired), Toast.LENGTH_SHORT).show()
+                                },
+                                onError = { e ->
+                                    Toast.makeText(context, context.getString(R.string.error_unpairing_scale), Toast.LENGTH_SHORT).show()
+                                    Log.e("ProfileScreen", context.getString(R.string.error_unpairing_scale), e)
+                                }
+                            )
+                        }
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Close,
+                            imageVector = Icons.Default.Delete,
                             contentDescription = "Eliminar dispositivo",
                             tint = MaterialTheme.colorScheme.onSecondary
                         )
@@ -229,13 +246,5 @@ private fun getOfficialName(deviceName : String) : String {
     }
     else {
         deviceName
-    }
-}
-
-@Preview
-@Composable
-fun ProfileScreenPreview() {
-    FitTrackTheme {
-        ProfileScreen(rememberNavController())
     }
 }

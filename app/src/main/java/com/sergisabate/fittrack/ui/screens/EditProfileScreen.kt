@@ -56,7 +56,7 @@ fun EditProfileScreen() {
                             weightsViewModel.addOrUpdateLastWeightRecord(
                                 weight,
                                 onSuccess = {
-                                    Toast.makeText(context, context.getString(R.string.profile_successfully_updated), Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, context.getString(R.string.profile_updated), Toast.LENGTH_SHORT).show()
                                 },
                                 onError = { e ->
                                     Toast.makeText(context, context.getString(R.string.error_saving_profile_data), Toast.LENGTH_SHORT).show()

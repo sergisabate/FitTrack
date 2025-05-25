@@ -57,7 +57,7 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun ManageWeightsScreen() {
+fun WeightManagerScreen() {
     val context = LocalContext.current
     val locale = Locale(context.resources.configuration.locales[0].language)
 

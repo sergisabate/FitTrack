@@ -57,7 +57,12 @@ fun FitTrackTitleCard(title: String, modifier: Modifier = Modifier, isClickable:
 }
 
 @Composable
-fun FitTrackTitleDescriptionCard(title: String, description: String, modifier: Modifier = Modifier, isClickable: Boolean = false) {
+fun FitTrackTitleDescriptionCard(
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier,
+    isClickable: Boolean = false
+) {
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
