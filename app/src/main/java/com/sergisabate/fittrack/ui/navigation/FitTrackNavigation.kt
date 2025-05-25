@@ -19,7 +19,8 @@ fun FitTrackNavigation(navController: NavHostController) {
         getBottomItems(),
         getSettingsItems(),
         getAIItems(),
-        getWeightItems()
+        getWeightItems(),
+        getPlanItems()
     ).flatten()
 
     NavHost(

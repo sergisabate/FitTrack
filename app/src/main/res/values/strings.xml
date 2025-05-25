@@ -31,7 +31,7 @@
     <string name="light_mode">Modo Claro</string>
     <string name="system_default">Predeterminado del Sistema</string>
     <string name="error_saving_profile_data">Error al guardar los datos del perfil</string>
-    <string name="updated_successfully">Actualizado con éxito</string>
+    <string name="profile_successfully_updated">Perfil actualizado con éxito</string>
     <string name="menu_generator_title">Generador de Menús</string>
     <string name="menu_generator_description">Genera un menú diario personalizado basado en tus parámetros y preferencias.</string>
     <string name="view_menu">Vista del Menú</string>
@@ -127,7 +127,7 @@
     <string name="recommended">Recomendado</string>
     <string name="sleep_hours">Horas de Sueño</string>
     <string name="liters_amount">%1$.2f litros</string>
-    <string name="hours_and_minutes_amount">%1$d horas y %2$d minutos</string>
+    <string name="hours_and_minutes_amount">%1$d h y %2$d min</string>
     <string name="weigh">Pesar</string>
     <string name="weight_control">Control del Peso</string>
     <string name="current">Actual</string>
@@ -139,4 +139,8 @@
     <string name="manage_weights_description">Lleva un control preciso de tu peso añadiendo o eliminando registros históricos.</string>
     <string name="weigh_description">Mide tu peso actual al instante con tu báscula vinculada por Bluetooth.</string>
     <string name="plan">Plan</string>
+    <string name="define_lifestyle">Definir Estilo de Vida</string>
+    <string name="define_lifestyle_description">Ajusta tus preferencias de estilo de vida para obtener recomendaciones personalizadas.</string>
+    <string name="error_saving_lifestyle_data">Error al guardar los datos del estilo de vida</string>
+    <string name="lifestyle_successfully_updated">Estilo de vida actualizado con éxito</string>
 </resources>

@@ -3,7 +3,6 @@ package com.sergisabate.fittrack.ui.navigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.automirrored.filled.ShowChart
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Create
@@ -25,6 +24,7 @@ import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
 import com.sergisabate.fittrack.ui.screens.AIScreen
 import com.sergisabate.fittrack.ui.screens.AboutScreen
 import com.sergisabate.fittrack.ui.screens.BluetoothScreen
+import com.sergisabate.fittrack.ui.screens.DefineLifestyleScreen
 import com.sergisabate.fittrack.ui.screens.EditProfileScreen
 import com.sergisabate.fittrack.ui.screens.GenerateExerciseRoutineScreen
 import com.sergisabate.fittrack.ui.screens.GenerateMenuScreen
@@ -74,7 +74,7 @@ fun getBottomItems(): List<NavItem> {
             icon = Icons.AutoMirrored.Filled.List,
             title = stringResource(R.string.plan),
             route = "Plan",
-            screen = { PlanScreen() }
+            screen = { navController -> navController?.let { PlanScreen(it) } }
         ),
         NavItem(
             icon = Icons.Default.AutoAwesome,
@@ -165,15 +165,27 @@ fun getWeightItems(): List<NavItem> {
         NavItem(
             icon = Icons.Default.Build,
             title = stringResource(R.string.weigh),
-            route = "WeighScreen",
+            route = "Weigh",
             screen = { navController -> navController?.let { WeighScreen(it) } }
         ),
         NavItem(
-            icon = Icons.Default.AddCircle,
+            icon = Icons.Default.Build,
             title = stringResource(R.string.manage_weights),
             route = "ManageWeights",
             screen = { ManageWeightsScreen() }
         ),
+    )
+}
+
+@Composable
+fun getPlanItems(): List<NavItem> {
+    return listOf(
+        NavItem(
+            icon = Icons.Default.Build,
+            title = stringResource(R.string.define_lifestyle),
+            route = "DefineLifestyle",
+            screen = { DefineLifestyleScreen() }
+        )
     )
 }
 

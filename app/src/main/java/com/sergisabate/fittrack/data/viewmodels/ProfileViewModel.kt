@@ -80,28 +80,20 @@ class ProfileViewModel(private val userPreferencesRepository: UserPreferencesRep
         return MutableStateFlow(profile)
     }
 
-    fun setActivityLevel(activityLevel: ActivityLevel) {
+    fun setLifestyleData(
+        lifestyleData: LifestyleData,
+        onSuccess: (() -> Unit)? = null,
+        onError: ((Throwable) -> Unit)? = null
+    ) {
         viewModelScope.launch {
             try {
-                userPreferencesRepository.setActivityLevel(activityLevel.ordinal)
-            } catch (_: Exception) {}
-        }
-    }
-
-    fun setCalorieGoal(calorieGoal: CalorieGoal) {
-        viewModelScope.launch {
-            try {
-                userPreferencesRepository.setCalorieGoal(calorieGoal.ordinal)
-            } catch (_: Exception) {}
-        }
-    }
-
-    fun setMacroDistribution(macroDistribution: MacroDistribution) {
-        viewModelScope.launch {
-            try {
-                userPreferencesRepository.setMacroDistribution(macroDistribution.ordinal)
-            } catch (_: Exception) {}
-
+                userPreferencesRepository.setActivityLevel(lifestyleData.activityLevel.ordinal)
+                userPreferencesRepository.setCalorieGoal(lifestyleData.calorieGoal.ordinal)
+                userPreferencesRepository.setMacroDistribution(lifestyleData.macroDistribution.ordinal)
+                onSuccess?.invoke()
+            } catch (e: Exception) {
+                onError?.invoke(e)
+            }
         }
     }
 

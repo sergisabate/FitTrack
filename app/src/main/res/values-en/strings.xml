@@ -31,7 +31,7 @@
     <string name="light_mode">Light Mode</string>
     <string name="system_default">System Default</string>
     <string name="error_saving_profile_data">Error saving profile data</string>
-    <string name="updated_successfully">Successfully updated</string>
+    <string name="profile_successfully_updated">Profile successfully updated</string>
     <string name="menu_generator_title">Menu Generator</string>
     <string name="menu_generator_description">Generate a personalized daily menu based on your parameters and preferences.</string>
     <string name="view_menu">View Menu</string>
@@ -127,7 +127,7 @@
     <string name="recommended">Recommended</string>
     <string name="sleep_hours">Sleep Hours</string>
     <string name="liters_amount">%1$.2f liters</string>
-    <string name="hours_and_minutes_amount">%1$d hours and %2$d minutes</string>
+    <string name="hours_and_minutes_amount">%1$d h and %2$d min</string>
     <string name="weigh">Weigh</string>
     <string name="weight_control">Weight Control</string>
     <string name="current">Current</string>
@@ -139,4 +139,8 @@
     <string name="manage_weights_description">Keep precise track of your weight by adding or removing past records.</string>
     <string name="weigh_description">Measure your current weight instantly with your connected Bluetooth scale.</string>
     <string name="plan">Plan</string>
+    <string name="define_lifestyle">Define Lifestyle</string>
+    <string name="define_lifestyle_description">Adjust your lifestyle preferences to receive personalized recommendations.</string>
+    <string name="error_saving_lifestyle_data">Error saving lifestyle data</string>
+    <string name="lifestyle_successfully_updated">Lifestyle successfully updated</string>
 </resources>
