@@ -28,7 +28,7 @@ import com.sergisabate.fittrack.ui.screens.GenerateExerciseRoutineScreen
 import com.sergisabate.fittrack.ui.screens.GenerateMenuScreen
 import com.sergisabate.fittrack.ui.screens.LanguageOption
 import com.sergisabate.fittrack.ui.screens.LanguageScreen
-import com.sergisabate.fittrack.ui.screens.LifestylePreferencesScreen
+import com.sergisabate.fittrack.ui.screens.LifestyleScreen
 import com.sergisabate.fittrack.ui.screens.PairScaleScreen
 import com.sergisabate.fittrack.ui.screens.PlanScreen
 import com.sergisabate.fittrack.ui.screens.ProfileScreen
@@ -182,9 +182,9 @@ fun getPlanItems(): List<NavItem> {
     return listOf(
         NavItem(
             icon = Icons.Default.Build,
-            title = stringResource(R.string.lifestyle_preferences),
-            route = "LifestylePreferences",
-            screen = { LifestylePreferencesScreen() }
+            title = stringResource(R.string.lifestyle),
+            route = "Lifestyle",
+            screen = { LifestyleScreen() }
         )
     )
 }
