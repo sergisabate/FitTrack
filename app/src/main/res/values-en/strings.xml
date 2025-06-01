@@ -20,10 +20,10 @@
     <string name="linked_devices">Linked Devices</string>
     <string name="welcome_message">Welcome to FitTrack!</string>
     <string name="skip">Skip</string>
-    <string name="excited_message">I am excited to join you on your journey towards a healthier and fitter lifestyle.</string>
-    <string name="claim_data_message">To offer you a personalized experience tailored to your needs, I need you to provide me with some basic information about yourself.</string>
-    <string name="local_data_message">This data will be stored only on your device and will help me track your progress accurately.</string>
-    <string name="complete_form_message">Complete the information below to get started, please.</string>
+    <string name="start_message">Your journey toward a healthier and fitter lifestyle starts here.</string>
+    <string name="claim_data_message">To offer you a personalized and tailored experience, some basic information about you is required.</string>
+    <string name="local_data_message">This data will be stored only on your device and used to accurately track your progress.</string>
+    <string name="complete_form_message">Please complete the information below to get started:</string>
     <string name="full_name">Full name</string>
     <string name="submit">Submit</string>
     <string name="edit_profile">Edit Profile</string>

@@ -20,10 +20,10 @@
     <string name="linked_devices">Dispositius Vinculats</string>
     <string name="welcome_message">Benvingut/da a FitTrack!</string>
     <string name="skip">Ometre</string>
-    <string name="excited_message">Estic emocionat d\'acompanyar-te en el teu viatge cap a un estil de vida més saludable i en forma.</string>
-    <string name="claim_data_message">Per oferir-te una experiència personalitzada i adaptada a les teves necessitats, necessito que em proporcionis algunes dades bàsiques sobre tu.</string>
-    <string name="local_data_message">Aquestes dades es guardaran únicament al teu dispositiu i m\'ajudaran a seguir el teu progrés de manera precisa.</string>
-    <string name="complete_form_message">Si us plau, completa la informació a continuació per començar.</string>
+    <string name="start_message">Aquí comença el teu viatge cap a un estil de vida més saludable i en forma.</string>
+    <string name="claim_data_message">Per oferir-te una experiència personalitzada i adaptada a les teves necessitats, és necessari que proporcionis algunes dades bàsiques sobre tu.</string>
+    <string name="local_data_message">Aquestes dades s’emmagatzemaran únicament al teu dispositiu i s’utilitzaran per fer un seguiment precís del teu progrés.</string>
+    <string name="complete_form_message">Si us plau, completa la informació a continuació per començar:</string>
     <string name="full_name">Nom complet</string>
     <string name="submit">Guardar</string>
     <string name="edit_profile">Editar Perfil</string>
