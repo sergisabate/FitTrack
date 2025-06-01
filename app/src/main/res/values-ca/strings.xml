@@ -138,8 +138,8 @@
     <string name="manage_weights_description">Fes un seguiment precís del teu pes afegint o eliminant registres històrics.</string>
     <string name="weigh_description">Mesura el teu pes actual a l\'instant amb la bàscula vinculada per Bluetooth.</string>
     <string name="plan">Pla</string>
-    <string name="lifestyle_preferences">Preferències d\'Estil de Vida</string>
-    <string name="lifestyle_preferences_description">Ajusta les teves preferències d\'estil de vida per obtenir recomanacions personalitzades.</string>
+    <string name="lifestyle">Estil de Vida</string>
+    <string name="lifestyle_description">Ajusta les teves preferències d\'estil de vida per obtenir recomanacions personalitzades.</string>
     <string name="error_saving_lifestyle_data">Error en desar les dades de l\'estil de vida</string>
     <string name="lifestyle_updated">Estil de vida actualitzat</string>
     <string name="pair_scale">Vincular Bàscula</string>

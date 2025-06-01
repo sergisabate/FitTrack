@@ -138,8 +138,8 @@
     <string name="manage_weights_description">Lleva un control preciso de tu peso añadiendo o eliminando registros históricos.</string>
     <string name="weigh_description">Mide tu peso actual al instante con tu báscula vinculada por Bluetooth.</string>
     <string name="plan">Plan</string>
-    <string name="lifestyle_preferences">Preferencias de Estilo de Vida</string>
-    <string name="lifestyle_preferences_description">Ajusta tus preferencias de estilo de vida para obtener recomendaciones personalizadas.</string>
+    <string name="lifestyle">Estilo de Vida</string>
+    <string name="lifestyle_description">Ajusta tus preferencias de estilo de vida para obtener recomendaciones personalizadas.</string>
     <string name="error_saving_lifestyle_data">Peso</string>
     <string name="lifestyle_updated">Estilo de vida actualizado</string>
     <string name="pair_scale">Vincular Báscula</string>

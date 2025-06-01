@@ -138,8 +138,8 @@
     <string name="manage_weights_description">Keep precise track of your weight by adding or removing past records.</string>
     <string name="weigh_description">Measure your current weight instantly with your connected Bluetooth scale.</string>
     <string name="plan">Plan</string>
-    <string name="lifestyle_preferences">Lifestyle Preferences</string>
-    <string name="lifestyle_preferences_description">Adjust your lifestyle preferences to receive personalized recommendations.</string>
+    <string name="lifestyle">Lifestyle</string>
+    <string name="lifestyle_description">Adjust your lifestyle preferences to receive personalized recommendations.</string>
     <string name="error_saving_lifestyle_data">Error saving lifestyle data</string>
     <string name="lifestyle_updated">Lifestyle updated</string>
     <string name="pair_scale">Pair Scale</string>
