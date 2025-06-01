@@ -95,7 +95,7 @@
     <string name="gender">Género</string>
     <string name="weight_added">Peso añadido</string>
     <string name="error_saving_weight">Error al guardar el peso</string>
-    <string name="add_weight">Añadir peso</string>
+    <string name="add_weight">Añadir Peso</string>
     <string name="last_weight_cannot_be_deleted">No se puede eliminar el último peso</string>
     <string name="weight_deleted">Peso eliminado</string>
     <string name="error_deleting_weight">Error al eliminar el peso</string>

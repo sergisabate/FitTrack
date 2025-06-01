@@ -95,7 +95,7 @@
     <string name="gender">Gender</string>
     <string name="weight_added">Weight added</string>
     <string name="error_saving_weight">Error saving the weight</string>
-    <string name="add_weight">Add weight</string>
+    <string name="add_weight">Add Weight</string>
     <string name="last_weight_cannot_be_deleted">The last weight cannot be deleted</string>
     <string name="weight_deleted">Weight deleted</string>
     <string name="error_deleting_weight">Error deleting the weight</string>

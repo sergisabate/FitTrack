@@ -162,7 +162,7 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
         textStyle = MaterialTheme.typography.titleMedium
     )
 
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier)
 
     Button(
         onClick = {
@@ -174,9 +174,7 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
         modifier = Modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.secondary,
-            contentColor = MaterialTheme.colorScheme.onSecondary,
-            disabledContainerColor = Color.Gray,
-            disabledContentColor = MaterialTheme.colorScheme.onSecondary
+            contentColor = MaterialTheme.colorScheme.onSecondary
         ),
     ) {
         if (isLoading) {

@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -112,7 +113,7 @@ fun GenerateMenuScreen(navController: NavHostController) {
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 item {
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier)
 
                     OutlinedTextField(
                         value = preferences,
@@ -174,7 +175,11 @@ fun GenerateMenuScreen(navController: NavHostController) {
                                 Toast.makeText(context, noInternetMessage, Toast.LENGTH_SHORT).show()
                             }
                         },
-                        enabled = !isLoading
+                        enabled = !isLoading,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = MaterialTheme.colorScheme.onSecondary
+                        )
                     ) {
                         Text(stringResource(id = R.string.generate_menu))
                     }

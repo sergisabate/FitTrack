@@ -20,7 +20,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sergisabate.fittrack.R
@@ -68,7 +67,7 @@ fun LifestyleForm(lifestyleData: LifestyleData, onSubmit: (ActivityLevel, Calori
         }
     )
 
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(8.dp))
 
     Button(
         onClick = {
@@ -79,9 +78,7 @@ fun LifestyleForm(lifestyleData: LifestyleData, onSubmit: (ActivityLevel, Calori
         modifier = Modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.secondary,
-            contentColor = MaterialTheme.colorScheme.onSecondary,
-            disabledContainerColor = Color.Gray,
-            disabledContentColor = MaterialTheme.colorScheme.onSecondary
+            contentColor = MaterialTheme.colorScheme.onSecondary
         ),
     ) {
         if (isLoading) {

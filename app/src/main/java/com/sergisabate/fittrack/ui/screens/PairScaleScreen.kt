@@ -34,6 +34,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -181,7 +182,11 @@ fun BluetoothScaffold(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = !isScanning,
-                    onClick = onScanButtonClick
+                    onClick = onScanButtonClick,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSecondary
+                    )
                 ) {
                     Text(text = if (isScanning) stringResource(R.string.searching_scales) else stringResource(R.string.search_scales))
                 }
