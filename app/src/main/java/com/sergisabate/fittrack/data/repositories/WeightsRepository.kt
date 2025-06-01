@@ -28,6 +28,8 @@ private const val DEFAULT_STRING = ""
 private const val DEFAULT_FLOAT = 0.0f
 private const val DEFAULT_LONG = 0L
 
+val Context.weightsDataStore by preferencesDataStore(name = "weights")
+
 class WeightsRepository private constructor(context: Context) {
 
     private object PreferencesKeys {
@@ -36,8 +38,7 @@ class WeightsRepository private constructor(context: Context) {
         val WEIGHT_HISTORY = stringPreferencesKey(WEIGHT_HISTORY_KEY)
     }
 
-    private val Context.dataStore by preferencesDataStore(name = "weights_datastore")
-    private val dataStore = context.applicationContext.dataStore
+    private val dataStore = context.applicationContext.weightsDataStore
 
     private val _currentWeightFlow =
         MutableStateFlow(runBlocking { getCurrentWeight() })

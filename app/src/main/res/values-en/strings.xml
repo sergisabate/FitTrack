@@ -147,4 +147,9 @@
     <string name="scale_paired">Scale paired</string>
     <string name="error_unpairing_scale">Error unpairing scale</string>
     <string name="error_pairing_scale">Error pairing scale</string>
+    <string name="delete_data">Delete Data</string>
+    <string name="this_action_is_irreversible">This action is irreversible!</string>
+    <string name="delete_data_warning">If you decide to delete all your data, it cannot be recovered and you will be returned to the onboarding screen.\n\nIf you are absolutely sure, type the following phrase in uppercase to confirm:</string>
+    <string name="i_want_to_delete_my_data">I WANT TO DELETE MY DATA</string>
+    <string name="confirmation_phrase">Confirmation phrase</string>
 </resources>

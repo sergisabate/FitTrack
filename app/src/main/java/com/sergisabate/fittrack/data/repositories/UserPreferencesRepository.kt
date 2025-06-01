@@ -36,7 +36,7 @@ private const val DEFAULT_INT = 0
 private const val DEFAULT_LONG = 0L
 private const val DEFAULT_LIFESTYLE = 1
 
-private val Context.dataStore by preferencesDataStore(name = "user_preferences")
+val Context.userPreferencesDataStore by preferencesDataStore(name = "user_preferences")
 
 class UserPreferencesRepository private constructor(context: Context) {
 
@@ -52,7 +52,7 @@ class UserPreferencesRepository private constructor(context: Context) {
         val MACRO_DISTRIBUTION = intPreferencesKey(MACRO_DISTRIBUTION_KEY)
     }
 
-    private val dataStore = context.applicationContext.dataStore
+    private val dataStore = context.applicationContext.userPreferencesDataStore
 
     private val _isInDarkModeFlow = MutableStateFlow(runBlocking { getDarkModePreference() })
     private val _nameFlow = MutableStateFlow(runBlocking { getNamePreference() })

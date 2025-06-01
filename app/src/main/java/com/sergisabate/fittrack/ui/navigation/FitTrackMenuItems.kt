@@ -6,6 +6,7 @@ import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Place
@@ -23,6 +24,7 @@ import com.sergisabate.fittrack.data.helpers.getPreferencesViewModel
 import com.sergisabate.fittrack.data.viewmodels.PreferencesViewModel
 import com.sergisabate.fittrack.ui.screens.AIScreen
 import com.sergisabate.fittrack.ui.screens.AboutScreen
+import com.sergisabate.fittrack.ui.screens.DeleteDataScreen
 import com.sergisabate.fittrack.ui.screens.EditProfileScreen
 import com.sergisabate.fittrack.ui.screens.GenerateExerciseRoutineScreen
 import com.sergisabate.fittrack.ui.screens.GenerateMenuScreen
@@ -119,6 +121,12 @@ fun getSettingsItems(): List<NavItem> {
             title = stringResource(R.string.about),
             route = "About",
             screen = { AboutScreen() }
+        ),
+        NavItem(
+            icon = Icons.Default.Delete,
+            title = stringResource(R.string.delete_data),
+            route = "DeleteData",
+            screen = { DeleteDataScreen() }
         )
     )
 }

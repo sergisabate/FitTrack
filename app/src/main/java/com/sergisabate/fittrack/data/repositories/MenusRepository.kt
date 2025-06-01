@@ -30,7 +30,7 @@ private const val MENU_SELECTED_KEY = "menu_selected"
 private const val DEFAULT_STRING = ""
 private const val DEFAULT_INT = 0
 
-private val Context.dataStore by preferencesDataStore(name = "menus")
+val Context.menusDataStore by preferencesDataStore(name = "menus")
 
 class MenusRepository private constructor(context: Context) {
 
@@ -44,7 +44,7 @@ class MenusRepository private constructor(context: Context) {
         val MENU_SELECTED = stringPreferencesKey(MENU_SELECTED_KEY)
     }
 
-    private val dataStore = context.applicationContext.dataStore
+    private val dataStore = context.applicationContext.menusDataStore
 
     private val _menu1JsonFlow = MutableStateFlow(runBlocking { getMenuJson(PreferencesKeys.MENU1_JSON) })
     val menu1JsonFlow: StateFlow<String> = _menu1JsonFlow

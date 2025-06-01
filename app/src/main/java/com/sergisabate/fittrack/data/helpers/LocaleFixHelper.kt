@@ -6,7 +6,7 @@ import android.os.LocaleList
 import androidx.core.content.edit
 import java.util.Locale
 
-private const val PREF_NAME = "locale_prefs"
+const val PREF_NAME = "locale_prefs"
 private const val KEY_LOCALE = "selected_locale"
 
 fun saveLocale(context: Context, locale: Locale) {

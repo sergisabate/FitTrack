@@ -147,4 +147,9 @@
     <string name="scale_paired">Bàscula vinculada</string>
     <string name="error_unpairing_scale">Error en desvincular la bàscula</string>
     <string name="error_pairing_scale">Error en vincular la bàscula</string>
+    <string name="delete_data">Esborrar Dades</string>
+    <string name="this_action_is_irreversible">Aquesta acció és irreversible!</string>
+    <string name="delete_data_warning">Si decideixes esborrar totes les teves dades, no es podran recuperar i tornaràs a la pantalla d\'introducció.\n\nSi estàs completament segur/a, escriu la següent frase en majúscules per confirmar:</string>
+    <string name="i_want_to_delete_my_data">VULL ESBORRAR LES MEVES DADES</string>
+    <string name="confirmation_phrase">Frase de confirmació</string>
 </resources>

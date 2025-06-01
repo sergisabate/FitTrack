@@ -30,7 +30,7 @@ private const val ROUTINE_SELECTED_KEY = "routine_selected"
 private const val DEFAULT_STRING = ""
 private const val DEFAULT_INT = 0
 
-private val Context.dataStore by preferencesDataStore(name = "exercise_routines")
+val Context.exerciseRoutinesDataStore by preferencesDataStore(name = "exercise_routines")
 
 class ExerciseRoutinesRepository private constructor(context: Context) {
 
@@ -44,7 +44,7 @@ class ExerciseRoutinesRepository private constructor(context: Context) {
         val ROUTINE_SELECTED = stringPreferencesKey(ROUTINE_SELECTED_KEY)
     }
 
-    private val dataStore = context.applicationContext.dataStore
+    private val dataStore = context.applicationContext.exerciseRoutinesDataStore
 
     private val _routine1JsonFlow = MutableStateFlow(runBlocking { getRoutineJson(PreferencesKeys.ROUTINE1_JSON) })
     val routine1JsonFlow: StateFlow<String> = _routine1JsonFlow

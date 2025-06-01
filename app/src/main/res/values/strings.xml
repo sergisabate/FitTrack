@@ -147,4 +147,9 @@
     <string name="scale_paired">Báscula vinculada</string>
     <string name="error_unpairing_scale">Error al desvincular la báscula</string>
     <string name="error_pairing_scale">Error al vincular la báscula</string>
+    <string name="delete_data">Borrar Datos</string>
+    <string name="this_action_is_irreversible">¡Esta acción es irreversible!</string>
+    <string name="delete_data_warning">Si decides borrar todos tus datos, ya no podrán recuperarse y volverás a la pantalla de introducción.\n\nSi estás completamente seguro/a, escribe la siguiente frase en mayúsculas para confirmar:</string>
+    <string name="i_want_to_delete_my_data">QUIERO BORRAR MIS DATOS</string>
+    <string name="confirmation_phrase">Frase de confirmación</string>
 </resources>
