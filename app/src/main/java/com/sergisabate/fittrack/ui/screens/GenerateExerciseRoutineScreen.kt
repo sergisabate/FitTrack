@@ -33,11 +33,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.core.os.ConfigurationCompat
 import androidx.navigation.NavHostController
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.api.getGPTContent
@@ -65,8 +68,9 @@ import kotlin.math.roundToInt
 @Composable
 fun GenerateExerciseRoutineScreen(navController: NavHostController) {
     val context = LocalContext.current
-    val locale = Locale(context.resources.configuration.locales[0].language)
+    val locale = ConfigurationCompat.getLocales(LocalConfiguration.current).get(0) ?: Locale.getDefault()
     val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
 
     var preferences by remember { mutableStateOf("") }
     var totalRoutines by remember { mutableIntStateOf(0) }
@@ -136,11 +140,10 @@ fun GenerateExerciseRoutineScreen(navController: NavHostController) {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    val errorMessage = stringResource(id = R.string.error_saving_exercise_routine)
-                    val noInternetMessage = stringResource(R.string.no_internet_connection)
                     Button(
                         onClick = {
                             keyboardController?.hide()
+                            focusManager.clearFocus()
 
                             if (isInternetAvailable(context)) {
                                 isLoading = true
@@ -150,7 +153,7 @@ fun GenerateExerciseRoutineScreen(navController: NavHostController) {
                                 ) { newRoutine ->
                                     if (newRoutine.isEmpty()){
                                         CoroutineScope(Dispatchers.Main).launch {
-                                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(context, context.getString(R.string.error_saving_exercise_routine), Toast.LENGTH_SHORT).show()
                                             isLoading = false
                                         }
                                     }
@@ -163,16 +166,17 @@ fun GenerateExerciseRoutineScreen(navController: NavHostController) {
                                                     exerciseRoutinesViewModel.getExerciseRoutineData(number).value
                                                 }
                                                 isLoading = false
+                                                Toast.makeText(context, context.getString(R.string.new_exercise_routine_saved), Toast.LENGTH_SHORT).show()
                                             },
                                             onError = {
-                                                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                                                 isLoading = false
+                                                Toast.makeText(context, context.getString(R.string.error_saving_exercise_routine), Toast.LENGTH_SHORT).show()
                                             }
                                         )
                                     }
                                 }
                             } else {
-                                Toast.makeText(context, noInternetMessage, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, context.getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show()
                             }
                         },
                         enabled = !isLoading,

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FitTrack</string>
-    <string name="home">Inicio</string>
-    <string name="progress">Progreso</string>
     <string name="ai">IA</string>
     <string name="profile">Perfil</string>
     <string name="settings">Ajustes</string>
@@ -14,10 +12,6 @@
     <string name="theme">Tema</string>
     <string name="language">Idioma</string>
     <string name="about">Acerca De</string>
-    <string name="steps">Pasos</string>
-    <string name="calories">Calorías</string>
-    <string name="kilometers">Kilómetros</string>
-    <string name="linked_devices">Dispositivos Vinculados</string>
     <string name="welcome_message">¡Bienvenido/a a FitTrack!</string>
     <string name="skip">Omitir</string>
     <string name="start_message">Aquí empieza tu viaje hacia un estilo de vida más saludable y en forma.</string>
@@ -40,6 +34,7 @@
     <string name="generate_menu">Generar Menú</string>
     <string name="total_menus_saved">Total de menús guardados: %1$d/5</string>
     <string name="generating_menu">Generando menú…</string>
+    <string name="new_menu_saved">Nuevo menú guardado</string>
     <string name="error_saving_menu">Error al guardar el menú</string>
     <string name="no_internet_connection">No hay conexión a Internet</string>
     <string name="error_selecting_menu">Error al seleccionar el menú</string>
@@ -57,11 +52,11 @@
     <string name="exercise_generator_description">Genera una rutina de ejercicio personalizada basada en tus parámetros y preferencias.</string>
     <string name="routine_generator_title">Generador de Rutinas</string>
     <string name="view_routine">Vista de la Rutina</string>
+    <string name="new_exercise_routine_saved">Nueva rutina de ejercicios guardada</string>
     <string name="error_saving_exercise_routine">Error al guardar la rutina de ejercicio</string>
     <string name="generate_exercise_routine">Generar Rutina</string>
     <string name="total_routines_saved">Total de rutinas guardadas: %1$d/5</string>
     <string name="generating_exercise_routine">Generando rutina…</string>
-    <string name="error_selecting_exercise_routine">Error al seleccionar la rutina de ejercicio</string>
     <string name="placeholder_preferences_routine">Ejemplo: Ejercicios para mejorar la resistencia cardiovascular, Entrenamientos de alta intensidad, Ejercicios de cuerpo completo</string>
     <string name="warm_up">Calentamiento</string>
     <string name="main_exercises">Ejercicios principales</string>
@@ -77,7 +72,7 @@
     <string name="scale_paired_title">Báscula Vinculada</string>
     <string name="version_x">Versión %1$s</string>
     <string name="about_fittrack">Acerca de FitTrack</string>
-    <string name="about_description">FitTrack es una aplicación diseñada para ayudarte a alcanzar tus objetivos de salud y bienestar. Con un diseño moderno desarrollado con Kotlin Jetpack Compose, FitTrack ofrece funcionalidades avanzadas como:\n\n- Sincronización en tiempo real con la báscula Xiaomi Mi Smart Scale 2.\n- Generación de menús y rutinas de ejercicio personalizadas con ayuda de OpenAI.\n- Seguimiento de tu progreso con gráficas de peso.\n- Almacenamiento seguro y local de tus datos.\n\nCompatible con Android 15, soporte multilingüe y un diseño pensado en ti.</string>
+    <string name="about_description">FitTrack es una aplicación diseñada para ayudarte a alcanzar tus objetivos de salud y bienestar. Con un diseño moderno desarrollado con Kotlin Jetpack Compose, FitTrack ofrece funcionalidades avanzadas como:\n\n- Sincronización en tiempo real con la báscula Xiaomi Mi Smart Scale 2.\n- Generación de menús y rutinas de ejercicio personalizadas con ayuda de OpenAI.\n- Seguimiento de tu progreso con gráficas de peso.\n- Almacenamiento seguro y local de tus datos.\n\nCompatible con Android 16, soporte multilingüe y un diseño pensado en ti.</string>
     <string name="copyright">© %1$d Sergi Sabaté. Todos los derechos reservados.</string>
     <string name="male">Hombre</string>
     <string name="female">Mujer</string>

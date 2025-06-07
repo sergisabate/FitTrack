@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FitTrack</string>
-    <string name="home">Inici</string>
-    <string name="progress">Progrés</string>
     <string name="ai">IA</string>
     <string name="profile">Perfil</string>
     <string name="settings">Configuració</string>
@@ -14,10 +12,6 @@
     <string name="theme">Tema</string>
     <string name="language">Idioma</string>
     <string name="about">Sobre</string>
-    <string name="steps">Passes</string>
-    <string name="calories">Calories</string>
-    <string name="kilometers">Quilòmetres</string>
-    <string name="linked_devices">Dispositius Vinculats</string>
     <string name="welcome_message">Benvingut/da a FitTrack!</string>
     <string name="skip">Ometre</string>
     <string name="start_message">Aquí comença el teu viatge cap a un estil de vida més saludable i en forma.</string>
@@ -40,6 +34,7 @@
     <string name="generate_menu">Generar Menú</string>
     <string name="total_menus_saved">Total de menús guardats: %1$d/5</string>
     <string name="generating_menu">Generant menú…</string>
+    <string name="new_menu_saved">Nou menú desat</string>
     <string name="error_saving_menu">Error en desar el menú</string>
     <string name="no_internet_connection">No hi ha connexió a Internet</string>
     <string name="error_selecting_menu">Error en seleccionar el menú</string>
@@ -57,11 +52,11 @@
     <string name="exercise_generator_description">Genera una rutina d’exercici personalitzada basada en els teus paràmetres i preferències.</string>
     <string name="routine_generator_title">Generador de Rutines</string>
     <string name="view_routine">Vista de la Rutina</string>
+    <string name="new_exercise_routine_saved">Nova rutina d\'exercicis desada</string>
     <string name="error_saving_exercise_routine">Error en desar la rutina d’exercici</string>
     <string name="generate_exercise_routine">Generar Rutina</string>
     <string name="total_routines_saved">Total de rutines guardades: %1$d/5</string>
     <string name="generating_exercise_routine">Generant rutina…</string>
-    <string name="error_selecting_exercise_routine">Error en seleccionar la rutina d’exercici</string>
     <string name="placeholder_preferences_routine">Exemple: Exercicis per millorar la resistència cardiovascular, Entrenaments d’alta intensitat, Exercicis de cos complet</string>
     <string name="warm_up">Escalfament</string>
     <string name="main_exercises">Exercicis principals</string>
@@ -77,7 +72,7 @@
     <string name="scale_paired_title">Bàscula Vinculada</string>
     <string name="version_x">Versió %1$s</string>
     <string name="about_fittrack">Sobre FitTrack</string>
-    <string name="about_description">FitTrack és una aplicació dissenyada per ajudar-te a assolir els teus objectius de salut i benestar. Amb un disseny modern desenvolupat amb Kotlin Jetpack Compose, FitTrack ofereix funcionalitats avançades com:\n\n- Sincronització en temps real amb la bàscula Xiaomi Mi Smart Scale 2.\n- Generació de menús i rutines d’exercici personalitzades amb l’ajuda d’OpenAI.\n- Seguiment del teu progrés amb gràfics de pes.\n- Emmagatzematge segur i local de les teves dades.\n\nCompatible amb Android 15, suport multilingüe i un disseny pensat per a tu.</string>
+    <string name="about_description">FitTrack és una aplicació dissenyada per ajudar-te a assolir els teus objectius de salut i benestar. Amb un disseny modern desenvolupat amb Kotlin Jetpack Compose, FitTrack ofereix funcionalitats avançades com:\n\n- Sincronització en temps real amb la bàscula Xiaomi Mi Smart Scale 2.\n- Generació de menús i rutines d’exercici personalitzades amb l’ajuda d’OpenAI.\n- Seguiment del teu progrés amb gràfics de pes.\n- Emmagatzematge segur i local de les teves dades.\n\nCompatible amb Android 16, suport multilingüe i un disseny pensat per a tu.</string>
     <string name="copyright">© %1$d Sergi Sabaté. Tots els drets reservats.</string>
     <string name="male">Home</string>
     <string name="female">Dona</string>

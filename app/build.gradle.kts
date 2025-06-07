@@ -3,6 +3,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
 }
 
 val localProperties: Properties by lazy {
@@ -15,12 +16,12 @@ val openaiApiKey: String = localProperties.getProperty("openaiApiKey")
 
 android {
     namespace = "com.sergisabate.fittrack"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.sergisabate.fittrack"
-        minSdk = 29
-        targetSdk = 35
+        minSdk = 26
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 

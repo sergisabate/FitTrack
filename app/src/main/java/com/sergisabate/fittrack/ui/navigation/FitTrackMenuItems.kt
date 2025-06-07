@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.sergisabate.fittrack.R
@@ -211,8 +211,7 @@ fun getThemeOptionName(): String {
 
 @Composable
 fun getLanguageOptionName(): String {
-    val context = LocalContext.current
-    val language = context.resources.configuration.locales.get(0).language
+    val language = LocalConfiguration.current.locales.get(0).language
     val option = LanguageOption.entries.firstOrNull { it.value == language } ?: LanguageOption.Spanish
     return option.displayName
 }

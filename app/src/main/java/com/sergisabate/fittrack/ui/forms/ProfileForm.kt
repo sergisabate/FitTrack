@@ -35,7 +35,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -191,7 +190,6 @@ fun ProfileForm(profile: ProfileData? = null, weightData: Float? = null, onSubmi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DatePickerField(selectedDate: Long?, onDateSelected: (Long?) -> Unit) {
-    val focusManager = LocalFocusManager.current
     var showModal by remember { mutableStateOf(false) }
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
@@ -218,7 +216,6 @@ private fun DatePickerField(selectedDate: Long?, onDateSelected: (Long?) -> Unit
             .onFocusChanged {
                 if (it.isFocused) {
                     showModal = true
-                    focusManager.clearFocus()
                 }
             }
     )

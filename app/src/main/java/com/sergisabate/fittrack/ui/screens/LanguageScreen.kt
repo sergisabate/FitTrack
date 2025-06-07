@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.sergisabate.fittrack.data.helpers.saveLocale
@@ -38,7 +39,7 @@ enum class LanguageOption(val value: String, val displayName: String) {
 @Composable
 fun LanguageScreen() {
     val context = LocalContext.current
-    val currentLanguage = context.resources.configuration.locales[0].language
+    val currentLanguage = LocalConfiguration.current.locales[0].language
     val initialOption = LanguageOption.entries.firstOrNull { it.value == currentLanguage } ?: LanguageOption.Spanish
     var selectedOption by remember { mutableStateOf(initialOption) }
 
@@ -97,7 +98,7 @@ fun localeSelection(localeTag: String, context: Context) {
         context.getSystemService(LocaleManager::class.java).applicationLocales = LocaleList.forLanguageTags(localeTag)
     } else {
         val activity = context as ComponentActivity
-        saveLocale(activity, Locale(localeTag))
+        saveLocale(activity, Locale.forLanguageTag(localeTag))
 
         val intent = Intent(activity, activity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)

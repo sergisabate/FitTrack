@@ -39,11 +39,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.os.ConfigurationCompat
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.helpers.getWeightsViewModel
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
@@ -60,7 +60,7 @@ import java.util.Locale
 @Composable
 fun WeightManagerScreen() {
     val context = LocalContext.current
-    val locale = Locale(context.resources.configuration.locales[0].language)
+    val locale = ConfigurationCompat.getLocales(LocalConfiguration.current).get(0) ?: Locale.getDefault()
 
     val weightsViewModel: WeightsViewModel = getWeightsViewModel()
     val weightRecords by weightsViewModel.weightHistory.collectAsState()
@@ -194,7 +194,6 @@ fun WeightManagerScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DatePickerField(selectedDate: Long?, onDateSelected: (Long?) -> Unit) {
-    val focusManager = LocalFocusManager.current
     var showModal by remember { mutableStateOf(false) }
     val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
@@ -221,7 +220,6 @@ private fun DatePickerField(selectedDate: Long?, onDateSelected: (Long?) -> Unit
             .onFocusChanged {
                 if (it.isFocused) {
                     showModal = true
-                    focusManager.clearFocus()
                 }
             }
     )
