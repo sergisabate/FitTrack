@@ -17,7 +17,7 @@ fun saveLocale(context: Context, locale: Locale) {
 fun getSavedLocale(context: Context): Locale {
     val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     val language = sharedPreferences.getString(KEY_LOCALE, Locale.getDefault().language)
-    return Locale(language ?: Locale.getDefault().language)
+    return Locale.forLanguageTag(language ?: Locale.getDefault().language)
 }
 
 fun applyLocale(context: Context, locale: Locale): Context {
