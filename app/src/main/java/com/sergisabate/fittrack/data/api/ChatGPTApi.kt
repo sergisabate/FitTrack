@@ -1,5 +1,6 @@
 package com.sergisabate.fittrack.data.api
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import com.sergisabate.fittrack.BuildConfig
 import okhttp3.Interceptor
@@ -23,6 +24,7 @@ class AuthInterceptor() : Interceptor {
     }
 }
 
+@Keep
 data class ChatGPTRequest(
     val model: String,
     val messages: List<Message>,
@@ -30,9 +32,13 @@ data class ChatGPTRequest(
     val responseFormat: Map<String, String>
 )
 
+@Keep
 data class ChatGPTResponse(val choices: List<Choice>)
 
+@Keep
 data class Choice(val message: Message)
+
+@Keep
 data class Message(val role: String, val content: String)
 
 val client: OkHttpClient = OkHttpClient.Builder()

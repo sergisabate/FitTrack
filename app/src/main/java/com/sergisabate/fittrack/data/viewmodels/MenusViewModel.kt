@@ -1,5 +1,6 @@
 package com.sergisabate.fittrack.data.viewmodels
 
+import androidx.annotation.Keep
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+@Keep
 data class MenuData(
     val title: String,
     val date: String,
@@ -18,10 +20,12 @@ data class MenuData(
     val dinner: Meals
 )
 
+@Keep
 data class Meals(
     val meals: List<Meal>
 )
 
+@Keep
 data class Meal(
     val description: String,
     val ingredients: List<String>,

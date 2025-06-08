@@ -165,12 +165,12 @@ fun GenerateMenuScreen(navController: NavHostController) {
                                                 menusList = (1..totalMenus).mapNotNull { number ->
                                                     menusViewModel.getMenuData(number).value
                                                 }
-                                                isLoading = false
                                                 Toast.makeText(context, context.getString(R.string.new_menu_saved), Toast.LENGTH_SHORT).show()
+                                                isLoading = false
                                             },
                                             onError = {
-                                                isLoading = false
                                                 Toast.makeText(context, context.getString(R.string.error_saving_menu), Toast.LENGTH_SHORT).show()
+                                                isLoading = false
                                             }
                                         )
                                     }
