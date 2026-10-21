@@ -29,6 +29,12 @@
 </p>
 <p align="center"><sub>Screenshots in Catalan; the app is also available in Spanish and English.</sub></p>
 
+<p align="center">
+  <a href="https://github.com/sergisabate/FitTrack/releases/latest"><b>⬇️ Download the latest APK</b></a>
+  <br>
+  <sub>Android 8.0+ · AI generators disabled in the prebuilt APK, see <a href="#build--run">Build & run</a></sub>
+</p>
+
 ## About
 
 FitTrack started as my Bachelor's final project in Computer Engineering (Universitat de Lleida), built solo from scratch while learning Kotlin and Jetpack Compose, and kept evolving afterwards up to Android 16 support.
