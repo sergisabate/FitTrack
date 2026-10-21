@@ -3,9 +3,9 @@ package com.sergisabate.fittrack.data.api
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import kotlinx.coroutines.CoroutineScope
+import com.sergisabate.fittrack.BuildConfig
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 fun isInternetAvailable(context: Context): Boolean {
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -19,11 +19,12 @@ fun isInternetAvailable(context: Context): Boolean {
     }
 }
 
-fun getGPTContent(
+fun isOpenAIConfigured(): Boolean = BuildConfig.OPENAI_API_KEY.isNotBlank()
+
+suspend fun getGPTContent(
     systemMessage: String,
-    userMessage: String,
-    onResult: (String) -> Unit
-) {
+    userMessage: String
+): String {
     val request = ChatGPTRequest(
         model = "gpt-4.1-mini",
         responseFormat = mapOf("type" to "json_object"),
@@ -33,17 +34,16 @@ fun getGPTContent(
         )
     )
 
-    CoroutineScope(Dispatchers.IO).launch {
+    return withContext(Dispatchers.IO) {
         try {
             val response = chatGPTApi.getChatGPTResponse(request).execute()
             if (response.isSuccessful) {
-                val menu = response.body()?.choices?.get(0)?.message?.content ?: ""
-                onResult(menu)
+                response.body()?.choices?.firstOrNull()?.message?.content ?: ""
             } else {
-                onResult("")
+                ""
             }
         } catch (_: Exception) {
-            onResult("")
+            ""
         }
     }
 }

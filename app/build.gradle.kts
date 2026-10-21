@@ -8,11 +8,11 @@ plugins {
 
 val localProperties: Properties by lazy {
     Properties().apply {
-        load(rootProject.file("local.properties").reader())
+        rootProject.file("local.properties").takeIf { it.exists() }?.reader()?.use { load(it) }
     }
 }
 
-val openaiApiKey: String = localProperties.getProperty("openaiApiKey")
+val openaiApiKey: String = localProperties.getProperty("openaiApiKey", "")
 
 android {
     namespace = "com.sergisabate.fittrack"
@@ -50,9 +50,6 @@ android {
         compose = true
         buildConfig = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -74,4 +71,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.converter.gson)
     implementation(libs.androidx.material.icons.extended)
+
+    testImplementation(libs.junit)
 }

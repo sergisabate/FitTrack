@@ -33,13 +33,17 @@ class WeightsViewModel(private val weightsRepository: WeightsRepository) : ViewM
         return weightsRepository.currentWeightFlow
     }
 
-    fun getWeightRecords(): StateFlow<MutableList<WeightRecord>> {
+    private fun readWeightHistory(): MutableList<WeightRecord> {
         val currentWeightHistoryJson = weightsRepository.weightHistoryFlow.value
-        val weightHistoryList: MutableList<WeightRecord> = if (currentWeightHistoryJson.isNotEmpty()) {
+        return if (currentWeightHistoryJson.isNotEmpty()) {
             Gson().fromJson(currentWeightHistoryJson, object : TypeToken<List<WeightRecord>>() {}.type)
         } else {
             mutableListOf()
         }
+    }
+
+    fun getWeightRecords(): StateFlow<MutableList<WeightRecord>> {
+        val weightHistoryList = readWeightHistory()
         _weightHistory.value = weightHistoryList
         return MutableStateFlow(weightHistoryList)
     }
@@ -55,38 +59,19 @@ class WeightsViewModel(private val weightsRepository: WeightsRepository) : ViewM
                 val lastDateEpoch = weightsRepository.lastDateFlow.value
                 val isTodayRecorded = lastDateEpoch == today
 
-                val currentWeightHistoryJson = weightsRepository.weightHistoryFlow.value
-                val weightHistoryList: MutableList<WeightRecord> = if (currentWeightHistoryJson.isNotEmpty()) {
-                    Gson().fromJson(currentWeightHistoryJson, object : TypeToken<List<WeightRecord>>() {}.type)
-                } else {
-                    mutableListOf()
-                }
+                val weightHistoryList = readWeightHistory()
 
                 val newRecord = WeightRecord(weight, today)
                 if (isTodayRecorded && weightHistoryList.isNotEmpty()) {
                     weightHistoryList[weightHistoryList.lastIndex] = newRecord
                 } else {
-                    /*
-                    weightHistoryList.add(WeightRecord(weight-1.5f, today-10))
-                    weightHistoryList.add(WeightRecord(weight-2f, today-9))
-                    weightHistoryList.add(WeightRecord(weight-1f, today-8))
-                    weightHistoryList.add(WeightRecord(weight, today-7))
-                    weightHistoryList.add(WeightRecord(weight+2f, today-6))
-                    weightHistoryList.add(WeightRecord(weight+3f, today-5))
-                    weightHistoryList.add(WeightRecord(weight+4f, today-4))
-                    weightHistoryList.add(WeightRecord(weight+3.5f, today-3))
-                    weightHistoryList.add(WeightRecord(weight+2f, today-2))
-                    weightHistoryList.add(WeightRecord(weight+1f, today-1))
-                    */
                     weightHistoryList.add(newRecord)
                 }
 
                 val updatedWeightHistoryJson = Gson().toJson(weightHistoryList)
                 weightsRepository.setWeightHistory(updatedWeightHistoryJson)
 
-                val lastWeightRecord = weightHistoryList.last()
-                weightsRepository.setCurrentWeight(lastWeightRecord.weight)
-                weightsRepository.setLastDate(lastWeightRecord.date)
+                saveLatestRecord(weightHistoryList)
 
                 _weightHistory.value = weightHistoryList
 
@@ -105,12 +90,7 @@ class WeightsViewModel(private val weightsRepository: WeightsRepository) : ViewM
     ) {
         viewModelScope.launch {
             try {
-                val currentWeightHistoryJson = weightsRepository.weightHistoryFlow.value
-                val weightHistoryList: MutableList<WeightRecord> = if (currentWeightHistoryJson.isNotEmpty()) {
-                    Gson().fromJson(currentWeightHistoryJson, object : TypeToken<List<WeightRecord>>() {}.type)
-                } else {
-                    mutableListOf()
-                }
+                val weightHistoryList = readWeightHistory()
 
                 val index = weightHistoryList.indexOfFirst { it.date == date }
                 if (index != -1) {
@@ -124,9 +104,7 @@ class WeightsViewModel(private val weightsRepository: WeightsRepository) : ViewM
                 val updatedWeightHistoryJson = Gson().toJson(weightHistoryList)
                 weightsRepository.setWeightHistory(updatedWeightHistoryJson)
 
-                val lastWeightRecord = weightHistoryList.last()
-                weightsRepository.setCurrentWeight(lastWeightRecord.weight)
-                weightsRepository.setLastDate(lastWeightRecord.date)
+                saveLatestRecord(weightHistoryList)
 
                 _weightHistory.value = weightHistoryList
 
@@ -144,21 +122,14 @@ class WeightsViewModel(private val weightsRepository: WeightsRepository) : ViewM
     ) {
         viewModelScope.launch {
             try {
-                val currentWeightHistoryJson = weightsRepository.weightHistoryFlow.value
-                val weightHistoryList: MutableList<WeightRecord> = if (currentWeightHistoryJson.isNotEmpty()) {
-                    Gson().fromJson(currentWeightHistoryJson, object : TypeToken<List<WeightRecord>>() {}.type)
-                } else {
-                    mutableListOf()
-                }
+                val weightHistoryList = readWeightHistory()
 
                 weightHistoryList.remove(weightRecord)
 
                 val updatedWeightHistoryJson = Gson().toJson(weightHistoryList)
                 weightsRepository.setWeightHistory(updatedWeightHistoryJson)
 
-                val lastWeightRecord = weightHistoryList.last()
-                weightsRepository.setCurrentWeight(lastWeightRecord.weight)
-                weightsRepository.setLastDate(lastWeightRecord.date)
+                saveLatestRecord(weightHistoryList)
 
                 _weightHistory.value = weightHistoryList
 
@@ -167,6 +138,12 @@ class WeightsViewModel(private val weightsRepository: WeightsRepository) : ViewM
                 onError?.invoke(e)
             }
         }
+    }
+
+    private suspend fun saveLatestRecord(weightHistoryList: List<WeightRecord>) {
+        val lastWeightRecord = weightHistoryList.lastOrNull() ?: WeightRecord.Default
+        weightsRepository.setCurrentWeight(lastWeightRecord.weight)
+        weightsRepository.setLastDate(lastWeightRecord.date)
     }
 }
 

@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +46,7 @@ import androidx.navigation.NavHostController
 import com.sergisabate.fittrack.R
 import com.sergisabate.fittrack.data.api.getGPTContent
 import com.sergisabate.fittrack.data.api.isInternetAvailable
+import com.sergisabate.fittrack.data.api.isOpenAIConfigured
 import com.sergisabate.fittrack.data.helpers.getMenusViewModel
 import com.sergisabate.fittrack.data.helpers.getProfileViewModel
 import com.sergisabate.fittrack.data.helpers.getWeightsViewModel
@@ -53,8 +55,6 @@ import com.sergisabate.fittrack.data.viewmodels.MenusViewModel
 import com.sergisabate.fittrack.data.viewmodels.ProfileViewModel
 import com.sergisabate.fittrack.data.viewmodels.WeightsViewModel
 import com.sergisabate.fittrack.ui.components.FitTrackTitleDescriptionCard
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -71,6 +71,7 @@ fun GenerateMenuScreen(navController: NavHostController) {
     val locale = ConfigurationCompat.getLocales(LocalConfiguration.current).get(0) ?: Locale.getDefault()
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+    val scope = rememberCoroutineScope()
 
     var preferences by remember { mutableStateOf("") }
     var totalMenus by remember { mutableIntStateOf(0) }
@@ -88,7 +89,7 @@ fun GenerateMenuScreen(navController: NavHostController) {
     val userMessageFormat = stringResource(id = R.string.chatgpt_menu_message)
     val userMessage = String.format(
         userMessageFormat,
-        preferences.replace(Regex("[^a-zA-Z0-9,;\\s]"), ""),
+        preferences.replace(Regex("[^\\p{L}\\p{N},;\\s]"), ""),
         "${locale.language}-${locale.country}",
         stringResource(profileData.gender.displayName),
         ChronoUnit.YEARS.between(LocalDate.ofEpochDay(profileData.birthDate), LocalDate.now()).toInt(),
@@ -145,17 +146,18 @@ fun GenerateMenuScreen(navController: NavHostController) {
                             keyboardController?.hide()
                             focusManager.clearFocus()
 
-                            if (isInternetAvailable(context)) {
+                            if (!isOpenAIConfigured()) {
+                                Toast.makeText(context, context.getString(R.string.ai_not_configured), Toast.LENGTH_LONG).show()
+                            } else if (isInternetAvailable(context)) {
                                 isLoading = true
-                                getGPTContent(
-                                    systemMessage = systemMessage,
-                                    userMessage = userMessage
-                                ) { newMenu ->
+                                scope.launch {
+                                    val newMenu = getGPTContent(
+                                        systemMessage = systemMessage,
+                                        userMessage = userMessage
+                                    )
                                     if (newMenu.isEmpty()){
-                                        CoroutineScope(Dispatchers.Main).launch {
-                                            Toast.makeText(context, context.getString(R.string.error_saving_menu), Toast.LENGTH_SHORT).show()
-                                            isLoading = false
-                                        }
+                                        Toast.makeText(context, context.getString(R.string.error_saving_menu), Toast.LENGTH_SHORT).show()
+                                        isLoading = false
                                     }
                                     else{
                                         menusViewModel.setMenuJson(
