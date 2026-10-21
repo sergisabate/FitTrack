@@ -10,17 +10,14 @@ import androidx.compose.ui.unit.sp
 import com.sergisabate.fittrack.R
 
 val googleSansFamily = FontFamily(
-        Font(R.font.productsans_black, FontWeight.Black),
-        Font(R.font.productsans_blackitalic, FontWeight.Black, FontStyle.Italic),
-        Font(R.font.productsans_bold, FontWeight.Bold),
-        Font(R.font.productsans_bolditalic, FontWeight.Bold, FontStyle.Italic),
-        Font(R.font.productsans_italic, FontWeight.Normal, FontStyle.Italic),
-        Font(R.font.productsans_light, FontWeight.Light),
-        Font(R.font.productsans_lightitalic, FontWeight.Light, FontStyle.Italic),
-        Font(R.font.productsans_medium, FontWeight.Medium),
-        Font(R.font.productsans_regular, FontWeight.Normal),
-        Font(R.font.productsans_thin, FontWeight.Light),
-        Font(R.font.productsans_thinitalic, FontWeight.Thin, FontStyle.Italic),
+        Font(R.font.google_sans_flex_regular, FontWeight.Normal),
+        Font(R.font.google_sans_flex_regular_italic, FontWeight.Normal, FontStyle.Italic),
+        Font(R.font.google_sans_flex_medium, FontWeight.Medium),
+        Font(R.font.google_sans_flex_medium_italic, FontWeight.Medium, FontStyle.Italic),
+        Font(R.font.google_sans_flex_semibold, FontWeight.SemiBold),
+        Font(R.font.google_sans_flex_semibold_italic, FontWeight.SemiBold, FontStyle.Italic),
+        Font(R.font.google_sans_flex_bold, FontWeight.Bold),
+        Font(R.font.google_sans_flex_bold_italic, FontWeight.Bold, FontStyle.Italic),
 )
 
 private val defaultTypography = Typography()
@@ -42,7 +39,7 @@ val Typography = Typography(
 
         titleLarge = TextStyle(
                 fontFamily = googleSansFamily,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.SemiBold,
                 fontSize = 22.sp,
                 lineHeight = 28.sp,
                 letterSpacing = 0.0.sp
