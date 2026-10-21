@@ -8,14 +8,13 @@
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 /.idea/other.xml
+/.idea/deviceManager.xml
+.kotlin
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
-/app/release/app-release.apk
-/app/release/baselineProfiles/0/app-release.dm
-/app/release/output-metadata.json
-/app/release/baselineProfiles/1/app-release.dm
+/app/release/
 /app/mapping.txt
